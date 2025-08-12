@@ -14,7 +14,7 @@ Your mission begins in 1889, just days before Nikola Tesla's laboratory is set t
 
 ## Tutorial Content
 
-{% split %}
+{% split /%}
 
 ### Step 1: Establish a Temporal Anchor
 
@@ -36,11 +36,11 @@ Your mission begins in 1889, just days before Nikola Tesla's laboratory is set t
 }
 ```
 
-{% /split %}
+{% split /%}
 
 ---
 
-{% split %}
+{% split /%}
 
 ### Step 2: Create the timeline to navigate to 1889
 
@@ -66,11 +66,11 @@ Your mission begins in 1889, just days before Nikola Tesla's laboratory is set t
 }
 ```
 
-{% /split %}
+{% split /%}
 
 ---
 
-{% split %}
+{% split /%}
 
 ### Step 3: Navigate to 1889
 
@@ -89,11 +89,11 @@ Your mission begins in 1889, just days before Nikola Tesla's laboratory is set t
 }
 ```
 
-{% /split %}
+{% split /%}
 
 ---
 
-{% split %}
+{% split /%}
 
 ### Step 4: Retrieve the Blueprints
 
@@ -116,11 +116,11 @@ Your mission begins in 1889, just days before Nikola Tesla's laboratory is set t
 }
 ```
 
-{% /split %}
+{% split /%}
 
 ---
 
-{% split %}
+{% split /%}
 
 ### Step 5: Avoid Paradoxes
 
@@ -142,11 +142,11 @@ Your mission begins in 1889, just days before Nikola Tesla's laboratory is set t
 }
 ```
 
-{% /split %}
+{% split /%}
 
 ---
 
-{% split %}
+{% split /%}
 
 ### Step 6: Return to the Present
 
@@ -162,7 +162,7 @@ Your mission begins in 1889, just days before Nikola Tesla's laboratory is set t
   }
 /%}
 
-{% /split %}
+{% split /%}
 
 ## Outcome
 
