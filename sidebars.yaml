@@ -1,0 +1,18 @@
+- page: index.md
+  label: Home
+- group: Guides
+  items:
+    - page: guides/getting-started.md
+    - page: guides/quickstart.md
+- group: Concepts
+  items:
+    - page: concepts/authentication.md
+    - page: concepts/webhooks.md
+- group: API Reference
+  items:
+    - page: reference/overview.md
+    - page: ./apis/yourcompany.yaml
+- page: sdks.md
+- page: support.md
+- page: changelog.md
+- page: terms.md
