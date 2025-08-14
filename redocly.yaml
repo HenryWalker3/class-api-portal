@@ -35,9 +35,5 @@ sso:
   - GUEST
 rbac:
   content:
-    '**':
-      anonymous: read
-      authenticated: read
     '/apis/*':
-      anonymous: none
       authenticated: read
