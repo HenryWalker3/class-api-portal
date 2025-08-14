@@ -31,13 +31,6 @@ logo:
   link: /
 footer:
   copyrightText: Copyleft © Redocly Inc. No rights reserved.
-  items:
-    - page: legal/terms.md
-      label: Terms
-    - page: legal/responsible-use.md
-      label: Responsible Use
-    - href: /
-      label: Cookies
 sso:
   - GUEST
 rbac:
