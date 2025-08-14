@@ -38,3 +38,6 @@ footer:
       label: Responsible Use
     - href: /
       label: Cookies
+requiresLogin: true
+sso:
+  - GUEST

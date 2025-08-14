@@ -1,40 +1,53 @@
-# Warp Guides
+---
+title: Class API Guides
+---
 
-Welcome to the Warp Guides! Whether you're just getting started or looking to dive deep into advanced time manipulation techniques, this is the place to find all the information you need. Below, you'll find a list of guides categorized to help you navigate through the different aspects of using Warp.
+# Class API Guides
+
+Welcome! This hub collects all the essential guides for building against the **Class API**. Start with the quickstart, then dive into authentication flows (Authorisation Code, Resource Owner Password), refresh tokens, scopes, error handling, and our API structure.
 
 ## Quickstart
 
-Start your journey with Warp by following our Quickstart guide. This guide will help you set up your environment and make your first request in minutes.
+Get set up and make your first successful request in minutes.
 
-- [Quickstart Guide](quickstart.md)
+- **[Using the API](/guides/class-api-structure)** — environment setup, base URL, headers, a first “hello” call, and troubleshooting tips.
 
-## Core Concepts
+## Authentication & Authorisation
+[legal](../legal)
+Learn how users and apps obtain tokens to call the Class API securely.
 
-Explore the fundamental features of Warp, including manipulating events, navigating through time, and setting temporal anchors.
+- **[Auth Overview](/guides/auth-overview)** — Identifying which flow to implement (Partner vs. Client)
+- **[Authorisation Code Flow](/guides/authorization-code-flow)** — recommended OAuth 2.0 flow for web/native apps. Includes redirect URIs, PKCE, and exchanging the code for tokens.
+- **[Resource Owner Password Flow](/guides/resource-owner-password-flow)** — legacy/edge case flow (direct username/password) with risks, when *not* to use it, and migration notes.
+- **[Refresh Tokens](/guides/refresh-tokens)** — how to obtain/rotate refresh tokens, refresh access tokens, expiration and revocation.
+- **[Authorisation Scopes](/guides/authorisation-scopes)** — available scopes, least-privilege examples, and mapping scopes to endpoints.
+- **[UserInfo Endpoint](/guides/userinfo-endpoint)** — retrieving the authenticated user’s profile and claims.
+- **[SSO using Class API](/guides/sso-using-class-api)** — high-level SSO patterns, IdP considerations, and session/token boundaries.
 
-- [Event Manipulation](event-manipulation.md)
-- [Time Navigation](time-navigation.md)
-- [Temporal Anchoring](temporal-anchoring.md)
+## API Structure & Discovery
 
-## Advanced Topics
+Understand how the Class API is organised and discover capabilities programmatically.
 
-Once you're comfortable with the basics, dive into our advanced topics. These guides cover complex scenarios, including paradox resolution, multi-timeline management, and security in time travel. 
+- **[Class API Structure](/guides/class-api-structure)** — service domains, resource naming, versioning strategy, pagination, filtering, and common response envelopes.
+- **[Discovery Document](/guides/discovery-document)** — where to find the OpenAPI document(s), multi-version strategy, and machine-readable metadata.
 
-### Topics
+## Reliability & Best Practices
 
-- [Automated Event Manipulation](advanced-topics/automated-event-manipulation.md)
-- [Case Studies in Advanced Time Manipulation](advanced-topics/case-studies-advanced-manipulation.md)
-- [Complex Paradox Resolution Techniques](advanced-topics/complex-paradox-resolution.md)
-- [Custom Extensions and Plugins for Warp](advanced-topics/custom-extensions-plugins.md)
-- [High-Precision Temporal Anchoring](advanced-topics/high-precision-temporal-anchoring.md)
-- [Multi-Timeline Management and Merging](advanced-topics/multi-timeline-management.md)
-- [Security in Time Travel](advanced-topics/security-in-time-travel.md)
-- [Temporal Data Management and Optimization](advanced-topics/temporal-data-management.md)
-- [Temporal Ethics and Best Practices](advanced-topics/temporal-ethics-best-practices.md)
-- [Temporal Mechanics and Theoretical Physics](advanced-topics/temporal-mechanics.md)
+Build resilient, well-behaved clients.
 
-For an overview of all advanced topics, visit the [Advanced Topics Index](advanced-topics/index.md).
+- **[Rate Limiting](/guides/rate-limiting)** — limits, headers, retry/backoff guidance, and client-side throttling patterns.
+- **[Error Codes](/guides/error-codes)** — error taxonomy, HTTP status mapping, problem+json payloads, and actionable remediation.
 
-## Conclusion
+## Reference
 
-These guides are designed to help you at every step of your time manipulation journey. Whether you're a beginner or an advanced user, you'll find the resources you need to master Warp. Explore the guides, practice the techniques, and unlock the full potential of time travel with Warp.
+- **[API Reference](/apis/openAPI.yaml)** — full OpenAPI reference (endpoints, schemas, examples).
+- **[DMS API](/apis/DMS-API.yaml)** — DMS-specific OpenAPI reference if you’re integrating document workflows.
+
+## Tools
+
+- **[Tools Index](/tools/)** — SDKs, Postman collections, CLI snippets, and sample apps.
+
+## Changelog & About
+
+- **[Changelog](/changelog.md)** — version history, breaking changes, deprecations.
+- **[About this template](/about.md)** — project structure, theming, and contribution guidelines.

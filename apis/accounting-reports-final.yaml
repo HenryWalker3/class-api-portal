@@ -1,0 +1,4669 @@
+openapi: 3.0.0
+info:
+  title: Accounting Reports API
+  version: 1.0.0000
+  description: "The Accounting Reports API provides a comprehensive suite of endpoints \nto generate various financial and accounting reports for funds \nmanaged within Class. It allows users to retrieve detailed \ndata for bank movements, cash reconciliation, depreciation, investment \ntransactions, capital gains, and more.\n\nEnvironments:\n- PIE: https://apigateway.class-pie.com.au/api/1.0\n- Production: https://apigateway.class.com.au/api/1.0\n"
+servers:
+- url: https://apigateway.class-test.com.au
+  description: Test Environment
+paths:
+  /f/{businessCode}/{fundCode}/report-data/accounting-reports/tax-accounting-reconciliation:
+    get:
+      summary: TaxAccountingReconciliation
+      description: Generates a tax accounting reconciliation report for the fund for a specified financial year.
+      operationId: taxAccountingReconciliation
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - $ref: '#/components/parameters/yearParam'
+      responses:
+        '200':
+          description: Success (Ok)
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/AccountingReports_TaxAccountingReconciliationDetails'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400':
+          description: Error Message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnauthorizedErrorCommon'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+        '404':
+          description: Resource not available or user does not have access to the fund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+      security:
+      - Class_oAuth:
+        - fund.read
+  /f/{businessCode}/{fundCode}/report-data/accounting-reports/trial-balance-details:
+    get:
+      operationId: trialBalance
+      summary: TrialBalance
+      description: Retrieves the trial balance for a fund at a specific date.
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - name: atDate
+        in: query
+        description: The date at which the data will be returned up to
+        required: true
+        schema:
+          type: string
+          format: date
+          example: 2024-07-01
+      responses:
+        '200':
+          description: Success (Ok)
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/AccountingReports_TrialBalanceDetails'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400':
+          description: Error Message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnauthorizedErrorCommon'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+        '404':
+          description: Resource not available or user does not have access to the fund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+      security:
+      - Class_oAuth:
+        - fund.read
+  /f/{businessCode}/{fundCode}/report-data/accounting-reports/bank-account-movement-descriptions:
+    get:
+      operationId: bankAccountMovement
+      summary: BankAccountMovement
+      description: Retrieves a report detailing the movement descriptions for a fund's bank accounts within a specified date range.
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - $ref: '#/components/parameters/startDateParam'
+      - $ref: '#/components/parameters/endDateParam'
+      responses:
+        '200':
+          description: Success (Ok)
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/AccountingReports_BankAccountMovementDescriptions'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400':
+          description: Error Message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnauthorizedErrorCommon'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+        '404':
+          description: Resource not available or user does not have access to the fund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+      security:
+      - Class_oAuth:
+        - fund.read
+  /f/{businessCode}/{fundCode}/report-data/accounting-reports/operating-statement-document:
+    get:
+      operationId: operatingStatementProfitAndLoss
+      summary: OperatingStatementProfitAndLoss
+      description: Generates a detailed operating statement (Profit and Loss) for the fund based on the provided input criteria.
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - name: startDate
+        in: query
+        description: The start date to retrieve the data for
+        required: true
+        schema:
+          type: string
+          format: date
+          example: 2024-07-01
+      - name: endDate
+        in: query
+        description: The end date to retrieve the data for
+        required: true
+        schema:
+          type: string
+          format: date
+          example: 2025-06-30
+      - name: prevStartDate
+        in: query
+        description: The start date of the previous period to compare to. Default is one year from the start date.
+        required: true
+        schema:
+          type: string
+          format: date
+          example: 2023-07-01
+      - name: prevEndDate
+        in: query
+        description: The end date of the previous period to compare to. Default is one year from the end date.
+        required: true
+        schema:
+          type: string
+          format: date
+          example: 2024-06-30
+      - name: isSummary
+        in: query
+        description: Indicates if result should include individual accounts or summaries.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success (Ok)
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/AccountingReports_DetailedOperatingStatement'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400':
+          description: Error Message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnauthorizedErrorCommon'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+        '404':
+          description: Resource not available or user does not have access to the fund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+      security:
+      - Class_oAuth:
+        - fund.read
+  /f/{businessCode}/{fundCode}/report-data/accounting-reports/transaction-audit-trail:
+    get:
+      operationId: generalLedgerAuditTrail
+      summary: GeneralLedgerAuditTrail
+      description: Retrieves the general ledger audit trail, showing all transactions within a date range, with an option to include deleted transactions.
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - name: startDate
+        in: query
+        description: The start date to retrieve the data for
+        required: true
+        schema:
+          type: string
+          format: date
+          example: 2024-07-01
+      - name: endDate
+        in: query
+        description: The end date to retrieve the data for
+        required: true
+        schema:
+          type: string
+          format: date
+          example: 2025-06-30
+      - name: includeDeleted
+        in: query
+        description: Default value is False
+        required: true
+        schema:
+          type: boolean
+          example: false
+      responses:
+        '200':
+          description: Success (Ok)
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/AccountingReports_GlTransactionsAuditTrail'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400':
+          description: Error Message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnauthorizedErrorCommon'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+        '404':
+          description: Resource not available or user does not have access to the fund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+      security:
+      - Class_oAuth:
+        - fund.read
+  /f/{businessCode}/{fundCode}/report-data/accounting-reports/disposal-capital-gains:
+    get:
+      operationId: realisedCapitalGains
+      summary: RealisedCapitalGains
+      description: Retrieves a report of realised capital gains from investment disposals, with results grouped by specified critera.
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - name: startDate
+        in: query
+        description: The start date to retrieve the data for
+        required: true
+        schema:
+          type: string
+          format: date
+          example: 2024-07-01
+      - name: endDate
+        in: query
+        description: The end date to retrieve the data for
+        required: true
+        schema:
+          type: string
+          format: date
+          example: 2025-06-30
+      - name: groupBy
+        in: query
+        description: Default value is MarketType
+        required: false
+        schema:
+          $ref: '#/components/schemas/InvestmentGroupingType'
+      responses:
+        '200':
+          description: Success (Ok)
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/AccountingReports_DisposalCapitalGainsSummary'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400':
+          description: Error Message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnauthorizedErrorCommon'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+        '404':
+          description: Resource not available or user does not have access to the fund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+      security:
+      - Class_oAuth:
+        - fund.read
+  /f/{businessCode}/{fundCode}/report-data/accounting-reports/general-ledger-account-movement-descriptions:
+    get:
+      operationId: generalLedgerAccountMovement
+      summary: GeneralLedgerAccountMovement
+      description: Provides descriptions of movements for general ledger accounts within a given date range.
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - $ref: '#/components/parameters/startDateParam'
+      - $ref: '#/components/parameters/endDateParam'
+      responses:
+        '200':
+          description: Success (Ok)
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/AccountingReports_GlAccountMovementDescriptions'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400':
+          description: Error Message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnauthorizedErrorCommon'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+        '404':
+          description: Resource not available or user does not have access to the fund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+      security:
+      - Class_oAuth:
+        - fund.read
+  /f/{businessCode}/{fundCode}/report-data/accounting-reports/financial-position-statement:
+    get:
+      operationId: statementOfFinancialPosition
+      summary: StatementOfFinancialPosition
+      description: Generates a statement of financial position for a fund for a given year, with a comparison to another year.
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - $ref: '#/components/parameters/yearParam'
+      - name: comparisonYear
+        in: query
+        description: To compare current data against another Financial Year
+        required: true
+        schema:
+          type: integer
+          format: int32
+          example: 2023
+      responses:
+        '200':
+          description: Success (Ok)
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/AccountingReports_FinancialPositionStatement'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400':
+          description: Error Message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnauthorizedErrorCommon'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+        '404':
+          description: Resource not available or user does not have access to the fund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+      security:
+      - Class_oAuth:
+        - fund.read
+  /f/{businessCode}/{fundCode}/report-data/accounting-reports/fund-auditor-details:
+    get:
+      operationId: auditReport
+      summary: AuditReport
+      description: Retrieves details about the fund's auditor for a specific financial year.
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - $ref: '#/components/parameters/yearParam'
+      responses:
+        '200':
+          description: Success (Ok)
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/FundAuditorDetails'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400':
+          description: Error Message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnauthorizedErrorCommon'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+        '404':
+          description: Resource not available or user does not have access to the fund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+      security:
+      - Class_oAuth:
+        - fund.read
+  /f/{businessCode}/{fundCode}/report-data/accounting-reports/cash-reconciliation:
+    get:
+      operationId: cashReconciliation
+      summary: CashReconciliation
+      description: Generates a cash reconciliation report for a specified fund, with an option to show only unmatched transactions.
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - name: currencyType
+        in: query
+        description: Filter by specific currency type
+        required: true
+        schema:
+          $ref: '#/components/schemas/CashReconciliationReport_CurrencyType'
+      - name: unmatchedOnly
+        in: query
+        description: Filter by unmatched detail only
+        required: true
+        schema:
+          type: boolean
+          example: false
+      - $ref: '#/components/parameters/startDateParam'
+      - $ref: '#/components/parameters/endDateParam'
+      responses:
+        '200':
+          description: Success (Ok)
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/AccountingReports_CashReconciliationReport'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400':
+          description: Error Message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnauthorizedErrorCommon'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+        '404':
+          description: Resource not available or user does not have access to the fund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+      security:
+      - Class_oAuth:
+        - fund.read
+  /f/{businessCode}/{fundCode}/report-data/accounting-reports/depreciation-schedule:
+    get:
+      operationId: depreciationWorksheet
+      summary: DepreciationWorksheet
+      description: Retrieves the depreciation schedule for a fund's assets for a given financial year.
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - name: year
+        in: query
+        description: The financial year to retrieve information
+        required: true
+        schema:
+          type: integer
+          example: 2024
+      responses:
+        '200':
+          description: Success (Ok)
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/AccountingReports_FundDepreciationReport'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400':
+          description: Error Message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnauthorizedErrorCommon'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+        '404':
+          description: Resource not available or user does not have access to the fund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+      security:
+      - Class_oAuth:
+        - fund.read
+  /f/{businessCode}/{fundCode}/report-data/accounting-reports/detailed-investment-transactions-report:
+    get:
+      operationId: detailedInvestmentTransactions
+      summary: DetailedInvestmentTransactions
+      description: Generates a report with detailed transaction information for a fund's investments over a specified period.
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - $ref: '#/components/parameters/startDateParam'
+      - $ref: '#/components/parameters/endDateParam'
+      responses:
+        '200':
+          description: Success (Ok)
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/AccountingReports_DetailedInvestmentTransactionsReport'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400':
+          description: Error Message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnauthorizedErrorCommon'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+        '404':
+          description: Resource not available or user does not have access to the fund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+      security:
+      - Class_oAuth:
+        - fund.read
+  /f/{businessCode}/{fundCode}/report-data/accounting-reports/fund-notes-to-financial-statement:
+    get:
+      operationId: notesToTheFinancialStatements
+      summary: NotesToTheFinancialStatements
+      description: Retrieves the notes accompanying the financial statements for a specific fund and year.
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - $ref: '#/components/parameters/yearParam'
+      responses:
+        '200':
+          description: Success (Ok)
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/AccountingReports_FundNotesToFinancialStatement'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400':
+          description: Error Message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnauthorizedErrorCommon'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+        '404':
+          description: Resource not available or user does not have access to the fund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+      security:
+      - Class_oAuth:
+        - fund.read
+  /f/{businessCode}/{fundCode}/report-data/accounting-reports/investment-income-comparison:
+    get:
+      operationId: investmentIncomeComparisonReport
+      summary: InvestmentIncomeComparisonReport
+      description: Generates a report that compares investment income between two periods.
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - $ref: '#/components/parameters/startDateParam'
+      - $ref: '#/components/parameters/endDateParam'
+      responses:
+        '200':
+          description: Success (Ok)
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/AccountingReports_InvestmentIncomeComparisonReport'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400':
+          description: Error Message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnauthorizedErrorCommon'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+        '404':
+          description: Resource not available or user does not have access to the fund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+      security:
+      - Class_oAuth:
+        - fund.read
+  /f/{businessCode}/{fundCode}/report-data/accounting-reports/market-price-audit-report:
+    get:
+      operationId: marketPriceAuditReport
+      summary: MarketPriceAuditReport
+      description: Retrieves a market price audit report for a fund's investments at a specific date, grouped by specified criteria.
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - name: atDate
+        in: query
+        description: The date at which the data will be returned up to
+        required: true
+        schema:
+          type: string
+          format: date
+          example: 2024-07-01
+      - name: groupBy
+        in: query
+        description: Default value is MarketType
+        required: true
+        schema:
+          $ref: '#/components/schemas/InvestmentGroupingType'
+      responses:
+        '200':
+          description: Success (Ok)
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/AccountingReports_MarketPriceAuditSummary'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400':
+          description: Error Message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnauthorizedErrorCommon'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+        '404':
+          description: Resource not available or user does not have access to the fund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+      security:
+      - Class_oAuth:
+        - fund.read
+  /f/{businessCode}/{fundCode}/report-data/accounting-reports/payg-income-stream-summary:
+    get:
+      operationId: pAYGPaymentSummaryIncomeStream
+      summary: PAYGPaymentSummaryIncomeStream
+      description: Retrieves the PAYG payment summary for income stream payments for a given year.
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - $ref: '#/components/parameters/yearParam'
+      responses:
+        '200':
+          description: Success (Ok)
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/AccountingReports_AllMemberPaygIncomeStreamSummaries'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400':
+          description: Error Message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnauthorizedErrorCommon'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+        '404':
+          description: Resource not available or user does not have access to the fund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+      security:
+      - Class_oAuth:
+        - fund.read
+  /f/{businessCode}/{fundCode}/report-data/accounting-reports/payg-summary-cash-lump-sum/{id}:
+    get:
+      operationId: pAYGPaymentSummarySuperannuationLumpSum
+      summary: PAYGPaymentSummarySuperannuationLumpSum
+      description: Retrieves the PAYG payment summary for a superannuation lump sum payment, identified by its unique ID.
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - name: id
+        in: path
+        description: Unique Guid request path
+        required: true
+        schema:
+          $ref: '#/components/schemas/Api_RequestId'
+      responses:
+        '200':
+          description: Success (Ok)
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/AccountingReports_CashLumpSumSummary'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400':
+          description: Error Message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnauthorizedErrorCommon'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+        '404':
+          description: Resource not available or user does not have access to the fund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+      security:
+      - Class_oAuth:
+        - fund.read
+  /f/{businessCode}/{fundCode}/report-data/accounting-reports/trust-notes-to-financial-statement:
+    get:
+      operationId: trustNotesToTheFinancialStatements
+      summary: TrustNotesToTheFinancialStatements
+      description: Retrieves the notes to the financial statements for a trust entity for a given year.
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - $ref: '#/components/parameters/yearParam'
+      responses:
+        '200':
+          description: Success (Ok)
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/AccountingReports_TrustNotesToFinancialStatement'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400':
+          description: Error Message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnauthorizedErrorCommon'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+        '404':
+          description: Resource not available or user does not have access to the fund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+      security:
+      - Class_oAuth:
+        - fund.read
+  /f/{businessCode}/{fundCode}/report-data/accounting-reports/unrealised-capital-gains:
+    get:
+      operationId: unrealisedCapitalGains
+      summary: UnrealisedCapitalGains
+      description: Generates a report on unrealised capital gains for a fund's investments at a specific date, with results grouped by the specified criteria.
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - name: atDate
+        in: query
+        description: The date at which the data will be returned up to
+        required: true
+        schema:
+          type: string
+          format: date
+          example: 2024-07-01
+      - name: groupBy
+        in: query
+        description: Default value is MarketType
+        required: true
+        schema:
+          $ref: '#/components/schemas/InvestmentGroupingType'
+      responses:
+        '200':
+          description: Success (Ok)
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/AccountingReports_DisposalCapitalGainsSummary'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400':
+          description: Error Message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnauthorizedErrorCommon'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+        '404':
+          description: Resource not available or user does not have access to the fund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+      security:
+      - Class_oAuth:
+        - fund.read
+components:
+  schemas:
+    AccountTransactionType:
+      type: string
+      enum:
+      - CostBasedAdjustment
+      - QuantityAdjustment
+      - CapitalHolding
+    AccountingReports_AllMemberPaygIncomeStreamSummaries:
+      type: object
+      required:
+      - AllMemberPaygIncomeSummaryStatements
+      properties:
+        AllMemberPaygIncomeSummaryStatements:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountingReports_PaygIncomeStreamSummary'
+    AccountingReports_AnnouncementDetail:
+      type: object
+      required:
+      - Description
+      - AmountPerUnit
+      - EligibleUnits
+      - EstimatedIncome
+      properties:
+        Description:
+          type: string
+        AmountPerUnit:
+          type: number
+          format: decimal
+        EligibleUnits:
+          type: number
+          format: decimal
+        EstimatedIncome:
+          $ref: '#/components/schemas/AccountingReports_IncomeDetail'
+    AccountingReports_BankAccountMovementDescription:
+      type: object
+      required:
+      - PortfolioName
+      - BankAccountDetails
+      properties:
+        PortfolioName:
+          type: string
+        BankAccountDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/BankAccountMovementDescription_BankAccountDetail'
+    AccountingReports_BankAccountMovementDescriptions:
+      type: object
+      required:
+      - FundCode
+      - FundName
+      - Period
+      - MovementDescriptions
+      properties:
+        FundCode:
+          type: string
+        FundName:
+          type: string
+        Period:
+          type: string
+          format: date
+        MovementDescriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountingReports_BankAccountMovementDescription'
+    AccountingReports_CashLumpSumSummary:
+      type: object
+      required:
+      - FundCode
+      - FinancialYearOfPayment
+      - PayeeDetails
+      - PaymentDetails
+      - PayerABN
+      - PayerName
+      properties:
+        FundCode:
+          type: string
+        FinancialYearOfPayment:
+          type: integer
+          format: int32
+        PayeeDetails:
+          $ref: '#/components/schemas/CashLumpSumSummary__PayeeDetails'
+        PaymentDetails:
+          $ref: '#/components/schemas/CashLumpSumSummary__PaymentDetails'
+        PayerABN:
+          type: string
+        PayerName:
+          type: string
+    AccountingReports_CashReconciliationReport:
+      type: object
+      required:
+      - StartDate
+      - EndDate
+      - BankAccounts
+      - FundDetails
+      properties:
+        StartDate:
+          type: string
+          format: date
+        EndDate:
+          type: string
+          format: date
+        BankAccounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/CashReconciliationReport_CashRecBankAccount'
+        FundDetails:
+          $ref: '#/components/schemas/FundReportingDetails'
+    AccountingReports_ComparisonDetail:
+      type: object
+      required:
+      - Date
+      - IncomeType
+      - HoldingDetail
+      - TransactionDetail
+      - AnnouncementDetail
+      properties:
+        Date:
+          type: string
+          format: date
+        IncomeType:
+          type: string
+        HoldingDetail:
+          $ref: '#/components/schemas/AccountingReports_HoldingDetail'
+        TransactionDetail:
+          $ref: '#/components/schemas/AccountingReports_TransactionDetail'
+        AnnouncementDetail:
+          $ref: '#/components/schemas/AccountingReports_AnnouncementDetail'
+    AccountingReports_DetailedInvestmentTransactionsReport:
+      type: object
+      required:
+      - FundCode
+      - FundName
+      - Period
+      - Accounts
+      properties:
+        FundCode:
+          type: string
+        FundName:
+          type: string
+        Period:
+          type: string
+          format: date
+        Accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/DetailedInvestmentTransactionsReport_Account'
+    AccountingReports_DetailedOperatingStatement:
+      type: object
+      required:
+      - FundName
+      - FundCode
+      - Period
+      - PreviousPeriod
+      - IncludesPrevYear
+      - IncomeItems
+      - ExpenseItems
+      - IncomeTaxItems
+      properties:
+        FundName:
+          type: string
+        FundCode:
+          type: string
+        Period:
+          type: string
+          format: date
+        PreviousPeriod:
+          type: string
+          format: date
+        IncludesPrevYear:
+          type: boolean
+        IncomeItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/DetailedOperatingStatement_IncomeExpenseDetailsItem'
+        ExpenseItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/DetailedOperatingStatement_IncomeExpenseDetailsItem'
+        IncomeTaxItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/DetailedOperatingStatement_IncomeExpenseDetailsItem'
+    AccountingReports_DisposalCapitalGainsSummary:
+      type: object
+      required:
+      - FundCode
+      - FundName
+      - ErrorCode
+      - Period
+      - PortfolioDetails
+      properties:
+        FundCode:
+          type: string
+        FundName:
+          type: string
+        ErrorCode:
+          type: string
+        Period:
+          type: string
+          format: date
+        PortfolioDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/DisposalCapitalGainsSummary_PortfolioDisposalCapitalGainsDetails'
+    AccountingReports_FinancialPositionStatement:
+      type: object
+      required:
+      - FundName
+      - FundCode
+      - AsAtDate
+      - PreviousYearAsAtDate
+      - PreviousYearAsAtDateSpecified
+      - CurrentLiabilityForAccruedBenefits
+      - PreviousYearLiabilityForAccruedBenefits
+      - Assets
+      - Liabilities
+      - LiabilitiesForAccruedBenefits
+      properties:
+        FundName:
+          type: string
+        FundCode:
+          type: string
+        AsAtDate:
+          type: string
+          format: date
+        PreviousYearAsAtDate:
+          type: string
+          format: date
+        PreviousYearAsAtDateSpecified:
+          type: boolean
+        CurrentLiabilityForAccruedBenefits:
+          type: number
+          format: decimal
+        PreviousYearLiabilityForAccruedBenefits:
+          type: number
+          format: decimal
+        Assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/FinancialPositionStatement_FinancialPositionDetail'
+        Liabilities:
+          type: array
+          items:
+            $ref: '#/components/schemas/FinancialPositionStatement_FinancialPositionDetail'
+        LiabilitiesForAccruedBenefits:
+          type: array
+          items:
+            $ref: '#/components/schemas/FinancialPositionStatement_FinancialPositionDetail'
+    AccountingReports_FundDepreciationReport:
+      type: object
+      required:
+      - FundName
+      - FundCode
+      - FinancialYearCode
+      - ErrorCode
+      - Accounts
+      properties:
+        FundName:
+          type: string
+        FundCode:
+          type: string
+        FinancialYearCode:
+          type: string
+        ErrorCode:
+          type: string
+        Accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundDepreciationReport_AccountDepreciation'
+    AccountingReports_FundNotesToFinancialStatement:
+      type: object
+      required:
+      - FundName
+      - FundCode
+      - Period
+      - HasMemberContributionsAllocatedInNextFY
+      - FundTrusteeSummary
+      - UseTaxEffectAccounting
+      - LiabilitiesNote
+      - VestmentNote
+      - HoldingsNote
+      - IncomeNote
+      - MarketChangeNote
+      - PoliciesNote
+      - GuaranteedBenefitesNote
+      - FundingNote
+      - SubsequentEventsNote
+      - IncomeTaxExpenseNote
+      - TaxAssetsNote
+      properties:
+        FundName:
+          type: string
+        FundCode:
+          type: string
+        Period:
+          type: string
+          format: date
+        HasMemberContributionsAllocatedInNextFY:
+          type: boolean
+        FundTrusteeSummary:
+          $ref: '#/components/schemas/FundTrusteeSummary'
+        UseTaxEffectAccounting:
+          type: boolean
+        LiabilitiesNote:
+          $ref: '#/components/schemas/FundNotesToFinancialStatement_LiabilitiesBlock'
+        VestmentNote:
+          $ref: '#/components/schemas/FundNotesToFinancialStatement_VestmentBlock'
+        HoldingsNote:
+          $ref: '#/components/schemas/FundNotesToFinancialStatement_HoldingsBlock'
+        IncomeNote:
+          $ref: '#/components/schemas/FundNotesToFinancialStatement_IncomeBlock'
+        MarketChangeNote:
+          $ref: '#/components/schemas/FundNotesToFinancialStatement_MarketChangeBlock'
+        PoliciesNote:
+          $ref: '#/components/schemas/FundNotesToFinancialStatement_ReferenceBlock'
+        GuaranteedBenefitesNote:
+          $ref: '#/components/schemas/FundNotesToFinancialStatement_ReferenceBlock'
+        FundingNote:
+          $ref: '#/components/schemas/FundNotesToFinancialStatement_ReferenceBlock'
+        SubsequentEventsNote:
+          $ref: '#/components/schemas/FundNotesToFinancialStatement_SubsequentEventsBlock'
+        IncomeTaxExpenseNote:
+          $ref: '#/components/schemas/FundNotesToFinancialStatement_ReferenceBlock'
+        TaxAssetsNote:
+          $ref: '#/components/schemas/FundNotesToFinancialStatement_ReferenceBlock'
+    AccountingReports_GlAccountMovementDescription:
+      type: object
+      required:
+      - OpeningBalanceIndicator
+      - OpeningQuantitySpecified
+      - ClosingQuantitySpecified
+      - ClosingBalanceIndicator
+      - Transactions
+      - DR
+      - CR
+      - AccountName
+      - GroupName
+      - AccountId
+      - Depth
+      - OpeningBalanceDate
+      - OpeningBalance
+      - OpeningDirection
+      - ClosingBalance
+      - ClosingDirection
+      properties:
+        OpeningBalanceIndicator:
+          type: string
+        OpeningQuantity:
+          type: number
+          format: decimal
+        OpeningQuantitySpecified:
+          type: boolean
+        ClosingQuantity:
+          type: number
+          format: decimal
+        ClosingQuantitySpecified:
+          type: boolean
+        ClosingBalanceIndicator:
+          type: string
+        Transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/GlAccountMovementDescription_GlTransaction'
+        DR:
+          type: string
+        CR:
+          type: string
+        AccountName:
+          type: string
+        GroupName:
+          type: string
+        AccountId:
+          type: string
+        Depth:
+          type: integer
+          format: int32
+        OpeningBalanceDate:
+          type: string
+          format: date
+        OpeningBalance:
+          type: number
+          format: decimal
+        OpeningDirection:
+          $ref: '#/components/schemas/DebitCreditIndicator'
+        ClosingBalance:
+          type: number
+          format: decimal
+        ClosingDirection:
+          $ref: '#/components/schemas/DebitCreditIndicator'
+    AccountingReports_GlAccountMovementDescriptions:
+      type: object
+      required:
+      - FundName
+      - FundCode
+      - Period
+      - Gl_AccountMovementDescriptions
+      properties:
+        FundName:
+          type: string
+        FundCode:
+          type: string
+        Period:
+          type: string
+          format: date
+        Gl_AccountMovementDescriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountingReports_GlAccountMovementDescription'
+    AccountingReports_GlTransactionsAuditTrail:
+      type: object
+      required:
+      - FundName
+      - FundCode
+      - Period
+      - Groups
+      properties:
+        FundName:
+          type: string
+        FundCode:
+          type: string
+        Period:
+          type: string
+          format: date
+        Groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/GlTransactionsAuditTrail_GlTransactionGroup'
+    AccountingReports_HoldingDetail:
+      type: object
+      required:
+      - GlClassification
+      - Code
+      - Name
+      - SecurityCode
+      - SecurityName
+      - MarketAndSecurityInfo
+      properties:
+        GlClassification:
+          type: string
+        Code:
+          type: string
+        Name:
+          type: string
+        SecurityCode:
+          type: string
+        SecurityName:
+          type: string
+        MarketAndSecurityInfo:
+          $ref: '#/components/schemas/MarketAndSecurityInfo'
+    AccountingReports_IncomeDetail:
+      type: object
+      required:
+      - TotalIncome
+      - FrankedPercentage
+      - UnfrankedAmount
+      - FrankedAmount
+      - FrankingCredit
+      - ForeignTaxCredit
+      properties:
+        TotalIncome:
+          type: number
+          format: decimal
+        FrankedPercentage:
+          type: number
+          format: decimal
+        UnfrankedAmount:
+          type: number
+          format: decimal
+        FrankedAmount:
+          type: number
+          format: decimal
+        FrankingCredit:
+          type: number
+          format: decimal
+        ForeignTaxCredit:
+          type: number
+          format: decimal
+    AccountingReports_InvestmentIncomeComparisonReport:
+      type: object
+      required:
+      - PeriodFrom
+      - PeriodTo
+      - FundName
+      - FundCode
+      - ComparisonDetails
+      properties:
+        PeriodFrom:
+          type: string
+          format: date
+        PeriodTo:
+          type: string
+          format: date
+        FundName:
+          type: string
+        FundCode:
+          type: string
+        ComparisonDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountingReports_ComparisonDetail'
+    AccountingReports_MarketPriceAuditSummary:
+      type: object
+      required:
+      - FundCode
+      - FundName
+      - AtDate
+      - MarketTypeItems
+      properties:
+        FundCode:
+          type: string
+        FundName:
+          type: string
+        AtDate:
+          type: string
+          format: date
+        MarketTypeItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/MarketPriceAuditSummary_MarketTypeItem'
+    AccountingReports_PaygIncomeStreamSummary:
+      type: object
+      required:
+      - FundCode
+      - FinancialYear
+      - PayeeDetails
+      - PaymentDetails
+      - PeriodStartDate
+      - PeriodEndDate
+      - PayerABN
+      - PayerName
+      properties:
+        FundCode:
+          type: string
+        FinancialYear:
+          type: integer
+          format: int32
+        PayeeDetails:
+          $ref: '#/components/schemas/PaygIncomeStreamSummary__PayeeDetails'
+        PaymentDetails:
+          $ref: '#/components/schemas/PaygIncomeStreamSummary__PaymentDetails'
+        PeriodStartDate:
+          type: string
+          format: date
+        PeriodEndDate:
+          type: string
+          format: date
+        PayerABN:
+          type: string
+        PayerName:
+          type: string
+    AccountingReports_PensionExemptionDetail:
+      type: object
+      required:
+      - ActuarialPensionExemptionPercentage
+      - ExpensesPensionExemptionPercentage
+      - ExpenseExemptionCalculationMethod
+      - UseSegregationForPensionExemption
+      properties:
+        ActuarialPensionExemptionPercentage:
+          type: number
+          format: decimal
+        ExpensesPensionExemptionPercentage:
+          type: number
+          format: decimal
+        ExpenseExemptionCalculationMethod:
+          $ref: '#/components/schemas/ExpenseExemptionCalculationMethod'
+        UseSegregationForPensionExemption:
+          type: boolean
+    AccountingReports_TaxAccountingReconciliationDetails:
+      type: object
+      required:
+      - FundName
+      - FundCode
+      - ErrorCode
+      - Period
+      - PensionExemptionDetail
+      - TaxBreakdown
+      - ProvisionVsIncomeTaxExpense
+      - ProvisionVsIncomeTaxPayable
+      - OperatingStatementProfitVsIncomeTaxPayable
+      properties:
+        FundName:
+          type: string
+        FundCode:
+          type: string
+        ErrorCode:
+          type: string
+        Period:
+          type: string
+          format: date
+        PensionExemptionDetail:
+          $ref: '#/components/schemas/AccountingReports_PensionExemptionDetail'
+        TaxBreakdown:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaxAccountingReconciliationDetails_TaxItem'
+        ProvisionVsIncomeTaxExpense:
+          $ref: '#/components/schemas/TaxAccountingReconciliationDetails_ReconciliationView'
+        ProvisionVsIncomeTaxPayable:
+          $ref: '#/components/schemas/TaxAccountingReconciliationDetails_ReconciliationView'
+        OperatingStatementProfitVsIncomeTaxPayable:
+          $ref: '#/components/schemas/TaxAccountingReconciliationDetails_ReconciliationView'
+    AccountingReports_TransactionDetail:
+      type: object
+      required:
+      - Description
+      - IncomeDetail
+      properties:
+        Description:
+          type: string
+        IncomeDetail:
+          $ref: '#/components/schemas/AccountingReports_IncomeDetail'
+    AccountingReports_TrialBalanceDetails:
+      type: object
+      required:
+      - FundName
+      - FundCode
+      - BalanceAtDate
+      - PeriodUpdateRun
+      - PriorYearNotOnSystem
+      - AccountBalanceGroups
+      properties:
+        FundName:
+          type: string
+        FundCode:
+          type: string
+        BalanceAtDate:
+          type: string
+          format: date
+        PeriodUpdateRun:
+          type: boolean
+        PriorYearNotOnSystem:
+          type: boolean
+        AccountBalanceGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrialBalanceDetails_AccountBalanceGroup'
+    AccountingReports_TrustNotesToFinancialStatement:
+      type: object
+      required:
+      - FundName
+      - FundCode
+      - Period
+      - FundTrusteeSummary
+      - UseTaxEffectAccounting
+      - IsGSTRegistered
+      - IsInBookCostOnlyMode
+      - HasIncomeTaxExpense
+      - IncomeTaxExpense
+      - HoldingsNote
+      - IncomeNote
+      - MarketChangeNote
+      - PoliciesNote
+      - RetainedProfitsNote
+      - SettlementSum
+      - Gift
+      - Reserve
+      - BeneficiaryAccounts
+      properties:
+        FundName:
+          type: string
+        FundCode:
+          type: string
+        Period:
+          type: string
+          format: date
+        FundTrusteeSummary:
+          $ref: '#/components/schemas/FundTrusteeSummary'
+        UseTaxEffectAccounting:
+          type: boolean
+        IsGSTRegistered:
+          type: boolean
+        IsInBookCostOnlyMode:
+          type: boolean
+        HasIncomeTaxExpense:
+          type: boolean
+        IncomeTaxExpense:
+          type: number
+          format: decimal
+        HoldingsNote:
+          $ref: '#/components/schemas/TrustNotesToFinancialStatement_HoldingsBlock'
+        IncomeNote:
+          $ref: '#/components/schemas/FundNotesToFinancialStatement_IncomeBlock'
+        MarketChangeNote:
+          $ref: '#/components/schemas/FundNotesToFinancialStatement_MarketChangeBlock'
+        PoliciesNote:
+          $ref: '#/components/schemas/FundNotesToFinancialStatement_ReferenceBlock'
+        RetainedProfitsNote:
+          $ref: '#/components/schemas/TrustNotesToFinancialStatement_RetainedProfitBlock'
+        SettlementSum:
+          $ref: '#/components/schemas/TrustNotesToFinancialStatement_FundLevelEquityAccountBlock'
+        Gift:
+          $ref: '#/components/schemas/TrustNotesToFinancialStatement_FundLevelEquityAccountBlock'
+        Reserve:
+          $ref: '#/components/schemas/TrustNotesToFinancialStatement_FundLevelEquityAccountBlock'
+        BeneficiaryAccounts:
+          $ref: '#/components/schemas/TrustNotesToFinancialStatement_BeneficiaryAccountsBlock'
+    AddressSummary:
+      type: object
+      required:
+      - AddressLine1
+      - AddressLine2
+      - AddressLine3
+      - PostCode
+      - Locality
+      - State
+      - Country
+      properties:
+        AddressLine1:
+          type: string
+        AddressLine2:
+          type: string
+        AddressLine3:
+          type: string
+        PostCode:
+          type: string
+        Locality:
+          type: string
+        State:
+          type: string
+        Country:
+          type: string
+    ApiError:
+      type: object
+      required:
+      - Code
+      - Message
+      properties:
+        Code:
+          type: string
+        Message:
+          type: string
+    ApiResponseBase:
+      type: object
+      required:
+      - ErrorCodes
+      - Errors
+      - CreatedUri
+      - IsCreatedResponse
+      properties:
+        ErrorCodes:
+          type: array
+          items:
+            type: string
+        Errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+        CreatedUri:
+          type: string
+        IsCreatedResponse:
+          type: boolean
+    Api_RequestId:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          $ref: '#/components/schemas/Guid'
+    BankAccountMovementDescription_BankAccountDetail:
+      type: object
+      required:
+      - OpeningBalance
+      - ClosingBalance
+      - OpeningBalanceDate
+      - CurrencyCode
+      - AccountBSB
+      - AccountNumber
+      - AccountCode
+      - AccountDescription
+      - Status
+      - Transactions
+      properties:
+        OpeningBalance:
+          type: number
+          format: decimal
+        ClosingBalance:
+          type: number
+          format: decimal
+        OpeningBalanceDate:
+          type: string
+          format: date
+        CurrencyCode:
+          type: string
+        AccountBSB:
+          type: string
+        AccountNumber:
+          type: string
+        AccountCode:
+          type: string
+        AccountDescription:
+          type: string
+        Status:
+          type: string
+        Transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/BankAccountMovementDescription_Transaction'
+    BankAccountMovementDescription_Transaction:
+      type: object
+      required:
+      - Date
+      - Amount
+      - Direction
+      - Description
+      - index
+      - DepositAmount
+      - WithdrawalAmount
+      - RunningTotal
+      properties:
+        Date:
+          type: string
+          format: date
+        Amount:
+          type: number
+          format: decimal
+        Direction:
+          $ref: '#/components/schemas/QuantityDirection'
+        Description:
+          type: string
+        index:
+          type: integer
+          format: int32
+        DepositAmount:
+          type: number
+          format: decimal
+        WithdrawalAmount:
+          type: number
+          format: decimal
+        RunningTotal:
+          type: number
+          format: decimal
+    CashLumpSumSummary__PayeeDetails:
+      type: object
+      required:
+      - PayeeAddressSummary
+      - Surname
+      - GivenName
+      - MiddleNames
+      - PayeeTFN
+      properties:
+        PayeeAddressSummary:
+          $ref: '#/components/schemas/AddressSummary'
+        Surname:
+          type: string
+        GivenName:
+          type: string
+        MiddleNames:
+          type: string
+        DateOfBirth:
+          type: string
+          format: date
+        PayeeTFN:
+          type: string
+    CashLumpSumSummary__PaymentDetails:
+      type: object
+      required:
+      - PaymentDate
+      - TotalTaxWithheld
+      - TaxedElement
+      - UntaxedElement
+      - TaxFreeComponent
+      - IsDeathBenefitPayment
+      - TypeOfDeathBenefit
+      properties:
+        PaymentDate:
+          type: string
+          format: date
+        TotalTaxWithheld:
+          type: number
+          format: decimal
+        TaxedElement:
+          type: number
+          format: decimal
+        UntaxedElement:
+          type: number
+          format: decimal
+        TaxFreeComponent:
+          type: number
+          format: decimal
+        IsDeathBenefitPayment:
+          type: boolean
+        TypeOfDeathBenefit:
+          type: string
+    CashReconciliationReport_CashRecBankAccount:
+      type: object
+      required:
+      - StartDate
+      - EndDate
+      - HoldingAccountId
+      - HoldingDescription
+      - OpeningBalance
+      - ClosingBalance
+      - CashReconciliationItems
+      - AccountType
+      - IsForeign
+      - CurrencyCode
+      properties:
+        StartDate:
+          type: string
+          format: date
+        EndDate:
+          type: string
+          format: date
+        HoldingAccountId:
+          type: string
+        HoldingDescription:
+          type: string
+        OpeningBalance:
+          type: number
+          format: decimal
+        ClosingBalance:
+          type: number
+          format: decimal
+        CashReconciliationItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/CashReconciliationReport_CashRecItem'
+        AccountType:
+          type: string
+        IsForeign:
+          type: boolean
+        CurrencyCode:
+          type: string
+    CashReconciliationReport_CashRecItem:
+      type: object
+      required:
+      - Id
+      - TransactionDate
+      - Description
+      - Amount
+      - CurrencyCode
+      - MatchedAmount
+      - ResidualAmount
+      - Balance
+      - DebitCreditIndicator
+      - MatchDetails
+      properties:
+        Id:
+          type: string
+        TransactionDate:
+          type: string
+          format: date
+        Description:
+          type: string
+        Amount:
+          type: number
+          format: decimal
+        ForeignAmount:
+          type: number
+          format: decimal
+        CurrencyCode:
+          type: string
+        MatchedAmount:
+          type: number
+          format: decimal
+        ResidualAmount:
+          type: number
+          format: decimal
+        Balance:
+          type: number
+          format: decimal
+        DebitCreditIndicator:
+          $ref: '#/components/schemas/DebitCreditIndicator'
+        MatchDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/CashReconciliationReport_MatchDetail'
+    CashReconciliationReport_CurrencyType:
+      type: string
+      enum:
+      - Aus
+      - Foreign
+      - Both
+    CashReconciliationReport_MatchDetail:
+      type: object
+      required:
+      - Id
+      - AccountName
+      - Classification
+      - EventTypeId
+      - Description
+      - DistinguishedDate
+      - ValueMatched
+      - MatchStatus
+      - Direction
+      properties:
+        Id:
+          type: string
+        AccountName:
+          type: string
+        Classification:
+          type: string
+        EventTypeId:
+          type: string
+        Description:
+          type: string
+        DistinguishedDate:
+          type: string
+          format: date
+        ValueMatched:
+          type: number
+          format: decimal
+        MatchStatus:
+          $ref: '#/components/schemas/MatchStatusType'
+        Direction:
+          $ref: '#/components/schemas/DebitCreditIndicator'
+    DebitCreditIndicator:
+      type: string
+      enum:
+      - Undefined
+      - Credit
+      - Debit
+    DepreciationMethod:
+      type: string
+      enum:
+      - PrimeCost
+      - DiminishingValue
+      - LowValuePoolFirstYear
+      - LowValuePoolFullYear
+      - NotApplicable
+    DepreciationType:
+      type: string
+      enum:
+      - CapitalAllowance
+      - CapitalWorksDeduction
+      - NotApplicable
+    DetailedInvestmentTransactionsReport_Account:
+      type: object
+      required:
+      - Id
+      - Code
+      - Name
+      - SecurityCode
+      - ExternalIdentifier
+      - OpeningPosition
+      - ClosingPosition
+      - Transactions
+      - MarketAndSecurityInfo
+      properties:
+        Id:
+          type: string
+        Code:
+          type: string
+        Name:
+          type: string
+        SecurityCode:
+          type: string
+        ExternalIdentifier:
+          type: string
+        OpeningPosition:
+          $ref: '#/components/schemas/DetailedInvestmentTransactionsReport_AccountPosition'
+        ClosingPosition:
+          $ref: '#/components/schemas/DetailedInvestmentTransactionsReport_AccountPosition'
+        Transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/DetailedInvestmentTransactionsReport_AccountTransaction'
+        MarketAndSecurityInfo:
+          $ref: '#/components/schemas/MarketAndSecurityInfo'
+    DetailedInvestmentTransactionsReport_AccountPosition:
+      type: object
+      required:
+      - BookCost
+      - UnsettledPosition
+      - Quantity
+      properties:
+        BookCost:
+          type: number
+          format: decimal
+        UnsettledPosition:
+          type: number
+          format: decimal
+        Quantity:
+          type: number
+          format: decimal
+    DetailedInvestmentTransactionsReport_AccountTransaction:
+      type: object
+      required:
+      - TransactionId
+      - TransactionType
+      - Date
+      - Description
+      - DirectionSpecified
+      - BookCostSpecified
+      - ConsiderationSpecified
+      - QuantitySpecified
+      - AmountType
+      properties:
+        TransactionId:
+          type: string
+        TransactionType:
+          $ref: '#/components/schemas/AccountTransactionType'
+        Date:
+          type: string
+          format: date
+        Description:
+          type: string
+        Direction:
+          $ref: '#/components/schemas/QuantityDirection'
+        DirectionSpecified:
+          type: boolean
+        BookCost:
+          type: number
+          format: decimal
+        BookCostSpecified:
+          type: boolean
+        Consideration:
+          type: number
+          format: decimal
+        ConsiderationSpecified:
+          type: boolean
+        Quantity:
+          type: number
+          format: decimal
+        QuantitySpecified:
+          type: boolean
+        AmountType:
+          type: string
+    DetailedOperatingStatement_IncomeExpenseDetailsItem:
+      type: object
+      required:
+      - TotalValuePrevYear
+      - Description
+      - TotalValue
+      - Depth
+      - TotalValueIsSummary
+      - TotalValuePrevYearIsSummary
+      - FundNotesReferenceNumber
+      - Id
+      properties:
+        TotalValuePrevYear:
+          type: number
+          format: decimal
+        Description:
+          type: string
+        TotalValue:
+          type: number
+          format: decimal
+        Depth:
+          type: integer
+          format: int32
+        TotalValueIsSummary:
+          type: boolean
+        TotalValuePrevYearIsSummary:
+          type: boolean
+        FundNotesReferenceNumber:
+          type: string
+        Id:
+          type: string
+    DisposalCapitalGainsSummary_CapitalEventDetails:
+      type: object
+      required:
+      - Type
+      - Date
+      - Quantity
+      - MatchedQuantity
+      - BookCost
+      - Proceeds
+      - CapitalLossApplied
+      - Description
+      - ParcelMatches
+      properties:
+        Type:
+          type: string
+        Date:
+          type: string
+          format: date
+        Quantity:
+          type: number
+          format: decimal
+        MatchedQuantity:
+          type: number
+          format: decimal
+        BookCost:
+          type: number
+          format: decimal
+        TaxFreeAmount:
+          type: number
+          format: decimal
+        TaxDeferredAmount:
+          type: number
+          format: decimal
+        Proceeds:
+          type: number
+          format: decimal
+        AdjustedCostBase:
+          type: number
+          format: decimal
+        ReducedCostBase:
+          type: number
+          format: decimal
+        IndexedCostBase:
+          type: number
+          format: decimal
+        IndexedGain:
+          type: number
+          format: decimal
+        DiscountableGain:
+          type: number
+          format: decimal
+        DeferredGain:
+          type: number
+          format: decimal
+        RecognisedDeferredGain:
+          type: number
+          format: decimal
+        OtherGain:
+          type: number
+          format: decimal
+        CapitalLoss:
+          type: number
+          format: decimal
+        CapitalLossApplied:
+          type: number
+          format: decimal
+        AppliedDiscount:
+          type: number
+          format: decimal
+        NetTaxableGain:
+          type: number
+          format: decimal
+        AccountingGainLoss:
+          type: number
+          format: decimal
+        Description:
+          type: string
+        ParcelMatches:
+          type: array
+          items:
+            $ref: '#/components/schemas/DisposalCapitalGainsSummary_ParcelMatcheDetails'
+    DisposalCapitalGainsSummary_CategorisedPortfolioCapitalGainDetails:
+      type: object
+      required:
+      - CategoryName
+      - GrossIndexedGain
+      - GrossDiscountGain
+      - GrossRecognisedDeferredGain
+      - GrossOtherGain
+      - GrossCapitalLoss
+      properties:
+        CategoryName:
+          type: string
+        GrossIndexedGain:
+          type: number
+          format: decimal
+        GrossDiscountGain:
+          type: number
+          format: decimal
+        GrossRecognisedDeferredGain:
+          type: number
+          format: decimal
+        GrossOtherGain:
+          type: number
+          format: decimal
+        GrossCapitalLoss:
+          type: number
+          format: decimal
+    DisposalCapitalGainsSummary_CustomHoldingCapitalGainDetails:
+      type: object
+      required:
+      - AccountId
+      - AccountCode
+      - AccountDescription
+      - GainLossAmount
+      - TaxProvisionRate
+      - TaxProvisionAmount
+      - MarketValue
+      - BookCost
+      properties:
+        AccountId:
+          type: string
+        AccountCode:
+          type: string
+        AccountDescription:
+          type: string
+        GainLossAmount:
+          type: number
+          format: decimal
+        TaxProvisionRate:
+          type: number
+          format: decimal
+        TaxProvisionAmount:
+          type: number
+          format: decimal
+        MarketValue:
+          type: number
+          format: decimal
+        BookCost:
+          type: number
+          format: decimal
+    DisposalCapitalGainsSummary_HoldingDisposalCapitalGainDetails:
+      type: object
+      required:
+      - MarketAndSecurityInfo
+      - Name
+      - Grouping
+      - Description
+      - MarketTypeId
+      - HoldingAccountId
+      - CapitalEvents
+      properties:
+        MarketAndSecurityInfo:
+          $ref: '#/components/schemas/MarketAndSecurityInfo'
+        Name:
+          type: string
+        Grouping:
+          $ref: '#/components/schemas/HoldingGroupingDetails'
+        Description:
+          type: string
+        MarketTypeId:
+          type: string
+        HoldingAccountId:
+          type: string
+        CapitalEvents:
+          type: array
+          items:
+            $ref: '#/components/schemas/DisposalCapitalGainsSummary_CapitalEventDetails'
+    DisposalCapitalGainsSummary_MarketTypeDetails:
+      type: object
+      required:
+      - MarketTypeId
+      - MarketTypeName
+      - MarketTypeCode
+      - HoldingDetails
+      properties:
+        MarketTypeId:
+          type: string
+        MarketTypeName:
+          type: string
+        MarketTypeCode:
+          type: string
+        HoldingDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/DisposalCapitalGainsSummary_HoldingDisposalCapitalGainDetails'
+    DisposalCapitalGainsSummary_ParcelMatcheDetails:
+      type: object
+      required:
+      - Type
+      - Date
+      - Quantity
+      - MatchedQuantity
+      - BookCost
+      - Proceeds
+      - CapitalLossApplied
+      - Description
+      properties:
+        Type:
+          type: string
+        Date:
+          type: string
+          format: date
+        Quantity:
+          type: number
+          format: decimal
+        MatchedQuantity:
+          type: number
+          format: decimal
+        BookCost:
+          type: number
+          format: decimal
+        TaxFreeAmount:
+          type: number
+          format: decimal
+        TaxDeferredAmount:
+          type: number
+          format: decimal
+        Proceeds:
+          type: number
+          format: decimal
+        AdjustedCostBase:
+          type: number
+          format: decimal
+        ReducedCostBase:
+          type: number
+          format: decimal
+        IndexedCostBase:
+          type: number
+          format: decimal
+        IndexedGain:
+          type: number
+          format: decimal
+        DiscountableGain:
+          type: number
+          format: decimal
+        DeferredGain:
+          type: number
+          format: decimal
+        RecognisedDeferredGain:
+          type: number
+          format: decimal
+        OtherGain:
+          type: number
+          format: decimal
+        CapitalLoss:
+          type: number
+          format: decimal
+        CapitalLossApplied:
+          type: number
+          format: decimal
+        AppliedDiscount:
+          type: number
+          format: decimal
+        NetTaxableGain:
+          type: number
+          format: decimal
+        Description:
+          type: string
+    DisposalCapitalGainsSummary_PortfolioCapitalLossesApplied:
+      type: object
+      required:
+      - CurrentYearIndexed
+      - CurrentYearDiscount
+      - CurrentYearOther
+      - CurrentYearRecognisedDeferred
+      - PriorYearsIndexed
+      - PriorYearsDiscount
+      - PriorYearsOther
+      - PriorYearRecognisedDeferred
+      properties:
+        CurrentYearIndexed:
+          type: number
+          format: decimal
+        CurrentYearDiscount:
+          type: number
+          format: decimal
+        CurrentYearOther:
+          type: number
+          format: decimal
+        CurrentYearRecognisedDeferred:
+          type: number
+          format: decimal
+        PriorYearsIndexed:
+          type: number
+          format: decimal
+        PriorYearsDiscount:
+          type: number
+          format: decimal
+        PriorYearsOther:
+          type: number
+          format: decimal
+        PriorYearRecognisedDeferred:
+          type: number
+          format: decimal
+    DisposalCapitalGainsSummary_PortfolioDisposalCapitalGainsDetails:
+      type: object
+      required:
+      - Name
+      - CapitalLossesApplied
+      - NetCapitalGains
+      - CustomHoldingCapitalGainDetails
+      - MarketTypeDetails
+      - CategorisedCapitalGainDetails
+      properties:
+        Name:
+          type: string
+        CapitalLossesApplied:
+          $ref: '#/components/schemas/DisposalCapitalGainsSummary_PortfolioCapitalLossesApplied'
+        NetCapitalGains:
+          $ref: '#/components/schemas/DisposalCapitalGainsSummary_PortfolioNetCapitalGains'
+        CustomHoldingCapitalGainDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/DisposalCapitalGainsSummary_CustomHoldingCapitalGainDetails'
+        MarketTypeDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/DisposalCapitalGainsSummary_MarketTypeDetails'
+        CategorisedCapitalGainDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/DisposalCapitalGainsSummary_CategorisedPortfolioCapitalGainDetails'
+    DisposalCapitalGainsSummary_PortfolioNetCapitalGains:
+      type: object
+      required:
+      - NetIndexedAfterLosses
+      - NetDiscountAfterLosses
+      - NetOtherAfterLosses
+      - DiscountAmount
+      - NetRecognisedDeferredGainsAfterLosses
+      properties:
+        NetIndexedAfterLosses:
+          type: number
+          format: decimal
+        NetDiscountAfterLosses:
+          type: number
+          format: decimal
+        NetOtherAfterLosses:
+          type: number
+          format: decimal
+        DiscountAmount:
+          type: number
+          format: decimal
+        NetRecognisedDeferredGainsAfterLosses:
+          type: number
+          format: decimal
+    ExpenseExemptionCalculationMethod:
+      type: string
+      enum:
+      - CalculateUsingATOFormula
+      - UseActuarialPercentage
+      - ManuallySpecifyPercentage
+    FinancialPositionStatement_FinancialPositionDetail:
+      type: object
+      required:
+      - Id
+      - Description
+      - Balance
+      - PreviousYearBalance
+      - Depth
+      - BalanceIsSummary
+      - PreviousYearBalanceIsSummary
+      - FundNotesReferenceNumber
+      - QuantitySpecified
+      - PreviousYearQuantitySpecified
+      properties:
+        Id:
+          type: string
+        Description:
+          type: string
+        Balance:
+          type: number
+          format: decimal
+        Quantity:
+          type: number
+          format: decimal
+        PreviousYearBalance:
+          type: number
+          format: decimal
+        PreviousYearQuantity:
+          type: number
+          format: decimal
+        Depth:
+          type: integer
+          format: int32
+        BalanceIsSummary:
+          type: boolean
+        PreviousYearBalanceIsSummary:
+          type: boolean
+        FundNotesReferenceNumber:
+          type: string
+        QuantitySpecified:
+          type: boolean
+        PreviousYearQuantitySpecified:
+          type: boolean
+    FundAuditorDetails:
+      type: object
+      required:
+      - FundName
+      - FundCode
+      - Period
+      - ABN
+      - TFN
+      - RMP_RiskManagementPlan_Date
+      - RMS_RiskManagementStrategy_Date
+      - RSE_RegisterableSuperanuationEntities_License
+      - ApprovedTrusteeName
+      - FundAddress
+      - Telephone
+      - Fax
+      - Auditor_Details
+      properties:
+        FundName:
+          type: string
+        FundCode:
+          type: string
+        Period:
+          type: string
+          format: date
+        ABN:
+          type: string
+        TFN:
+          type: string
+        RMP_RiskManagementPlan_Date:
+          type: string
+          format: date
+        RMS_RiskManagementStrategy_Date:
+          type: string
+          format: date
+        RSE_RegisterableSuperanuationEntities_License:
+          type: string
+        ApprovedTrusteeName:
+          type: string
+        FundAddress:
+          $ref: '#/components/schemas/AddressSummary'
+        Telephone:
+          type: string
+        Fax:
+          type: string
+        Auditor_Details:
+          $ref: '#/components/schemas/FundAuditorDetails_AuditorDetails'
+    FundAuditorDetails_AuditorDetails:
+      type: object
+      required:
+      - AuditorName
+      - AuditorAddress
+      - BusinessName
+      - BusinessAddress
+      - Telephone
+      - Fax
+      - ProfessionalOrganisation
+      - ProfessionalRegistrationNumber
+      - TFN
+      properties:
+        AuditorName:
+          type: string
+        AuditorAddress:
+          $ref: '#/components/schemas/AddressSummary'
+        BusinessName:
+          type: string
+        BusinessAddress:
+          $ref: '#/components/schemas/AddressSummary'
+        Telephone:
+          type: string
+        Fax:
+          type: string
+        ProfessionalOrganisation:
+          type: string
+        ProfessionalRegistrationNumber:
+          type: string
+        TFN:
+          type: string
+    FundDepreciationReport_AccountDepreciation:
+      type: object
+      required:
+      - PropertyName
+      - PropertyCode
+      - PropertyType
+      - Address
+      - Items
+      - TotalCapitalAllowance
+      - TotalCapitalWorksDeduction
+      properties:
+        PropertyName:
+          type: string
+        PropertyCode:
+          type: string
+        PropertyType:
+          type: string
+        Address:
+          $ref: '#/components/schemas/AddressSummary'
+        Items:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundDepreciationReport_ItemDepreciation'
+        TotalCapitalAllowance:
+          type: number
+          format: decimal
+        TotalCapitalWorksDeduction:
+          type: number
+          format: decimal
+    FundDepreciationReport_ItemDepreciation:
+      type: object
+      required:
+      - Description
+      - Category
+      - Code
+      - PurchaseDate
+      - PurchaseCost
+      - OpeningWrittenDownValue
+      - DisposalDateSpecified
+      - TerminationValueSpecified
+      - AssessableSpecified
+      - DeductibleSpecified
+      - DepreciationRate
+      - DepreciationMethod
+      - DepreciationType
+      - DepreciationMethodCode
+      - DepreciationTypeCode
+      - DeclineInValue
+      - ClosingWrittenDownValue
+      properties:
+        Description:
+          type: string
+        Category:
+          type: string
+        Code:
+          type: string
+        PurchaseDate:
+          type: string
+          format: date
+        PurchaseCost:
+          type: number
+          format: decimal
+        OpeningWrittenDownValue:
+          type: number
+          format: decimal
+        DisposalDate:
+          type: string
+          format: date
+        DisposalDateSpecified:
+          type: boolean
+        TerminationValue:
+          type: number
+          format: decimal
+        TerminationValueSpecified:
+          type: boolean
+        Assessable:
+          type: number
+          format: decimal
+        AssessableSpecified:
+          type: boolean
+        Deductible:
+          type: number
+          format: decimal
+        DeductibleSpecified:
+          type: boolean
+        DepreciationRate:
+          type: number
+          format: decimal
+        DepreciationMethod:
+          $ref: '#/components/schemas/DepreciationMethod'
+        DepreciationType:
+          $ref: '#/components/schemas/DepreciationType'
+        DepreciationMethodCode:
+          type: string
+        DepreciationTypeCode:
+          type: string
+        DeclineInValue:
+          type: number
+          format: decimal
+        ClosingWrittenDownValue:
+          type: number
+          format: decimal
+    FundNotesToFinancialStatement_GroupDetails:
+      type: object
+      required:
+      - GroupId
+      - GroupName
+      - AccountId
+      - Investments
+      - Totals
+      properties:
+        GroupId:
+          type: string
+        GroupName:
+          type: string
+        AccountId:
+          type: string
+        Investments:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundNotesToFinancialStatement_InvestmentDetail'
+        Totals:
+          $ref: '#/components/schemas/FundNotesToFinancialStatement_InvestmentSummary'
+    FundNotesToFinancialStatement_HoldingsBlock:
+      type: object
+      required:
+      - Groups
+      properties:
+        Groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundNotesToFinancialStatement_GroupDetails'
+    FundNotesToFinancialStatement_IncomeBlock:
+      type: object
+      required:
+      - Groups
+      properties:
+        Groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundNotesToFinancialStatement_GroupDetails'
+    FundNotesToFinancialStatement_InvestmentDetail:
+      type: object
+      required:
+      - Name
+      - ClosingPricePreviousYear
+      - ClosingPriceThisYear
+      - IsHeader
+      - AccountId
+      properties:
+        Name:
+          type: string
+        ClosingPricePreviousYear:
+          type: number
+          format: decimal
+        ClosingPriceThisYear:
+          type: number
+          format: decimal
+        IsHeader:
+          type: boolean
+        AccountId:
+          type: string
+    FundNotesToFinancialStatement_InvestmentSummary:
+      type: object
+      required:
+      - ClosingPricePreviousYear
+      - ClosingPriceThisYear
+      properties:
+        ClosingPricePreviousYear:
+          type: number
+          format: decimal
+        ClosingPriceThisYear:
+          type: number
+          format: decimal
+    FundNotesToFinancialStatement_LiabilitiesBlock:
+      type: object
+      required:
+      - CurrentYearLiabilityDetails
+      - PreviousYearLiabilityDetails
+      - BenefitsPaid
+      properties:
+        CurrentYearLiabilityDetails:
+          $ref: '#/components/schemas/FundNotesToFinancialStatement_NotesLiabilityDetails'
+        PreviousYearLiabilityDetails:
+          $ref: '#/components/schemas/FundNotesToFinancialStatement_NotesLiabilityDetails'
+        BenefitsPaid:
+          $ref: '#/components/schemas/FundNotesToFinancialStatement_MemberBenefitPaymentSummary'
+    FundNotesToFinancialStatement_MarketChangeBlock:
+      type: object
+      required:
+      - Groups
+      properties:
+        Groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundNotesToFinancialStatement_GroupDetails'
+    FundNotesToFinancialStatement_MemberBenefitPayment:
+      type: object
+      required:
+      - Depth
+      - Id
+      - Description
+      - CurrentYearBalance
+      - PreviousYearBalance
+      properties:
+        Depth:
+          type: integer
+          format: int32
+        Id:
+          type: string
+        Description:
+          type: string
+        CurrentYearBalance:
+          type: number
+          format: decimal
+        PreviousYearBalance:
+          type: number
+          format: decimal
+    FundNotesToFinancialStatement_MemberBenefitPaymentSummary:
+      type: object
+      required:
+      - CurrentYearTotalBenefitsPaid
+      - PreviousYearTotalBenefitsPaid
+      - BenefitsPaid
+      properties:
+        CurrentYearTotalBenefitsPaid:
+          type: number
+          format: decimal
+        PreviousYearTotalBenefitsPaid:
+          type: number
+          format: decimal
+        BenefitsPaid:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundNotesToFinancialStatement_MemberBenefitPayment'
+    FundNotesToFinancialStatement_NotesLiabilityDetails:
+      type: object
+      required:
+      - StartingLiability
+      - IncreaseInLiability
+      - ClosingLiability
+      - TotalBenefitsPaid
+      - TotalOperational
+      properties:
+        StartingLiability:
+          type: number
+          format: decimal
+        IncreaseInLiability:
+          type: number
+          format: decimal
+        ClosingLiability:
+          type: number
+          format: decimal
+        TotalBenefitsPaid:
+          type: number
+          format: decimal
+        TotalOperational:
+          type: number
+          format: decimal
+    FundNotesToFinancialStatement_ReferenceBlock:
+      type: object
+      required:
+      - Name
+      - Description
+      - ReferenceNumber
+      properties:
+        Name:
+          type: string
+        Description:
+          type: string
+        ReferenceNumber:
+          type: string
+    FundNotesToFinancialStatement_SubsequentEventsBlock:
+      type: object
+      required:
+      - Text
+      properties:
+        Text:
+          type: string
+    FundNotesToFinancialStatement_VestmentBlock:
+      type: object
+      required:
+      - CurrentYearVestedDetails
+      - PreviousYearVestedDetails
+      - BenefitsPaid
+      properties:
+        CurrentYearVestedDetails:
+          $ref: '#/components/schemas/FundNotesToFinancialStatement_NotesLiabilityDetails'
+        PreviousYearVestedDetails:
+          $ref: '#/components/schemas/FundNotesToFinancialStatement_NotesLiabilityDetails'
+        BenefitsPaid:
+          $ref: '#/components/schemas/FundNotesToFinancialStatement_MemberBenefitPaymentSummary'
+    FundReportingDetails:
+      type: object
+      required:
+      - FundName
+      - FundCode
+      - PhysicalAddress
+      - PostalAddress
+      - ABN
+      - HasTFN
+      - FundTrusteeSummary
+      - AuditorDetails
+      - Administrator
+      - FundPhone
+      - FundEmail
+      - AccountSequenceNumber
+      properties:
+        FundName:
+          type: string
+        FundCode:
+          type: string
+        PhysicalAddress:
+          $ref: '#/components/schemas/AddressSummary'
+        PostalAddress:
+          $ref: '#/components/schemas/AddressSummary'
+        ABN:
+          type: string
+        HasTFN:
+          type: boolean
+        FundTrusteeSummary:
+          $ref: '#/components/schemas/FundTrusteeSummary'
+        AuditorDetails:
+          $ref: '#/components/schemas/FundAuditorDetails_AuditorDetails'
+        Administrator:
+          $ref: '#/components/schemas/FundReportingDetails_AdministratorDetails'
+        FundPhone:
+          type: string
+        FundEmail:
+          type: string
+        AccountSequenceNumber:
+          type: string
+    FundReportingDetails_AdministratorDetails:
+      type: object
+      required:
+      - Name
+      - PostalAddress
+      properties:
+        Name:
+          type: string
+        PostalAddress:
+          $ref: '#/components/schemas/AddressSummary'
+    FundTrusteeSummary:
+      type: object
+      required:
+      - FundLegalType
+      - FundName
+      - TrusteeNames
+      - TrusteeNamesString
+      - ChairpersonName
+      - ChairpersonGivenName
+      - ChairpersonLastName
+      - ChairpersonPreferredName
+      - ChairpersonPartyId
+      - IsCorporateTrustee
+      - ChairpersonTitle
+      - ChairpersonEmail
+      - ChairpersonEmailSpecified
+      - CorporateTrusteeACN
+      - CorporateTrusteeABN
+      properties:
+        FundLegalType:
+          type: string
+        FundName:
+          type: string
+        TrusteeNames:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundTrusteeSummary_TrusteeName'
+        TrusteeNamesString:
+          type: string
+        ChairpersonName:
+          type: string
+        ChairpersonGivenName:
+          type: string
+        ChairpersonLastName:
+          type: string
+        ChairpersonPreferredName:
+          type: string
+        ChairpersonPartyId:
+          type: string
+        IsCorporateTrustee:
+          type: boolean
+        ChairpersonTitle:
+          type: string
+        ChairpersonEmail:
+          type: string
+        ChairpersonEmailSpecified:
+          type: boolean
+        CorporateTrusteeACN:
+          type: string
+        CorporateTrusteeABN:
+          type: string
+    FundTrusteeSummary_TrusteeName:
+      type: object
+      required:
+      - Id
+      - Name
+      - PartyType
+      - Title
+      - FirstName
+      - MiddleNames
+      - LastName
+      - PreferredName
+      - Email
+      - EmailSpecified
+      - DefaultAddress
+      - DisplayName
+      - IsErrorMessage
+      properties:
+        Id:
+          type: string
+        Name:
+          type: string
+        PartyType:
+          type: string
+        Title:
+          type: string
+        FirstName:
+          type: string
+        MiddleNames:
+          type: string
+        LastName:
+          type: string
+        PreferredName:
+          type: string
+        Email:
+          type: string
+        EmailSpecified:
+          type: boolean
+        DefaultAddress:
+          $ref: '#/components/schemas/AddressSummary'
+        JoinFundDate:
+          type: string
+          format: date
+        DisplayName:
+          type: string
+        IsErrorMessage:
+          type: boolean
+    GlAccountMovementDescription_GlTransaction:
+      type: object
+      required:
+      - QuantitySpecified
+      - Date
+      - Description
+      - Amount
+      - DebitCreditIndicator
+      - index
+      - RunningBalance
+      - RunningBalanceDirection
+      properties:
+        Quantity:
+          type: number
+          format: decimal
+        QuantitySpecified:
+          type: boolean
+        Date:
+          type: string
+          format: date
+        Description:
+          type: string
+        Amount:
+          type: number
+          format: decimal
+        DebitCreditIndicator:
+          $ref: '#/components/schemas/DebitCreditIndicator'
+        index:
+          type: integer
+          format: int32
+        RunningBalance:
+          type: number
+          format: decimal
+        RunningBalanceDirection:
+          $ref: '#/components/schemas/DebitCreditIndicator'
+    GlTransactionsAuditTrail_GlTransactionGroup:
+      type: object
+      required:
+      - GroupName
+      - Transactions
+      properties:
+        GroupName:
+          type: string
+        Transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/GlTransactionsAuditTrail_GlTransactionSummary'
+    GlTransactionsAuditTrail_GlTransactionSummary:
+      type: object
+      required:
+      - Debit
+      - DebitSpecified
+      - Credit
+      - CreditSpecified
+      - ProcessedByUser
+      - Account
+      - Description
+      - State
+      - Balance
+      properties:
+        Debit:
+          type: number
+          format: decimal
+        DebitSpecified:
+          type: boolean
+        Credit:
+          type: number
+          format: decimal
+        CreditSpecified:
+          type: boolean
+        ProcessedOnDate:
+          type: string
+          format: date
+        ProcessedByUser:
+          type: string
+        TransactionDate:
+          type: string
+          format: date
+        Account:
+          type: string
+        Description:
+          type: string
+        State:
+          type: string
+        Balance:
+          type: number
+          format: decimal
+    HoldingGroupingDetails:
+      type: object
+      required:
+      - NO_FHR_CAPTION
+      - Tags
+      properties:
+        NO_FHR_CAPTION:
+          type: string
+        Tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/HoldingGroupingDetails_Tag'
+    HoldingGroupingDetails_Tag:
+      type: object
+      required:
+      - Type
+      - Value
+      properties:
+        Type:
+          $ref: '#/components/schemas/InvestmentGroupingType'
+        Value:
+          type: string
+    HoldingRevaluationPricingSource:
+      type: string
+      enum:
+      - Holding
+      - Scoped
+      - OfficialDerivation
+      - Default
+    InvestmentGroupingType:
+      type: string
+      enum:
+      - MarketType
+      - Reference
+      - AssetPool
+      - Gl
+    MarketAndSecurityInfo:
+      type: object
+      required:
+      - SecurityCode
+      - SecurityName
+      - MarketCode
+      - MarketAcronym
+      properties:
+        SecurityCode:
+          type: string
+        SecurityName:
+          type: string
+        MarketCode:
+          type: string
+        MarketAcronym:
+          type: string
+    MarketPriceAuditSummary_MarketPriceAuditItem:
+      type: object
+      required:
+      - MarketAndSecurityInfo
+      - HoldingCode
+      - HoldingDescription
+      - Units
+      - MarketPrice
+      - MarketValue
+      - PricingSource
+      - Scope
+      - ModifiedByUserId
+      - ModifiedByUser
+      - Grouping
+      properties:
+        MarketAndSecurityInfo:
+          $ref: '#/components/schemas/MarketAndSecurityInfo'
+        HoldingCode:
+          type: string
+        HoldingDescription:
+          type: string
+        Units:
+          type: number
+          format: decimal
+        MarketPrice:
+          type: number
+          format: decimal
+        MarketValue:
+          type: number
+          format: decimal
+        PricingSource:
+          $ref: '#/components/schemas/HoldingRevaluationPricingSource'
+        Scope:
+          type: string
+        CommunityPrice:
+          type: number
+          format: decimal
+        VariationPercentage:
+          type: number
+          format: decimal
+        VariationAmount:
+          type: number
+          format: decimal
+        ModifiedByUserId:
+          type: string
+        ModifiedByUser:
+          type: string
+        ModificationDate:
+          type: string
+          format: date
+        PriceEffectiveFrom:
+          type: string
+          format: date
+        Grouping:
+          $ref: '#/components/schemas/HoldingGroupingDetails'
+    MarketPriceAuditSummary_MarketTypeItem:
+      type: object
+      required:
+      - MarketTypeName
+      - MarketPriceAuditItems
+      properties:
+        MarketTypeName:
+          type: string
+        MarketPriceAuditItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/MarketPriceAuditSummary_MarketPriceAuditItem'
+    MatchStatusType:
+      type: string
+      enum:
+      - Unmatched
+      - PartiallyMatched
+      - FullyMatched
+      - AwaitingApproval
+    PaygIncomeStreamSummary__PayeeDetails:
+      type: object
+      required:
+      - PayeeAddressSummary
+      - Surname
+      - GivenName
+      - MiddleNames
+      - PayeeTFN
+      properties:
+        PayeeAddressSummary:
+          $ref: '#/components/schemas/AddressSummary'
+        Surname:
+          type: string
+        GivenName:
+          type: string
+        MiddleNames:
+          type: string
+        DateOfBirth:
+          type: string
+          format: date
+        PayeeTFN:
+          type: string
+    PaygIncomeStreamSummary__PaymentDetails:
+      type: object
+      required:
+      - TotalTaxWithheld
+      - TaxedElement
+      - UntaxedElement
+      - TaxFreeComponent
+      - TaxOffsetAmount
+      properties:
+        TotalTaxWithheld:
+          type: number
+          format: decimal
+        TaxedElement:
+          type: number
+          format: decimal
+        UntaxedElement:
+          type: number
+          format: decimal
+        TaxFreeComponent:
+          type: number
+          format: decimal
+        TaxOffsetAmount:
+          type: number
+          format: decimal
+    QuantityDirection:
+      type: string
+      enum:
+      - Acquisition
+      - Disposal
+    StandardApiResponse:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/ApiResponseBase'
+    TaxAccountingReconciliationDetails_Item:
+      type: object
+      required:
+      - Description
+      - Total
+      properties:
+        Description:
+          type: string
+        Total:
+          type: number
+          format: decimal
+    TaxAccountingReconciliationDetails_ReconciliationView:
+      type: object
+      required:
+      - First
+      - Final
+      - Add
+      - Less
+      properties:
+        First:
+          $ref: '#/components/schemas/TaxAccountingReconciliationDetails_Item'
+        Final:
+          $ref: '#/components/schemas/TaxAccountingReconciliationDetails_Item'
+        Add:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaxAccountingReconciliationDetails_Item'
+        Less:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaxAccountingReconciliationDetails_Item'
+    TaxAccountingReconciliationDetails_TaxItem:
+      type: object
+      required:
+      - FieldName
+      - GrossAmount
+      - TaxAmount
+      properties:
+        FieldName:
+          type: string
+        GrossAmount:
+          type: number
+          format: decimal
+        TaxAmount:
+          type: number
+          format: decimal
+    TrialBalanceDetails_AccountBalanceDetails:
+      type: object
+      required:
+      - Id
+      - AccountDescription
+      - Depth
+      - CurrentBalance
+      - PreviousBalance
+      - HasChildWithQuantity
+      properties:
+        Id:
+          type: string
+        AccountDescription:
+          type: string
+        Depth:
+          type: integer
+          format: int32
+        CurrentBalance:
+          $ref: '#/components/schemas/TrialBalanceDetails_Balance'
+        PreviousBalance:
+          $ref: '#/components/schemas/TrialBalanceDetails_Balance'
+        HasChildWithQuantity:
+          type: boolean
+    TrialBalanceDetails_AccountBalanceGroup:
+      type: object
+      required:
+      - Name
+      - AccountBalances
+      properties:
+        Name:
+          type: string
+        AccountBalances:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrialBalanceDetails_AccountBalanceDetails'
+    TrialBalanceDetails_Balance:
+      type: object
+      required:
+      - QuantityOut
+      - QuantityOutSpecified
+      - AccountBalance
+      - AccountBalanceDirection
+      - IsSummary
+      properties:
+        QuantityOut:
+          type: number
+          format: decimal
+        Quantity:
+          type: number
+          format: decimal
+        QuantityOutSpecified:
+          type: boolean
+        AccountBalance:
+          type: number
+          format: decimal
+        AccountBalanceDirection:
+          $ref: '#/components/schemas/DebitCreditIndicator'
+        IsSummary:
+          type: boolean
+    TrustNotesToFinancialStatement_BeneficiaryAccountsBlock:
+      type: object
+      required:
+      - BeneficiaryTransactionsBlocks
+      properties:
+        BeneficiaryTransactionsBlocks:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrustNotesToFinancialStatement_BeneficiaryTransactionsBlock'
+    TrustNotesToFinancialStatement_BeneficiaryTransactionsBlock:
+      type: object
+      required:
+      - MemberId
+      - DefaultDisplayName
+      - CurrentYearOpeningBalance
+      - CurrentYearClosingBalance
+      - PreviousYearOpeningBalance
+      - PreviousYearClosingBalance
+      - TransactionRows
+      properties:
+        MemberId:
+          type: string
+        DefaultDisplayName:
+          type: string
+        CurrentYearOpeningBalance:
+          type: number
+          format: decimal
+        CurrentYearClosingBalance:
+          type: number
+          format: decimal
+        PreviousYearOpeningBalance:
+          type: number
+          format: decimal
+        PreviousYearClosingBalance:
+          type: number
+          format: decimal
+        TransactionRows:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrustNotesToFinancialStatement_TransactionRow'
+    TrustNotesToFinancialStatement_DistributionDetails:
+      type: object
+      required:
+      - Description
+      - CurrentYearAmount
+      - PreviousYearAmount
+      properties:
+        Description:
+          type: string
+        CurrentYearAmount:
+          type: number
+          format: decimal
+        PreviousYearAmount:
+          type: number
+          format: decimal
+    TrustNotesToFinancialStatement_FundLevelEquityAccount:
+      type: object
+      required:
+      - AccountName
+      - PreviousBalance
+      - CurrentBalance
+      properties:
+        AccountName:
+          type: string
+        PreviousBalance:
+          type: number
+          format: decimal
+        CurrentBalance:
+          type: number
+          format: decimal
+    TrustNotesToFinancialStatement_FundLevelEquityAccountBlock:
+      type: object
+      required:
+      - EquityAccounts
+      properties:
+        EquityAccounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrustNotesToFinancialStatement_FundLevelEquityAccount'
+    TrustNotesToFinancialStatement_GroupDetails:
+      type: object
+      required:
+      - GroupId
+      - GroupName
+      - AccountId
+      - Investments
+      - Totals
+      properties:
+        GroupId:
+          type: string
+        GroupName:
+          type: string
+        AccountId:
+          type: string
+        Investments:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrustNotesToFinancialStatement_InvestmentDetail'
+        Totals:
+          $ref: '#/components/schemas/TrustNotesToFinancialStatement_InvestmentSummary'
+    TrustNotesToFinancialStatement_HoldingsBlock:
+      type: object
+      required:
+      - Groups
+      properties:
+        Groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrustNotesToFinancialStatement_GroupDetails'
+    TrustNotesToFinancialStatement_InvestmentDetail:
+      type: object
+      required:
+      - Name
+      - ClosingPricePreviousYear
+      - ClosingPriceThisYear
+      - IsHeader
+      - AccountId
+      properties:
+        Name:
+          type: string
+        ClosingPricePreviousYear:
+          type: number
+          format: decimal
+        ClosingPriceThisYear:
+          type: number
+          format: decimal
+        OtherValuationThisYear:
+          type: number
+          format: decimal
+        IsHeader:
+          type: boolean
+        AccountId:
+          type: string
+    TrustNotesToFinancialStatement_InvestmentSummary:
+      type: object
+      required:
+      - ClosingPricePreviousYear
+      - ClosingPriceThisYear
+      - OtherValuationThisYear
+      properties:
+        ClosingPricePreviousYear:
+          type: number
+          format: decimal
+        ClosingPriceThisYear:
+          type: number
+          format: decimal
+        OtherValuationThisYear:
+          type: number
+          format: decimal
+    TrustNotesToFinancialStatement_RetainedProfitBlock:
+      type: object
+      required:
+      - CurrentYearOpeningBalance
+      - PreviousYearOpeningBalance
+      - CurrentYearProfitAfterExpenses
+      - PreviousYearProfitAfterExpenses
+      - CurrentYearClosingBalance
+      - PreviousYearClosingBalance
+      - Distributions
+      properties:
+        CurrentYearOpeningBalance:
+          type: number
+          format: decimal
+        PreviousYearOpeningBalance:
+          type: number
+          format: decimal
+        CurrentYearProfitAfterExpenses:
+          type: number
+          format: decimal
+        PreviousYearProfitAfterExpenses:
+          type: number
+          format: decimal
+        CurrentYearClosingBalance:
+          type: number
+          format: decimal
+        PreviousYearClosingBalance:
+          type: number
+          format: decimal
+        Distributions:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrustNotesToFinancialStatement_DistributionDetails'
+    TrustNotesToFinancialStatement_TransactionRow:
+      type: object
+      required:
+      - Description
+      - CurrentYearAmount
+      - PreviousYearAmount
+      properties:
+        Description:
+          type: string
+        CurrentYearAmount:
+          type: number
+          format: decimal
+        PreviousYearAmount:
+          type: number
+          format: decimal
+    Guid:
+      type: string
+    InternalErrorCommon:
+      type: object
+      properties:
+        Code:
+          type: string
+          example: API_INTERNAL_ERROR
+        Message:
+          type: string
+          example: An unexpected error occurred on the server. Please try again later.
+      xml:
+        name: Error
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          nullable: true
+        message:
+          type: string
+          nullable: true
+      additionalProperties: false
+    ForbiddenErrorCommon:
+      type: object
+      properties:
+        Code:
+          type: string
+          example: FORBIDDEN
+        Message:
+          type: string
+          example: You do not have permission to access this resource.
+      xml:
+        name: Error
+    ResourceUnavailableErrorCommon:
+      type: object
+      properties:
+        Code:
+          type: string
+          example: API_NOT_FOUND
+        Message:
+          type: string
+          example: Resource not available or user does not have access to the fund.
+      xml:
+        name: Error
+    UnauthorizedErrorCommon:
+      type: object
+      properties:
+        Code:
+          type: string
+          example: API_NOT_AUTHORISED
+        Message:
+          type: string
+          example: Not authorised
+      xml:
+        name: Error
+        wrapped: false
+  parameters:
+    businessCodeParam:
+      name: businessCode
+      in: path
+      description: Class business code
+      required: true
+      schema:
+        type: string
+        example: demo-business
+    yearParam:
+      name: year
+      description: The financial year to retrieve information
+      in: query
+      required: true
+      schema:
+        type: integer
+        example: 2024
+    fundCodeParam:
+      name: fundCode
+      description: Class entity code
+      in: path
+      required: true
+      schema:
+        type: string
+        example: demo-fund
+    startDateParam:
+      name: startDate
+      in: query
+      description: The start date to retrieve the data for
+      required: false
+      schema:
+        type: string
+        format: date
+        example: 2024-07-01
+    endDateParam:
+      name: endDate
+      in: query
+      description: The end date to retrieve the data for
+      required: false
+      schema:
+        type: string
+        format: date
+        example: 2025-06-30
+  securitySchemes:
+    Class_oAuth:
+      type: oauth2
+      description: Class uses oAuth2 and OpenID for authentication and authorisation
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.class-test.com.au/connect/authorize
+          tokenUrl: https://app.class-test.com.au/connect/token
+          scopes:
+            business.fund.list: List summarised data of funds in the business
+            business.fund.create: Create new funds in the business
+            fund.details.read: View basic fund details
+            fund.details.maintain: View and maintain basic fund details
+            fund.member.read: View member details
+            fund.member.maintain: View and maintain member details
+            fund.read: View all fund information
+            fund.maintain: View and maintain all fund information
+        clientCredentials:
+          tokenUrl: https://app.class-test.com.au/connect/token
+          scopes:
+            business.fund.list: List summarised data of funds in the business
+            business.fund.create: Create new funds in the business
+            fund.details.read: View basic fund details
+            fund.details.maintain: View and maintain basic fund details
+            fund.member.read: View member details
+            fund.member.maintain: View and maintain member details
+            fund.read: View all fund information
+            fund.maintain: View and maintain all fund information
