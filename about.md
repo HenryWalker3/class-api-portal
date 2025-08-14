@@ -109,3 +109,4 @@ I start my home page in Markdown because it's easy to write.
 Then, I add in the fancier components and design flourishes last.
 
 The same concept applies to any landing page, not just the home page.
+
