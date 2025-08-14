@@ -15,8 +15,8 @@ navbar:
       label: Missions
     - page: guides/index.md
       label: Guides
-    - page: apis/index.yaml
-      label: API Reference
+    # - page: apis/index.yaml
+    #   label: API Reference
     - page: tools/index.md
       label: Tools
     - page: changelog.md
@@ -31,13 +31,13 @@ logo:
   link: /
 footer:
   copyrightText: Copyleft © Redocly Inc. No rights reserved.
-  items:
-    - page: legal/terms.md
-      label: Terms
-    - page: legal/responsible-use.md
-      label: Responsible Use
-    - href: /
-      label: Cookies
+  # items:
+  #   - page: legal/terms.md
+  #     label: Terms
+  #   - page: legal/responsible-use.md
+  #     label: Responsible Use
+  #   - href: /
+  #     label: Cookies
 requiresLogin: true
 sso:
   - GUEST
