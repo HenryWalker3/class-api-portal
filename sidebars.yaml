@@ -7,15 +7,15 @@
 - group: Guides
   page: guides/index.md
   items:
-    - page: guides/time-navigation.md
+    # - page: guides/time-navigation.md
     - page: guides/temporal-anchoring.md
-    - page: guides/event-manipulation.md
+    # - page: guides/event-manipulation.md
     - group: Advanced Topics
       directory: guides/advanced-topics
     
 - group: API Reference
   items:
-    page: apis/accounting-reports-final.yaml
+    - page: apis/accounting-reports-final.yaml
 - group: Tools
   page: tools/index.md
   items:
