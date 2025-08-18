@@ -5,14 +5,26 @@
     - page: tutorials/lost-invention.md
     - page: tutorials/missing-mathematician.md
 - group: Guides
-  page: guides/index.md
   items:
-    # - page: guides/time-navigation.md
-    - page: guides/temporal-anchoring.md
-    # - page: guides/event-manipulation.md
+    - page: guides/index.md
+      label: Guides Overview
+    - group: Authentication
+      items:
+        - page: guides/auth-overview.md
+        - page: guides/authorization-code-flow.md
+        - page: guides/resource-owner-password-flow.md
+        - page: guides/refresh-tokens.md
+        - page: guides/authorisation-scopes.md
+        - page: guides/userinfo-endpoint.md
+        - page: guides/sso-using-class-api.md
+    - group: API Fundamentals
+      items:
+        - page: guides/class-api-structure.md
+        - page: guides/discovery-document.md
+        - page: guides/rate-limiting.md
+        - page: guides/error-codes.md
     - group: Advanced Topics
       directory: guides/advanced-topics
-    
 - group: API Reference
   items:
     - page: apis/accounting-reports-final.yaml
