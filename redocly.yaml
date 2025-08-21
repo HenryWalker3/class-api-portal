@@ -7,22 +7,66 @@ links:
   - href: https://fonts.googleapis.com/css2?family=VT323&display=swap
   - href: https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap
 seo:
-  title: Warp API
-  description: Warp is the groundbreaking API that allows you to navigate, manipulate, and control time.
+  title: Class API
+  description: 
 navbar:
   items:
-    - page: tutorials/index.md
-      label: Missions
-    - page: guides/index.md
-      label: Guides
-    # - page: apis/index.yaml
-    #   label: API Reference
+    - group: API Reference
+      items:
+        - page: apis/accounting-reports-final.yaml
+          label: Accounting Reports
+    - group: Resources
+      items: 
+        - page: guides/auth-overview.md
+          label: Auth Overview
+        - page: guides/authorization-code-flow.md
+          label: Authorization Code Flow
+        - page: guides/rate-limiting.md
+          label: Rate Limiting
+        - page: guides/refresh-tokens.md
+          label: Refresh Token    
     - page: tools/index.md
       label: Tools
     - page: changelog.md
       label: Changelog
     - page: about.md
       label: About this template
+theme:
+  openapi:
+    # === Functionality (from the "Configuration options for API docs" page) ===
+    pagination: section            # none | section | item
+    layout: stacked            # three-panel | stacked
+    disableSearch: false
+    hideRightPanel: false
+    hideTryItPanel: false          # set true to remove the Try it console
+    defaultSampleLanguage: "curl"
+    generateCodeSamples:
+      languages: 
+      - lang: "curl"
+      - lang: "Python"
+      - lang: "C#"
+      - label: "Hello World"
+
+
+    schemaExpansionLevel: 0        # 0 | number | "all"
+    jsonSampleExpandLevel: 0       # number | "all"
+    expandDefaultRequest: true
+    expandDefaultResponse: true
+    corsProxyUrl: "https://cors.redoc.ly"   # or your own proxy
+    oAuth2RedirectURI: "https://YOUR-DOMAIN/oauth2-redirect.html"
+
+    # === Theming (optional, but lives under the same block) ===
+    theme:
+      sidebar:
+        width: "280px"
+      rightPanel:
+        width: "40%"
+      typography:
+        fontSize: 16px
+      colors:
+        primary:
+          main: "#0F62FE"
+
 markdown:
   toc:
     depth: 2
@@ -33,7 +77,7 @@ footer:
   copyrightText: Copyleft © Redocly Inc. No rights reserved.
 sso:
   - GUEST
-rbac:
-  content:
-    '/apis/*':
-      authenticated: read
+#rbac:
+#  content:
+#    '/apis/*':
+#      authenticated: read
