@@ -31,42 +31,40 @@ navbar:
       label: Changelog
     - page: about.md
       label: About this template
-theme:
-  openapi:
-    # === Functionality (from the "Configuration options for API docs" page) ===
-    pagination: section            # none | section | item
-    layout: stacked            # three-panel | stacked
-    disableSearch: false
-    hideRightPanel: false
-    hideTryItPanel: false          # set true to remove the Try it console
-    defaultSampleLanguage: "curl"
-    generateCodeSamples:
-      languages: 
-      - lang: "curl"
-      - lang: "Python"
-      - lang: "C#"
-      - label: "Hello World"
 
-
-    schemaExpansionLevel: 0        # 0 | number | "all"
-    jsonSampleExpandLevel: 0       # number | "all"
-    expandDefaultRequest: true
-    expandDefaultResponse: true
-    corsProxyUrl: "https://cors.redoc.ly"   # or your own proxy
-    oAuth2RedirectURI: "https://YOUR-DOMAIN/oauth2-redirect.html"
-
+openapi:
+  # === Functionality (from the "Configuration options for API docs" page) ===
+  pagination: section            # none | section | item
+  layout: three-panel            # three-panel | stacked
+  disableSearch: false
+  hideRightPanel: false
+  hideTryItPanel: false          # set true to remove the Try it console
+  defaultSampleLanguage: "curl"
+  generatedPayloadSamplesMaxDepth: 0
+  generateCodeSamples:
+    languages: 
+    - lang: "curl"
+    - lang: "Python"
+    - lang: "C#"
+    - label: "Hello World"
+  hideDownloadButton: true
+  schemaExpansionLevel: 0        # 0 | number | "all"
+  jsonSampleExpandLevel: 0       # number | "all"
+  expandDefaultRequest: true
+  expandDefaultResponse: true
+  corsProxyUrl: "https://cors.redoc.ly"   # or your own proxy
+  oAuth2RedirectURI: "https://YOUR-DOMAIN/oauth2-redirect.html"
     # === Theming (optional, but lives under the same block) ===
-    theme:
-      sidebar:
-        width: "280px"
-      rightPanel:
-        width: "40%"
-      typography:
-        fontSize: 16px
-      colors:
-        primary:
-          main: "#0F62FE"
-
+theme:
+  sidebar:
+    width: "280px"
+  rightPanel:
+    width: "40%"
+  typography:
+    fontSize: 16px
+  colors:
+    primary:
+      main: "#0F62FE"
 markdown:
   toc:
     depth: 2
