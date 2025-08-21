@@ -1,14 +1,17 @@
-# reunite:
-  # ignoreLint: true
+reunite:
+  ignoreLint: true
   # ignoreLinkChecker: true
 extends:
   - minimal
-links:
-  - href: https://fonts.googleapis.com/css2?family=VT323&display=swap
-  - href: https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap
+# links:
+#   - href: https://fonts.googleapis.com/css2?family=VT323&display=swap
+#   - href: https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap
 seo:
   title: Warp API
   description: Warp is the groundbreaking API that allows you to navigate, manipulate, and control time.
+resolve:
+  components:
+    Root: ./@theme/components/Root.tsx
 navbar:
   items:
     - page: tutorials/index.md

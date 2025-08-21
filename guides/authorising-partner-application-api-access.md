@@ -1,3 +1,33 @@
+
+
+### Component Test Area
+
+<div>
+  **Button:**
+  <br />
+  <sl-button variant="primary">Click Me</sl-button>
+  <sl-button>Button</sl-button>
+  <br /><br />
+  **Input:**
+  <br />
+  <sl-input placeholder="Test Input"></sl-input>
+  <br /><br />
+  **Alert (from docs):**
+  <br />
+  <sl-alert variant="info" open>
+    <sl-icon slot="icon" name="fas-circle-info"></sl-icon>
+    This is a test alert using the icon from the documentation.
+  </sl-alert>
+  <br /><br />
+  **Your Original Alert:**
+  <br />
+  <sl-alert open variant="primary">
+    <sl-icon slot="icon" name="info-circle"></sl-icon>
+    This is your original alert code.
+  </sl-alert>
+</div>
+
+
 # Authorising Partner Application API Access
 
 ## Overview
@@ -15,7 +45,11 @@ Example "Partner Application" requesting access to customer data using a few sam
 
 ![Example of a partner application requesting access to data.](../images/partner-access.jpg)
 
-Access can only be granted to one business at a time, so if your practice has multiple Class businesses, then you will have to grant access to each business.
+<sl-alert open variant="primary">
+  <sl-icon slot="icon" name="info-circle"></sl-icon>
+  Access can only be granted to one business at a time. If your practice has multiple Class businesses, you will have to grant access to each business individually.
+</sl-alert>
+
 
 ## Access Scopes
 | Scope | Meaning |

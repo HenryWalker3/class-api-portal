@@ -10,7 +10,7 @@
       label: Guides Overview
     - group: Authentication
       items:
-        - page: guides/auth-overview.md
+        - page: guides/authorising-partner-application-api-access.md
         - page: guides/authorization-code-flow.md
         - page: guides/resource-owner-password-flow.md
         - page: guides/refresh-tokens.md
