@@ -1,7 +1,3 @@
-@import url('https://cdn.hub24.ai/dist/themes/common.css');
-@import url('https://cdn.hub24.ai/dist/themes/class.css');
-@import url('https://cdn.hub24.ai/dist/themes/ni.css');
-
 /* Learn more about Realm styles: https://redocly.com/docs/realm/style/concepts/styling */
 :root .button-tone-brand {
   background-color: var(--color-persian-green-6);

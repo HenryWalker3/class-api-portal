@@ -2,30 +2,17 @@
 
 ### Component Test Area
 
-<div>
-  **Button:**
-  <br />
+
   <sl-button variant="primary">Click Me</sl-button>
-  <sl-button>Button</sl-button>
-  <br /><br />
-  **Input:**
-  <br />
-  <sl-input placeholder="Test Input"></sl-input>
-  <br /><br />
-  **Alert (from docs):**
-  <br />
-  <sl-alert variant="info" open>
+
+
+
+
+  <sl-alert open>
     <sl-icon slot="icon" name="fas-circle-info"></sl-icon>
-    This is a test alert using the icon from the documentation.
+    This is a standard alert. You can customize its content and even the icon.
   </sl-alert>
-  <br /><br />
-  **Your Original Alert:**
-  <br />
-  <sl-alert open variant="primary">
-    <sl-icon slot="icon" name="info-circle"></sl-icon>
-    This is your original alert code.
-  </sl-alert>
-</div>
+
 
 
 # Authorising Partner Application API Access

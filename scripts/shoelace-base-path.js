@@ -1,0 +1,1 @@
+window.shoelaceBasePath = "https://cdn.hub24.ai/dist/";

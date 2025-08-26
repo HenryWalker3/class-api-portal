@@ -3,15 +3,30 @@ reunite:
   # ignoreLinkChecker: true
 extends:
   - minimal
-# links:
-#   - href: https://fonts.googleapis.com/css2?family=VT323&display=swap
-#   - href: https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap
+
+links:
+  # HDS requirements
+  - href: 'https://cdn.hub24.ai/dist/themes/common.css'
+    rel: stylesheet
+  - href: 'https://cdn.hub24.ai/dist/themes/class.css'
+    rel: stylesheet
+  - href: 'https://cdn.hub24.ai/dist/themes/ni.css'
+    rel: stylesheet
+  # Add Font Awesome for icons
+  - href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css'
+    rel: stylesheet
+  # Your existing Google Fonts
+  - href: 'https://fonts.googleapis.com/css2?family=VT323&display=swap'
+  - href: 'https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap'
+
+scripts:
+  body:
+    - src: ./scripts/hds-loader.js
+      module: true
 seo:
   title: Warp API
   description: Warp is the groundbreaking API that allows you to navigate, manipulate, and control time.
-resolve:
-  components:
-    Root: ./@theme/components/Root.tsx
+
 navbar:
   items:
     - page: tutorials/index.md
