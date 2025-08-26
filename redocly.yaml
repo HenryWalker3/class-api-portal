@@ -2,23 +2,27 @@
   # ignoreLint: true
   # ignoreLinkChecker: true
 extends:
-  - minimal
+  - recommended
+
+apis:
+  accounting-reports:
+    root: ./apis/accounting-reports-final.yaml
+
 links:
   - href: https://fonts.googleapis.com/css2?family=VT323&display=swap
   - href: https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap
-seo:
-  title: Class API
-  description: 
+
 navbar:
   items:
     - group: API Reference
       items:
         - page: apis/accounting-reports-final.yaml
           label: Accounting Reports
+    - group: Guides
     - group: Resources
       items: 
-        - page: guides/auth-overview.md
-          label: Auth Overview
+        - page: guides/resources-overview.page.tsx
+          label: Resources Overview
         - page: guides/authorization-code-flow.md
           label: Authorization Code Flow
         - page: guides/rate-limiting.md
@@ -32,39 +36,11 @@ navbar:
     - page: about.md
       label: About this template
 
-openapi:
-  # === Functionality (from the "Configuration options for API docs" page) ===
-  pagination: section            # none | section | item
-  layout: three-panel            # three-panel | stacked
-  disableSearch: false
-  hideRightPanel: false
-  hideTryItPanel: false          # set true to remove the Try it console
-  defaultSampleLanguage: "curl"
-  generatedPayloadSamplesMaxDepth: 0
-  generateCodeSamples:
-    languages: 
-    - lang: "curl"
-    - lang: "Python"
-    - lang: "C#"
-    - label: "Hello World"
-  hideDownloadButton: true
-  schemaExpansionLevel: 0        # 0 | number | "all"
-  jsonSampleExpandLevel: 0       # number | "all"
-  expandDefaultRequest: true
-  expandDefaultResponse: true
-  corsProxyUrl: "https://cors.redoc.ly"   # or your own proxy
-  oAuth2RedirectURI: "https://YOUR-DOMAIN/oauth2-redirect.html"
-    # === Theming (optional, but lives under the same block) ===
-theme:
-  sidebar:
-    width: "280px"
-  rightPanel:
-    width: "40%"
-  typography:
-    fontSize: 16px
-  colors:
-    primary:
-      main: "#0F62FE"
+
+
+mockServer:
+  off: true 
+
 markdown:
   toc:
     depth: 2
@@ -79,3 +55,22 @@ sso:
 #  content:
 #    '/apis/*':
 #      authenticated: read
+
+
+openapi: 
+  layout: 'three-panel'
+  codeSamples: 
+      languages: 
+      - lang: 'curl'
+        label: 'cURL'
+      - lang: 'C#'
+        label: 'C#'
+      - lang: 'Python'
+        label: 'Python'
+      - lang: 'JavaScript'
+        label: 'JavaScript'
+  hideSchemaTitles: true
+  hideReplay: true
+
+
+
