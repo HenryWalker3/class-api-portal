@@ -24,19 +24,11 @@
 
   /* spacing */
   --spacing-unit: 4px;
+
+
 }
 
-/* Dark mode (use Realm’s color-mode hooks) */
-:root.dark {
-  --bg-color: #0b1220;
-  --bg-color-tonal: #0f162a;
-  --text-color-primary: #e5ecff;
-  --text-color-secondary: #b6c2e2;
-  --border-color-primary: rgba(148,163,184,.25);
 
-  --color-primary-base: #6aa3ff;
-  --color-primary-text: #bcd2ff;
-}
 
 /* ---- Global layout bits (Common / Components) ---- */
 :root {
@@ -51,6 +43,10 @@
   --sidebar-width: 280px;
 
   --toc-width: 240px;
+}
+
+:root {
+   --dropdown-menu-item-color-hover: var(--color-primary-base);
 }
 
 /* ---- Code blocks (Components → Code) ---- */
@@ -71,21 +67,44 @@
 
 /* ---- API docs panels (API docs variables) ---- */
 :root {
-  /* operation/request/response panels */
-  --panel-border: 1px solid var(--border-color-primary);
-  --panel-border-radius: 12px;
-
-  /* “Response” header ribbons by type */
-  --panel-response-success-heading-bg-color: #ecfdf5;
-  --panel-response-info-heading-bg-color: #eff6ff;
-  --panel-response-error-heading-bg-color: #fef2f2;
-  --panel-response-redirect-heading-bg-color: #fffbeb;
-
-
   /* language/sample panel */
   --panel-samples-bg-color: var(--bg-color);
   --panel-samples-border: var(--panel-border);
   --panel-samples-code-block-bg-color: var(--code-block-bg-color);
+  --panel-samples-heading-bg-color: rgb(50, 63, 75);
+  --panel-samples-heading-text-color: var(--code-block-text-color);
+  --panel-samples-heading-font-size: 20px;
+  --panel-samples-body-bg-color: rgb(50, 63, 75);
+  --panel-samples-body-text-color: white;
+  --panel-samples-body-font-size: 16px;
+  --panel-request-samples-heading-text-color: var(--code-block-text-color);
+  --panel-samples-dropdown-bg-color: rgb(50, 63, 75);
+  --panel-servers-list-input-bg-color: rgb(50, 63, 75);
+}
+:root {
+  --schema-example-text-color: white;
+  --schema-example-bg-color: white;
+  --schema-example-border-color: white;
+}
+
+:root {
+  /* brighter 2xx, 4xx/5xx, 3xx, 1xx chips */
+  --panel-response-success-heading-bg-color: white;
+  --panel-response-error-heading-bg-color:   var(--color-error-base);
+  --panel-response-redirect-heading-bg-color:var(--color-warning-base);
+  --panel-response-info-heading-bg-color:    white;
+
+  /* ensure strong contrast on the numbers */
+  --panel-response-success-heading-text-color: var(--text-color-on-color);
+  --panel-response-error-heading-text-color:   var(--text-color-on-color);
+  --panel-response-redirect-heading-text-color:var(--text-color-on-color);
+  --panel-response-info-heading-text-color:    var(--text-color-on-color);
+
+  /* optional: crisper borders around chips */
+  --panel-response-success-border-color: var(--color-success-active);
+  --panel-response-error-border-color:   var(--color-error-active);
+  --panel-response-redirect-border-color:var(--color-warning-active);
+  --panel-response-info-border-color:    var(--color-info-active);
 }
 
 /* ---- HTTP verb/tag chips (Components → Tags) ---- */
@@ -139,7 +158,7 @@
 }
 .auth-subtitle {
   font-size: 1.125rem;
-  color: #555;
+  color: black;
   margin-bottom: 2rem;
 }
 
@@ -150,14 +169,21 @@
   gap: 1.5rem;
 }
 
+
 /* Individual card */
 .card {
   background: #fff;
-  border: 1px solid #e1e1e1;
+  color: #2549ebb0;
+  border: 1px solid #686666;
   border-radius: 8px;
   padding: 1.5rem;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
+
+.card:hover {
+  background-color:  rgba(0,0,0,0.05);
+} 
+
 .card-title {
   font-size: 1.5rem;
   margin-bottom: 1rem;
@@ -172,11 +198,12 @@
 }
 .card-link {
   text-decoration: none;
-  color: #1e2f93;
+  color: black;
   font-weight: 500;
 }
 .card-link:hover {
   text-decoration: underline;
+
 }
 
 /* Code block */

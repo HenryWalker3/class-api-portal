@@ -1,11 +1,10 @@
-```markdown
 # OAuth 2.0 Authorization Code Flow – Class API
 
 This guide explains how to obtain **access tokens**, **refresh tokens**, and **ID tokens** using the [OAuth 2.0 Authorization Code Flow](http://tools.ietf.org/html/rfc6749#section-4.1). Access tokens let you interact with the Class API for SMSF data, transactions, and accounting reports.
 
 > **Note:** To use this flow, update your redirect URL by emailing [partners@class.com.au](mailto:partners@class.com.au).
 
----
+
 
 ## Step 1: Flow Overview
 
@@ -17,7 +16,7 @@ The authorization code flow is designed for integrations that can keep the `clie
 4. Your integration sends a **token request** to exchange the code for tokens.
 5. Class returns an **access token** and, if requested, a **refresh token** and/or **ID token**.
 
----
+
 
 ## Step 2: Client Authentication
 
@@ -34,7 +33,6 @@ Some requests require client authentication using your `client_id` and `client_s
 Authorization: Basic PGNsaWVudF9pZD46PGNsaWVudF9zZWNyZXTvu78+
 ```
 
----
 
 ## Step 3: Authorization Request
 

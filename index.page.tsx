@@ -1,237 +1,245 @@
-// Learn more about how to build React pages in Realm: https://redocly.com/docs/realm/extend/how-to/create-react-page
-import React from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
+import { Button } from '@redocly/theme/components/Button/Button';
+import { Link } from '@redocly/theme/components/Link/Link';
+import { breakpoints } from '@redocly/theme/core/utils';
 
-import { ArrowRightIcon, Button } from '@redocly/theme';
-import { CardWithCode } from './@theme/components/CardWithCode/CardWithCode';
-import { Card } from '@redocly/theme/markdoc/components/Cards/Card';
-import { Cards } from '@redocly/theme/markdoc/components/Cards/Cards';
+export const frontmatter = {
+  seo: {
+    title: 'Demo React Page',
+  },
+  // Uncomment to hide navbar and footer
+  // navbar: {
+  //   hide: true,
+  // },
+  // footer: {
+  //   hide: true,
+  // }
+};
 
-const code = `curl -X POST \\
-  https://api.warp.com/warp/v1/time/set \\
-  -H "Authorization: Bearer YOUR_API_KEY" \\
-  -H "Content-Type: application/json" \\
-  -d '{"time": "+1s"}'
-`;
-
-export default function HomePage() {
+export default function () {
   return (
-    <div>
-      <HeroContainer>
-        <HeroBg />
-        {/* <Image srcSet={`${require('./images/grid.svg')} light, ${require('./images/grid-dark.svg')} dark`} /> */}
-        <h1>Time Travel API</h1>
-        <p>Bend Time with the First API for Time Travel</p>
-        <Button size="large" variant="primary" tone="brand" to="/guides/quickstart">
-          Get started
-        </Button>
-        <CardWithCode
-          title="Quickstart"
-          description="Set up your environment and make your first call to warp you one second into the future."
-          code={code}
-        />
-      </HeroContainer>
-      <Container>
-        <h3>Accelerate Your Development with the Power of Time</h3>
-        <p>
-          Warp is the groundbreaking API that allows you to navigate, manipulate, and control time. Whether you need to
-          fix critical mistakes, explore alternative histories, or ensure future success, Warp gives you the tools to do
-          so with precision and safety.
-        </p>
-      </Container>
-      <Container>
-        <h3>Key Features</h3>
-        <Feature>
-          <ArrowRightIcon />
-          <p>Time Navigation: Move backward, forward, or pause time with pinpoint accuracy.</p>
-        </Feature>
-        <Feature>
-          <ArrowRightIcon />
-          <p>Temporal Anchoring: Set fixed points in time to safely experiment and return to.</p>
-        </Feature>
-        <Feature>
-          <ArrowRightIcon />
-          <p>Event Manipulation: Modify past events, influence future outcomes, or create alternate timelines.</p>
-        </Feature>
-        <Feature>
-          <ArrowRightIcon />
-          <p>Safety Protocols: Built-in safeguards to prevent paradoxes and unintended consequences.</p>
-        </Feature>
-        <br />
-        <ButtonContainer>
-          <Button size="large" to="/guides/quickstart">
-            Get started with Warp
-          </Button>
-          <Button size="large" to="/guides">
-            Explore documentation
-          </Button>
-        </ButtonContainer>
-      </Container>
+    <LandingWrapper>
+      <Jumbotron
+        p="30px 18x 130px 180px"
+        // bgImage={require('images/hero-bg.png')}
+      >
+        <LandingHeader>Class Developer Portal</LandingHeader>
+        <LandingSubheader>Get connected with Class APIs</LandingSubheader>
 
-      <Container>
-        <h3>Featured Missions</h3>
-        <Cards>
-          <Card title="The Lost Invention" to="/tutorials/lost-invention">
-            Retrieve Nikola Tesla's lost blueprint before it's destroyed in a mysterious fire.
-          </Card>
-          <Card title="The Missing Mathematician" to="/tutorials/missing-mathematician">
-            Ensure that Katherine Johnson stays on the path that will lead her to NASA and a pivotal role in space
-            exploration.
-          </Card>
-        </Cards>
-      </Container>
-
-      <Container>
-        <ContactUsSection>
-          <h3>Need help?</h3>
-          <ButtonContainer>
-            <Button variant="outlined" size="large">
-              Join our community
-            </Button>
-            <Button variant="outlined" size="large">
-              Read the docs
-            </Button>
-          </ButtonContainer>
-        </ContactUsSection>
-      </Container>
-    </div>
+      </Jumbotron>
+      <Box mb="70px">
+        <SectionHeader>
+          Explore our comprehensive API documentation
+        </SectionHeader>
+        <Tiles>
+          <Tile to="/getting-started" icon={<img src={require('images/logo.svg')} />} header="Getting Started">
+            Get started by creating an app,<br />
+            and follow our guides to get connected.
+          </Tile>
+          <Tile to="/apis/accounting-reports-final" icon={<img src={require('images/sitemap.png')} />} header="API Reference">
+            Explore Class API specifications<br />
+            and start building.<br />
+          </Tile>
+          <Tile to="/guides/resources-overview" icon={<img src={require('images/sitemap.png')} />} header="Resources">
+            Learn about authentication, authorisation<br />
+            and explore our technical documentation.<br />
+          </Tile>
+          <Tile to="/guides" icon={<img src={require('images/sitemap.png')} />} header="Guides">
+            View our developer guides<br />
+            to utilise our API endpoints for your specific use case.
+          </Tile>
+          <Tile to="/changelog" icon={<img src={require('images/sitemap.png')} />} header="Change Log">
+            View the release notes<br />
+            for the latest API changes.
+          </Tile>
+            <Tile to="/announcements" icon={<img src={require('images/sitemap.png')} />} header="Announcements">
+            View the latest news<br />
+            and find out about upcoming changes.
+          </Tile>  
+        </Tiles>
+      </Box>
+    </LandingWrapper>
   );
 }
 
-const HeroBg = styled.div`
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-
-
-  z-index: -1;
-
-  &:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url(${require('./images/background.svg')});
-    background-size: cover;
-    filter: blur(60px);
-    opacity: 0.7;
-  }
-  &:after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-size: cover;
-    background-image: url(${require('./images/grid.svg')});
-    opacity: 0.2;
-    .dark & {
-      background-image: url(${require('./images/grid-dark.svg')});
+const LandingWrapper = styled.div`
+  --color-gradient-1: #1677ff;
+  --color-gradient-2: #ba99ff;
+  --color-brand: #8d5bff;
+  --color-brand-hover: #7a4dd0;
+  --color-brand-active: #663eb1;
+  .button-tone-brand {
+    color: white;
+    border-color: var(--color-brand);
+    background-color: var(--color-brand);
+    &:hover {
+      color: white;
+      border-color: var(--color-brand-hover);
+      background-color: var(--color-brand-hover);
     }
+    &:active {
+      color: white;
+      border-color: var(--color-brand-active);
+      background-color: var(--color-brand-active);
+    }
+  }
+  & .button-size-xl {
+    --button-padding: var(--spacing-sm) var(--spacing-xxl);
+    font-size: var(--font-size-lg);
+  }
+  & .button-tone-brand {
+    --button-background: var(--color-primary);
+    --button-color: var(--text-color-inverse);
   }
 `;
 
-const HeroContainer = styled.div`
-  width: 100%;
+function Tile({
+  icon,
+  header,
+  children,
+  to,
+  textAlign = 'center',
+}: {
+  icon?: React.ReactNode;
+  header: string;
+  children: React.ReactNode;
+  to: string;
+  textAlign?: 'left' | 'center' | 'right';
+}) {
+  return (
+    <TileWrapper to={to} textAlign={textAlign}>
+      {icon && <IconWrapper>{icon}</IconWrapper>}
+
+      <TileHeader>{header}</TileHeader>
+
+      <TileDescription>{children}</TileDescription>
+    </TileWrapper>
+  );
+}
+
+const Tiles = styled.div<{ type?: 'wide' }>`
+  display: grid;
+  grid-template-columns: ${({ type }) =>
+    type === 'wide' ? 'repeat(auto-fit, minmax(450px, 1fr))' : 'repeat(auto-fit, minmax(250px, 1fr))'};
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 60px;
+`;
+
+const TileWrapper = styled(Link)<{ textAlign?: 'left' | 'center' | 'right' }>`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 32px;
-  position: relative;
-  .code-line::before {
-    color: var(--text-color-disabled);
-  }
-
-  span {
-    color: var(--text-color-secondary);
-  }
-
-  h1 {
-    color: var(--color-magenta-5);
-    text-align: center;
-    font-size: 92px;
-    font-weight: 700;
-    line-height: 102px;
-    letter-spacing: 1px;
-    margin-bottom: 24px;
-    margin: 160px 0 24px 0;
-  }
-
-  > p {
-    color: var(--text-color-primary);
-    text-align: center;
-    font-size: 20px;
-    font-weight: 600;
-    line-height: 28px;
-    margin: 0 0 24px 0;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: rgba(35, 35, 35, 0.1) 0px 10px 30px 0px;
+  padding: 30px 20px;
+  gap: 20px;
+  width: 100%;
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+  text-align: ${({ textAlign }) => textAlign || 'center'};
+  text-decoration: none;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: rgba(35, 35, 35, 0.1) 0px 20px 60px 0px;
   }
 `;
 
-const Container = styled.div`
-  margin-top: 64px;
+const IconWrapper = styled.div`
   display: flex;
-  flex-direction: column;
   justify-content: center;
-  color: var(--text-color-secondary);
-  font-size: 20px;
-  font-weight: 400;
-  line-height: 28px;
-
-  width: min(90%, 886px);
-  margin: 64px auto 0;
-  a {
-    text-decoration: none;
-  }
-
-  p {
-    margin: 0;
-  }
-
-  h3 {
-    color: var(--text-color-primary);
-    font-size: 24px;
-    font-weight: 600;
-    line-height: 32px;
-    margin: 0 0 24px 0;
-  }
-`;
-
-const Feature = styled.div`
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-
+  align-items: center;
+  height: 90px;
+  width: 90px;
+  object-fit: contain;
+  background-color: var(--color-primary);
+  img,
   svg {
-    height: 16px;
-    width: 16px;
-    margin-top: 6px; // Aligns the icon with the first line of text
-    flex-shrink: 0; // Prevents the icon from shrinking
-    path {
-      fill: var(--color-persian-green-6);
-    }
+    width: 100%;
   }
-  margin-bottom: var(--spacing-sm);
 `;
 
-const ButtonContainer = styled.div`
-  display: flex;
-  gap: var(--spacing-xs);
-  justify-content: center;
-  flex-wrap: wrap;
+const TileHeader = styled.h3`
+  font-size: var(--font-size-xl);
+  margin-bottom: 10px;
+  color: var(--text-color-primary);
+  margin: 0;
+  width: 100%;
 `;
 
-const ContactUsSection = styled.div`
+const TileDescription = styled.p`
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-lg);
+  color: var(--text-color-secondary);
+  margin: 0;
+`;
+
+export const SectionHeader = styled.h2`
+  color: var(--text-color-primary);
+  font-size: 28px;
+  font-weight: 300;
+  text-align: center;
+  margin: 2.65em 0;
+  padding: 0px 20px;
+`;
+
+export const Box = styled.div<{ display?: string; mt?: string; mb?: string; my?: string; p?: string }>`
+  display: ${({ display }) => display};
+  margin-top: ${({ mt, my }) => mt || my};
+  margin-bottom: ${({ mb, my }) => mb || my};
+  padding: ${({ p }) => p};
+`;
+
+export const Flex = styled(Box)<{ mt?: string; p?: string; justifyContent?: string }>`
   display: flex;
-  flex-direction: row;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: var(--spacing-lg);
-  flex-wrap: wrap;
-  gap: var(--spacing-xs);
-  h3 {
-    margin: 0;
+  justify-content: ${({ justifyContent }) => justifyContent || 'center'};
+`;
+
+export const LandingHeader = styled.h1`
+  text-align: center;
+  font-size: 56px;
+  line-height: 80px;
+  display: inline-block;
+  margin: 50px 0 0.2em 0;
+`;
+
+export const LandingSubheader = styled.div`
+  font-size: 30px;
+  font-weight: 300;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 60px;
+`;
+
+export const ButtonContainer = styled(Box)`
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  ${Button} {
+    margin-bottom: 10px;
   }
+  @media screen and (min-width: ${breakpoints.medium}) {
+    flex-direction: row;
+  }
+`;
+
+export const Jumbotron = styled(Box)<{ bgImage?: string }>`
+  background: linear-gradient(-63.43000000000001deg, var(--color-gradient-1) 15%, var(--color-gradient-2) 85%);
+  color: var(--text-color-inverse);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  ${({ bgImage }) =>
+    bgImage &&
+    `
+    background: url(${bgImage});
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+  `}
 `;
