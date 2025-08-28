@@ -1,1 +1,3 @@
-
+- group: API Reference
+  items:
+    - page: apis/accounting-reports-final.yaml
