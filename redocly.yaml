@@ -65,10 +65,11 @@ footer:
   copyrightText: Copyleft © Redocly Inc. No rights reserved.
 sso:
   - GUEST
-#rbac:
-#  content:
-#    '/apis/*':
-#      authenticated: read
+  
+rbac:
+  content:
+    '/apis/*':
+      authenticated: read
 
 
 openapi: 
