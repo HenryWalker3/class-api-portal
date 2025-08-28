@@ -15,6 +15,9 @@ links:
 colorMode: 
   hide: true
 
+reunite:
+  ignoreLinkChecker: true
+  
 developerOnboarding:
   adapters:
     - type: APIGEE_X
