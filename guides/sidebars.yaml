@@ -1,3 +1,1 @@
-- group: API Reference
-  items:
-    - page: apis/accounting-reports-final.yaml
+- page: guides/auth-overview.md
