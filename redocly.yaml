@@ -15,6 +15,14 @@ links:
 colorMode: 
   hide: true
 
+developerOnboarding:
+  adapters:
+    - type: APIGEE_X
+      organizationName: class-apigee-nonprod
+      auth:
+        type: SERVICE_ACCOUNT
+        serviceAccountEmail: DavidL@class-apigee-nonprod.iam.gserviceaccount.com
+        serviceAccountPrivateKey: '{{PROCESS_ENV_MAIN_PRIVATE_KEY}}'
 navbar:
   items:
     - group: API Reference
