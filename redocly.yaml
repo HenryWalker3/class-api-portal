@@ -67,9 +67,12 @@ sso:
   - GUEST
   
 rbac:
-  content:
-    '/apis/*':
-      authenticated: read
+  reunite:
+    anonymous: none
+    authenticated: write
+    Admins: admin
+    Developers: maintain
+    Writers: write
 
 
 openapi: 
