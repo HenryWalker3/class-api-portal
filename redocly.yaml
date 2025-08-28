@@ -21,7 +21,7 @@ reunite:
 developerOnboarding:
   adapters:
     - type: APIGEE_X
-      organizationName: class-apigee-nonprod
+      organizationName: class-apigee-non
       auth:
         type: SERVICE_ACCOUNT
         serviceAccountEmail: DavidL@class-apigee-nonprod.iam.gserviceaccount.com
