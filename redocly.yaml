@@ -26,6 +26,8 @@ developerOnboarding:
         type: SERVICE_ACCOUNT
         serviceAccountEmail: DavidL@class-apigee-nonprod.iam.gserviceaccount.com
         serviceAccountPrivateKey: '{{ process.env.PROCESS_ENV_MAIN_PRIVATE_KEY }}'
+      allowApiProductsOutsideCatalog: true
+      
 navbar:
   items:
     - group: API Reference
