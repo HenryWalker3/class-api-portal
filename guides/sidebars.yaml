@@ -1,1 +1,12 @@
-- page: guides/auth-overview.md
+- group: Guides
+  items:
+    - page: guides/authorization-code-flow.md
+      label: Authorization Code Flow
+    - page: guides/authorisation-scopes.md
+      label: Authorization Scopes
+    - page: guides/rate-limiting.md
+      label: Rate Limiting
+    - page: guides/resource-owner-password-flow.md
+      label: Resource Owner Password Flow
+    - page: guides/refresh-tokens.md
+      label: Refresh Token

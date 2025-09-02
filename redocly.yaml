@@ -15,8 +15,8 @@ links:
 colorMode: 
   hide: true
 
-reunite:
-  ignoreLinkChecker: true
+#reunite:
+#  ignoreLinkChecker: false
   
 developerOnboarding:
   adapters:
