@@ -1,0 +1,361 @@
+openapi: 3.0.1
+info:
+  title: PBS - Portfolio Balance Service API
+  version: 1.0.0000
+  description: | 
+   The Portfolio Balance Service (PBS) aims to facilitate the activation, authorization, and collection of client financial data from mutually agreed financial institutions. 
+   This API service provides the holding balances and market values of entities to offer a single view of wealth. This information could be used to integrate with CRM systems or dashboards.
+   
+   In order to use the PBS API, you will need to obtain:
+   - 1 OAuth credentials 
+   - 2 Access token, using your OAuth credentials. 
+   
+   Authorization servers:
+   PIE (Sandbox): https://demo-apps.hub24.com.au/Hub24_OAuth/rest/oauth2/token
+   Production: https://apps.hub24.com.au/Hub24_OAuth/rest/oauth2/token 
+   
+   Obtain an access token by making a call to the authorization server as follows: 
+   
+   --header 'Content-Type: text/plain' \
+   --data 'grant_type=client_credentials&client_id={your client id}&client_secret={your client secret}'
+
+   You will receive a response providing: 
+    - your Access token of type "Bearer" (valid for 24 hours)
+    - your Refresh token
+  
+   Once you have an Access token, then call the API resource server as follows:
+   
+   --header 'Authorization: Bearer ae2ef02cd882530c545d238c771dc15af7b8148ef5bd5d38b7b3ad1346c4'
+   
+   Authorization value should use the word "Bearer" followed by a space and then the {Access token} obtained earlier.  
+   Results will be paged, so ensure you request and obtain paging metadata to ensure you retrieve all information. 
+   
+  contact:
+    name: Class Partners
+    email: partners@class.com.au
+  termsOfService: "https://www.class.com.au/api-terms"
+
+servers:
+  - description: Class-Pie. The Class Partner Integration Environment (PIE) is a sandbox environment.
+    url: 'https://daas-api.class-pie.com.au'
+  - description: Class-Production. 
+    url: 'https://daas-api.class.com.au'
+
+tags:
+  - name: Balances
+    description: | 
+     The balance endpoint returns a list of accounts, indicating the provider, account number, account name, adviser id, investment code, exchange market value, unit price, unit balance and some more portfolio details where available.     
+paths:
+  /api/v1/balances:
+    get:
+      tags:
+        - Balances
+      operationId: "getPBSbalances"
+      summary: Get all the balances for all accounts
+      description: |
+       Returns all accounts activated for all providers by default. 
+       Allows you to only return balances for a specific account, specific adviser id and/or a specific date.
+       
+       It would commonly be called on a daily basis and would provide the latest date by default, or you could specify a particlar date if you wanted to obtain it for a particular end of period. 
+       
+      parameters:
+        - name: adviserId
+          in: query
+          schema:
+            type: string
+        - name: accountId
+          in: query
+          schema:
+            type: string
+        - name: asOfDate
+          in: query
+          schema:
+            type: string
+        - name: pageNumber
+          in: query
+          schema:
+            type: integer
+            format: int32
+            default: 1
+        - name: pageSize
+          in: query
+          schema:
+            type: integer
+            format: int32
+            default: 100
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/portfolioBalanceResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/portfolioBalanceResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/portfolioBalanceResponse'
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                type: string
+            application/json:
+              schema:
+                type: string
+            text/json:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                type: string
+            application/json:
+              schema:
+                type: string
+            text/json:
+              schema:
+                type: string
+        '500':
+          description: Internal Server Error
+          content:
+            text/plain:
+              schema:
+                type: string
+            application/json:
+              schema:
+                type: string
+            text/json:
+              schema:
+                type: string
+  /healthcheck:
+    get:
+      tags:
+        - Balances
+      operationId: "getPBShealthcheck"
+      summary: Check if PBS API is available
+      description: |
+       Returns "healthy" when service is available. 
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+components:
+  schemas:
+    investmentHolding:
+      type: object
+      required:
+      - providerCode
+      - adviserId
+      - adviserName
+      - accountId
+      - accountName
+      - investmentCode
+      - investmentCodeName
+      - exchange
+      - isSMA
+      - marketValue
+      - unitPrice
+      - unitBalanceTotal
+      - unitBalanceSettled
+      - unitBalanceUnsettled
+      - costBase
+      - asAtDate
+      - userEmail
+      - portfolioCode
+      - portfolioName
+      - subPortfolioCode
+      - portfolioType
+      properties:
+        providerCode:
+          type: string
+          nullable: true
+          example: HUB24EPI43
+          description: System code for the relevant feed provider
+        adviserId:
+          type: string
+          nullable: true
+          example: 13705856    
+          description: Unique identifier for the adviser of that particular account
+        adviserName:
+          type: string
+          nullable: true
+          example: Bork Ward
+          description: Name of the adviser for the particular account
+        accountId:
+          type: string
+          nullable: true
+          example: 24018554
+          description: Account number of the investor on the related provider system
+        accountName:
+          type: string
+          nullable: true
+          example: Keegan Monroe
+          description: Investor account name. Individual or entity holding the investment
+        investmentCode:
+          type: string
+          nullable: true
+          example: AGL
+          description: Investment code on the provider system. Ticker / APIR Code or Provider’s internal identifier (e.g. EPICASH) as referenced in Investment Product record
+        investmentCodeName:
+          type: string
+          nullable: true
+          example: AGL Energy Limited. Ordinary
+          description: Investment name on the provider system
+        exchange:
+          type: string
+          nullable: true
+          example: ASX
+          description: Code for the exchange on which the investment is listed. "Unknown if not listed" 
+        isSMA:
+          $ref: '#/components/schemas/isSMA'
+        marketValue:
+          type: number
+          format: double
+          example: 940.54
+          description: This is the unit balance * unit price
+        unitPrice:
+          type: number
+          format: double
+          example: 11.469999999999999
+          description: Unit price used to calculate the market value in the currency of the investment product. Latest market price for the investment or latest price on the asAtDate requested
+        unitBalanceTotal:
+          type: number
+          format: double
+          example: 82
+          description: Total number of units held on provider system
+        unitBalanceSettled:
+          type: number
+          format: double
+          example: 0
+          description: The settled Units for the investment. This may not necessarily be available based on upstream provider and will return "0" if not provided
+        unitBalanceUnsettled:
+          type: number
+          format: double
+          example: 0
+          description: The unsettled Units for the investment. This may not necessarily be available based on upstream provider and will return "0" if not provided 
+        costBase:
+          type: number
+          format: double
+          example: 621.24
+          description: Total cost of units held
+        asAtDate:
+          type: string
+          format: date
+          pattern: "YYYY-MM-DD"
+          minLength: 0
+          maxLength: 10
+          nullable: true
+          example: 2025-05-09
+          description: Indicates the date relating to the feed balance information obtained from provider. This date would be the latest record received if no "asOfDate" was requested in the query, else it would be the last record on or before the "asOfDate" if specified.
+        userEmail:
+          type: string
+          nullable: true
+          example: feedsupport@class.com.au
+          description: The email address of the user who provided the authority for this account to be included
+        portfolioCode:
+          type: string
+          nullable: true
+          example: GPS008
+          description: Portfolio code assigned by provider, generally when used in a managed portfolio
+        portfolioName:
+          type: string
+          nullable: true
+          example: CARE Enhanced Australian Equity Portfolio
+          description: Name of the portfolio. E.g. "iShares Enhanced Strategic Growth Portfolio"
+        subPortfolioCode:
+          type: string
+          nullable: true
+          example: JPS001
+          description: Name of the sub-portfolio (if used)
+        portfolioType:
+          type: string
+          enum:
+            - ListedSecurity
+            - Cash
+            - TermDeposit
+            - ManagedPortfolio
+            - ManagedFund
+            - LockedSecurity
+          nullable: true
+          example: ManagedPortfolio
+          description: Indicating the type of Portfolio. E.g. "ManagedPortfolio". This is only used for the HUB24 feed and null for all other feed providers.
+        nativeCurrency:
+          type: string 
+          example: USD
+        nativeMarketValue:
+          type: number
+          format: double
+          example: 602.88
+          description: This is the unit balance * unit price * fxNativeToAud
+        fxNativeToAUD:
+          type: number
+          format: double
+          example: 0.64
+          description: This is the foreign currency expressed in 1 AUD
+      additionalProperties: false
+    isSMA:
+      type: object
+      properties:
+        id:
+          type: string
+          nullable: true
+          description: Unique SMA account code on platform
+          example: EICQCSUB1
+        type:
+          type: string
+          nullable: true
+          description:  Parent or Child. Indicates whether the investment holding is the parent or child for the SMA
+          example: Parent
+      additionalProperties: false
+    metaData:
+      type: object
+      properties:
+        currentPage:
+          type: integer
+          format: int32
+          example: 1
+        totalPages:
+          type: integer
+          format: int32
+          example: 142
+        totalRecords:
+          type: integer
+          format: int32
+          example: 70900
+        pageSize:
+          type: integer
+          format: int32
+          example: 500
+      additionalProperties: false
+    portfolioBalanceResponse:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/investmentHolding'
+          nullable: true
+        metaData:
+          $ref: '#/components/schemas/metaData'
+      additionalProperties: false
+  securitySchemes:
+    bearerAuth:
+      type: http
+      description: |
+       Please use DAP consumer system Access Token.
+       
+       --header 'Authorization: ••••••'
+       Authorization value should use the word "Bearer" followed by a space and then the {Access token} obtained earlier.  
+       
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - bearerAuth: []
