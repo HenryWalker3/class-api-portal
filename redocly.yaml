@@ -37,15 +37,18 @@ navbar:
         - page: apis/accounting-reports-final.yaml
           label: Accounting Reports
     - group: Guides
+      items: 
+        - page: guides/practice-management.md
+          label: Practice Management
     - group: Resources
       items: 
-        - page: guides/resources-overview.page.tsx
+        - page: resources/resources-overview.page.tsx
           label: Resources Overview
-        - page: guides/authorization-code-flow.md
+        - page: resources/authorization-code-flow.md
           label: Authorization Code Flow
-        - page: guides/rate-limiting.md
+        - page: resources/rate-limiting.md
           label: Rate Limiting
-        - page: guides/refresh-tokens.md
+        - page: resources/refresh-tokens.md
           label: Refresh Token    
     - page: tools/index.md
       label: Tools
