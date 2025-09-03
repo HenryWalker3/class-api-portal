@@ -22,6 +22,8 @@ developerOnboarding:
   adapters:
     - type: APIGEE_X
       organizationName: class-apigee-nonprod
+      ignoreApiProducts:
+        - class-partner-api-v1
       auth:
         type: SERVICE_ACCOUNT
         serviceAccountEmail: DavidL@class-apigee-nonprod.iam.gserviceaccount.com
