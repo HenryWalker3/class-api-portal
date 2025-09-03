@@ -4,7 +4,7 @@ This guide explains how to obtain **access tokens**, **refresh tokens**, and **I
 
 > **Note:** To use this flow, update your redirect URL by emailing [partners@class.com.au](mailto:partners@class.com.au).
 
-
+---
 
 ## Step 1: Flow Overview
 
@@ -16,7 +16,7 @@ The authorization code flow is designed for integrations that can keep the `clie
 4. Your integration sends a **token request** to exchange the code for tokens.
 5. Class returns an **access token** and, if requested, a **refresh token** and/or **ID token**.
 
-
+---
 
 ## Step 2: Client Authentication
 
@@ -33,7 +33,7 @@ Some requests require client authentication using your `client_id` and `client_s
 Authorization: Basic PGNsaWVudF9pZD46PGNsaWVudF9zZWNyZXTvu78+
 ```
 
-
+---
 ## Step 3: Authorization Request
 
 The authorization request prompts the user for consent, then redirects them to the specified `redirect_uri`. If successful, the redirect includes an authorization `code`.

@@ -26,7 +26,6 @@ Learn how users and apps obtain tokens to call the Class API securely.
 ## API Structure & Discovery
 
 - **[Class API Structure](./class-api-structure.md)** — service domains, resource naming, versioning strategy.
-- **[Discovery Document](./discovery-document.md)** — where to find the OpenAPI document(s).
 
 ## Reliability & Best Practices
 
