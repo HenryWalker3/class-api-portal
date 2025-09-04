@@ -1,5 +1,9 @@
 openapi: 3.0.1
 info:
+  x-metadata:
+    apiId: class-partner-api-v1
+    tags:
+      - Partner
   title: Fund Data API
   version: 1.0.0000
   description: |
@@ -735,7 +739,7 @@ paths:
   /f/{businessCode}/{fundCode}/fund-data/fund-detail:
     get:
       operationId: getFundDetail
-      summary: getFundDetail
+      summary: GetFundDetail
       description: Access fund information such as the funds name, ABN, status, and contact details.
       parameters:
       - $ref: '#/components/parameters/businessCodeParam'
@@ -751,7 +755,7 @@ paths:
                 - Data
                 properties:
                   Data:
-                    $ref: '#/components/schemas/FundDetailResponse'
+                    $ref: '#/components/schemas/FundData_FundDetail'
                 allOf:
                 - $ref: '#/components/schemas/ApiResponseBase'
         '400':
@@ -1189,7 +1193,7 @@ paths:
                   Data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/FundListResponse'
+                      $ref: '#/components/schemas/FundData_FundListDetail'
                 allOf:
                 - $ref: '#/components/schemas/ApiResponseBase'
         '400':
@@ -1529,16 +1533,16 @@ components:
             type: string
         EstablishmentDeedDate:
           type: string
-          format: date
+          format: date-time
         EndDate:
           type: string
-          format: date
+          format: date-time
         FundStartDate:
           type: string
-          format: date
+          format: date-time
         OnSystemDate:
           type: string
-          format: date
+          format: date-time
         Code:
           type: string
         Name:
@@ -1559,15 +1563,15 @@ components:
           type: string
         RseEffectiveDate:
           type: string
-          format: date
+          format: date-time
         LastActivated:
           type: string
-          format: date
+          format: date-time
         LastActivatedBy:
           type: string
         LastSuspended:
           type: string
-          format: date
+          format: date-time
         LastSuspendedBy:
           type: string
         IsNonSuper:
@@ -1742,7 +1746,7 @@ components:
           type: string
         StartDate:
           type: string
-          format: date
+          format: date-time
         StartDateSpecified:
           type: boolean
         TrustDeeds:
@@ -1883,7 +1887,7 @@ components:
           $ref: '#/components/schemas/Gender'
         DateOfBirth:
           type: string
-          format: date
+          format: date-time
         PreferredGreeting:
           type: string
         PreferredVoiceContact:
@@ -1978,10 +1982,10 @@ components:
           type: boolean
         StartDate:
           type: string
-          format: date
+          format: date-time
         EndDate:
           type: string
-          format: date
+          format: date-time
         Enabled:
           type: boolean
         StartDateSpecified:
@@ -2027,12 +2031,12 @@ components:
           type: boolean
         PolicyStartDate:
           type: string
-          format: date
+          format: date-time
         PolicyStartDateSpecified:
           type: boolean
         PolicyEndDate:
           type: string
-          format: date
+          format: date-time
         PolicyEndDateSpecified:
           type: boolean
         UseSegregatedPensions:
@@ -2110,7 +2114,7 @@ components:
           $ref: '#/components/schemas/FundPolicyGSTTaxPeriodCode'
         GSTStatusDate:
           type: string
-          format: date
+          format: date-time
         GSTStatusDateSpecified:
           type: boolean
     FundImports_FundReferenceDataFundReturn:
@@ -2187,22 +2191,22 @@ components:
           type: string
         JoinFundDate:
           type: string
-          format: date
+          format: date-time
         LeaveFundDate:
           type: string
         ESPStartDate:
           type: string
-          format: date
+          format: date-time
         ESPStartDateSpecified:
           type: boolean
         DateOfDisability:
           type: string
-          format: date
+          format: date-time
         DateOfDisabilitySpecified:
           type: boolean
         LastRetirementDate:
           type: string
-          format: date
+          format: date-time
         LastRetirementDateSpecified:
           type: boolean
         AustralianResident:
@@ -2211,7 +2215,7 @@ components:
           type: boolean
         SpouseAgreementDate:
           type: string
-          format: date
+          format: date-time
         SpouseAgreementDateSpecified:
           type: boolean
         ClaimTaxFreeThreshold:
@@ -2247,12 +2251,12 @@ components:
           $ref: '#/components/schemas/Gender'
         DateOfBirth:
           type: string
-          format: date
+          format: date-time
         DateOfBirthSpecified:
           type: boolean
         DateOfDeath:
           type: string
-          format: date
+          format: date-time
         DateOfDeathSpecified:
           type: boolean
         PreferredGreeting:
@@ -2304,10 +2308,10 @@ components:
       properties:
         EffectiveDate:
           type: string
-          format: date
+          format: date-time
         ExpiryDate:
           type: string
-          format: date
+          format: date-time
         ExpiryDateSpecified:
           type: boolean
         BindingStatus:
@@ -2327,12 +2331,12 @@ components:
           type: string
         StartDate:
           type: string
-          format: date
+          format: date-time
         PensionProductType:
           $ref: '#/components/schemas/PensionProductType'
         EtpPost07ChangeDate:
           type: string
-          format: date
+          format: date-time
         EtpPost07ChangeDateSpecified:
           type: boolean
         PensionAccountIdentifier:
@@ -2345,7 +2349,7 @@ components:
       properties:
         EffectiveDate:
           type: string
-          format: date
+          format: date-time
         TransitionType:
           type: string
     FundImports_FundReferenceDataMemberTransitions:
@@ -2401,7 +2405,7 @@ components:
           type: string
         DateOfBirth:
           type: string
-          format: date
+          format: date-time
         DateOfBirthSpecified:
           type: boolean
         TFN:
@@ -2444,7 +2448,7 @@ components:
           type: string
         EffectiveDate:
           type: string
-          format: date
+          format: date-time
     FundImports_FundReferenceDataReserveDetails:
       type: object
       required:
@@ -2460,7 +2464,7 @@ components:
       properties:
         JoinFundDate:
           type: string
-          format: date
+          format: date-time
         Reserves:
           type: array
           items:
@@ -2475,7 +2479,7 @@ components:
           type: string
         StartDate:
           type: string
-          format: date
+          format: date-time
     FundImports_FundReferenceDataTrustDeed:
       type: object
       required:
@@ -2490,10 +2494,10 @@ components:
       properties:
         DeedDate:
           type: string
-          format: date
+          format: date-time
         DatePrinted:
           type: string
-          format: date
+          format: date-time
         DatePrintedSpecified:
           type: boolean
         Jurisdiction:
@@ -2718,10 +2722,10 @@ components:
           type: boolean
         LastPeriodUpdateEndDate:
           type: string
-          format: date
+          format: date-time
         ProcessedToDate:
           type: string
-          format: date
+          format: date-time
         LegalEntityType:
           $ref: '#/components/schemas/LegalEntityType'
         BrandName:
