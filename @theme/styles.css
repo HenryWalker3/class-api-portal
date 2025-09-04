@@ -41,21 +41,23 @@
   --toc-width: 240px;
 }
 
-/* ---- Code blocks (Components → Code) ---- */
+/* ---- Code blocks (Components → Code) ----
 :root {
   --code-block-font-family: var(--font-family-monospaced);
   --code-block-font-size: 13px;
   --code-block-line-height: 20px;
-  --code-block-bg-color: #0b1020;    /* dark panel */
-  --code-block-text-color: #e8eefc;
+  --code-block-bg-color: #bfc2cb;    
+  --code-block-text-color: #d3d5db09;
   --code-block-padding: 14px 16px;
   --code-block-max-height: calc(100vh - 260px);
-  /* token colors */
+  
   --code-block-tokens-string-color: #7cc6ff;
   --code-block-tokens-keyword-color: #ff80bf;
   --code-block-tokens-operator-color: #ffc27a;
   --code-block-tokens-boolean-color: #7ee787;
 }
+*/
+
 
 /* ---- API docs panels (API docs variables) ---- */
 :root {

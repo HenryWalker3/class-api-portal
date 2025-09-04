@@ -7,7 +7,7 @@ info:
   title: Fund Web API
   version: 1.0.0000
   description: |
-    Environments:
+   Environments:
    - PIE base url: https://apigateway.class-pie.com.au
    - Production base url: https://apigateway.class.com.au
 
