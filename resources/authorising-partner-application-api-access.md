@@ -1,19 +1,11 @@
 
-
 ### Component Test Area
-
-
   <sl-button variant="primary">Click Me</sl-button>
-
-
-
 
   <sl-alert open>
     <sl-icon slot="icon" name="fas-circle-info"></sl-icon>
     This is a standard alert. You can customize its content and even the icon.
   </sl-alert>
-
-
 
 # Authorising Partner Application API Access
 

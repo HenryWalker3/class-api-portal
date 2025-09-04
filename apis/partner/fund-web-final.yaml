@@ -7023,7 +7023,3 @@ components:
       schema:
         type: string
         example: '1.0'
-servers:
-- url: https://api.class-test.com.au
-  description: Single server endpoint
-  variables: {}

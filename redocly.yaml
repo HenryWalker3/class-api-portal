@@ -2,11 +2,31 @@ reunite:
   ignoreLint: true
   # ignoreLinkChecker: true
 extends:
-  - recommended
+  - minimal
 
 apis:
   accounting-reports:
-    root: ./apis/accounting-reports-final.yaml
+    root: ./apis/partner/accounting-reports-final.yaml
+  business-data:
+    root: ./apis/partner/business-data-final.yaml
+  external-provider:
+    root: ./apis/partner/external-provider-final.yaml
+  feed-data:
+    root: ./apis/partner/feed-data-final.yaml
+  fund-data:
+    root: ./apis/partner/fund-data-final.yaml
+  fund-web:
+    root: ./apis/partner/fund-web-final.yaml
+  investment-reports:
+    root: ./apis/partner/investment-reports-final.yaml
+  member-data:
+    root: ./apis/partner/member-data-final.yaml
+  member-reports:
+    root: ./apis/partner/member-reports-final.yaml
+  minutes-data:
+    root: ./apis/partner/minutes-data-final.yaml
+  report-generator:
+    root: ./apis/partner/report-generator-final.yaml
 
 links:
   # HDS requirements
@@ -65,6 +85,8 @@ navbar:
           label: Rate Limiting
         - page: resources/refresh-tokens.md
           label: Refresh Token
+        - page: resources/authorising-partner-application-api-access.md
+          label: Authorising Partner API Access
     - group: Guides
       items: 
         - page: guides/practice-management.md
