@@ -1,7 +1,7 @@
 # Rate Limiting
 
 ## Overview
-**Rate limiting** is a technique used to control the number of API requests a client can make to a server within a specific period. It helps pre**vent abuse, ensures fair usage, and protects our back-end systems from being overwhelmed.
+**Rate limiting** is a technique used to control the number of API requests a client can make to a server within a specific period. It helps prevent abuse, ensures fair usage, and protects our back-end systems from being overwhelmed.
 
 - **Ensure fair access for all users**
 - **Protect system stability and performance**
@@ -50,4 +50,4 @@ To avoid exceeding the 500 calls/minute limit, we recommend:
 By following these principles, you can ensure your integration remains compliant with our platform’s rate limits while still delivering reliable and scalable performance.
 
 ## What's Next?
-For more guidance, refer to AWS’s official For more guidance, refer to AWS’s official documentation on [AWS Lambda functions](https://docs.aws.amazon.com/lambda/latest/dg/lambda-concurrency.html).
+For more guidance, refer to AWS’s official documentation on [AWS Lambda functions](https://docs.aws.amazon.com/lambda/latest/dg/lambda-concurrency.html).
