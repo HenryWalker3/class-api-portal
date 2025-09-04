@@ -22,12 +22,11 @@ developerOnboarding:
   adapters:
     - type: APIGEE_X
       organizationName: class-apigee-nonprod
-      allowApiProductsOutsideCatalog: false
       auth:
         type: SERVICE_ACCOUNT
         serviceAccountEmail: DavidL@class-apigee-nonprod.iam.gserviceaccount.com
         serviceAccountPrivateKey: '{{ process.env.PROCESS_ENV_MAIN_PRIVATE_KEY }}'
-      allowApiProductsOutsideCatalog: true
+      allowApiProductsOutsideCatalog: false
       
 navbar:
   items:
