@@ -34,7 +34,7 @@ Learn how users and apps obtain tokens to call the Class API securely.
 
 ## Reference
 
-- **[API Reference](../apis/accounting-reports-final.yaml)** — full OpenAPI reference.
+- **[API Reference](../apis)** — full OpenAPI reference.
 
 ## Tools
 
