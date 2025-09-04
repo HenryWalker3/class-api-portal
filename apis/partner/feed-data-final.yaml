@@ -1,0 +1,982 @@
+openapi: 3.0.1
+info:
+  x-metadata:
+    apiId: class-partner-api-v1
+    tags:
+      - Partner
+  title: Feed Data API
+  version: 1.0.0000
+  description: |
+   The Class Feed Data API allows you to:
+   - Generate a report of feed and ledger balances for all holdings in a feed or fund, including aggregate information on how many accounts reconcile with the latest feed data.
+   - Retrieve a summary of the configuration and current status of all feeds in a business or fund.
+
+   Environments:
+   - PIE base url: https://apigateway.class-pie.com.au/api/1.0
+   - Production base url: https://apigateway.class.com.au/api/1.0
+
+servers:
+  - url: https://apigateway.class-test.com.au/api/1.0
+    description: Test Environment
+
+paths:
+  /b/{businessCode}/feed-data/processing-summary/{feedId}:
+    get:
+      operationId: feedProcessingSummary
+      summary: feedProcessingSummary
+      description: A summary of the configuration and current status of all feeds in a
+        business or fund.
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - name: feedId
+        in: path
+        required: false
+        schema:
+          type: string
+      - name: fundCode
+        description: Class entity code
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success (Ok)
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FeedData_FeedProcessingSummary'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400':
+          description: Error Message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+                      wrapped: true
+                      name: Errors
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnauthorizedErrorCommon'
+            application/xml:
+              schema:
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xmlns:xsd="http://www.w3.org/2001/XMLSchema-instance"
+                type: object
+                properties:
+                  Errors:
+                    type: object
+                    properties:
+                      ApiError:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/UnauthorizedErrorCommon'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        '404':
+          description: Resource not available or user does not have access to the
+            fund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      security:
+      - Class_oAuth:
+        - fund.details.read
+  /f/{businessCode}/{fundCode}/feed-data/processing-summary/{feedId}:
+    get:
+      operationId: feedProcessingSummaryByFund
+      summary: feedProcessingSummaryByFund
+      description: A summary of the configuration and current status of all feeds in a fund.
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - name: feedId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success (Ok)
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FeedData_FeedProcessingSummary'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400':
+          description: Error Message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+                      wrapped: true
+                      name: Errors
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnauthorizedErrorCommon'
+            application/xml:
+              schema:
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xmlns:xsd="http://www.w3.org/2001/XMLSchema-instance"
+                type: object
+                properties:
+                  Errors:
+                    type: object
+                    properties:
+                      ApiError:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/UnauthorizedErrorCommon'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        '404':
+          description: Resource not available or user does not have access to the
+            fund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      security:
+      - Class_oAuth:
+        - fund.details.read
+  /f/{businessCode}/{fundCode}/feed-data/balance-summary/{feedId}:
+    get:
+      operationId: feedBalanceSummary
+      summary: feedBalanceSummary
+      description: A report of feed and ledger balances for all holdings in a feed or
+        fund, including aggregate information on how many accounts reconcile with
+        the latest feed data.
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - name: feedId
+        in: path
+        description: Allows retrieval of the balance summary for a specific feed.
+        required: false
+        schema:
+          type: string
+          example: 
+      - name: includeHoldingBalance
+        in: query
+        description: Default value is False
+        required: false
+        schema:
+          type: boolean
+          example: False
+      - name: asAtDate
+        in: query
+        description: The date of balance calculation
+        required: false
+        schema:
+          type: string
+          example: '2024-07-01'
+      responses:
+        '200':
+          description: Success (Ok)
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/FeedData_FeedBalanceSummary'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400':
+          description: Error Message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+                      wrapped: true
+                      name: Errors
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnauthorizedErrorCommon'
+            application/xml:
+              schema:
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xmlns:xsd="http://www.w3.org/2001/XMLSchema-instance"
+                type: object
+                properties:
+                  Errors:
+                    type: object
+                    properties:
+                      ApiError:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/UnauthorizedErrorCommon'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        '404':
+          description: Resource not available or user does not have access to the
+            fund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      security:
+      - Class_oAuth:
+        - fund.details.read
+components:
+  parameters:
+    businessCodeParam:
+      name: businessCode
+      in: path
+      description: Class business code
+      required: true
+      schema:
+        type: string
+        example: demo-business
+    fundCodeParam:
+      name: fundCode
+      description: Class entity code
+      in: path
+      required: true
+      schema:
+        type: string
+        example: demo-fund
+  schemas:
+    ApiError:
+      type: object
+      required:
+      - Code
+      - Message
+      properties:
+        Code:
+          type: string
+        Message:
+          type: string
+    ApiResponseBase:
+      type: object
+      required:
+      - ErrorCodes
+      - Errors
+      - CreatedUri
+      - IsCreatedResponse
+      properties:
+        ErrorCodes:
+          type: array
+          items:
+            type: string
+        Errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+        CreatedUri:
+          type: string
+        IsCreatedResponse:
+          type: boolean
+    AuthorisationStatus:
+      type: string
+      enum:
+      - Waiting
+      - Received
+      - ReceivedBarcodeUnrecognised
+      - ReceivedIncorrectPageCount
+      - ReceivedBarCodeMismatch
+    AuthorisationType:
+      type: string
+      enum:
+      - None
+      - AccountHolder
+      - AdviserOrDealer
+      - Online
+    BalanceStatus:
+      type: string
+      enum:
+      - NoData
+      - Balanced
+      - Unbalanced
+    FeedData_BalanceInfo:
+      type: object
+      required:
+      - SecurityIssueCode
+      - HoldingAccountCode
+      - HoldingAccountId
+      - HoldingAccountDescription
+      - LedgerBalance
+      - LedgerBalanceDate
+      - Status
+      properties:
+        SecurityIssueCode:
+          type: string
+        HoldingAccountCode:
+          type: string
+        HoldingAccountId:
+          type: string
+        HoldingAccountDescription:
+          type: string
+        LedgerBalance:
+          type: number
+          format: decimal
+        LedgerBalanceDate:
+          type: string
+          format: date
+        FeedBalance:
+          type: number
+          format: decimal
+        FeedBalanceDate:
+          type: string
+          format: date
+        Status:
+          $ref: '#/components/schemas/BalanceStatus'
+    FeedData_FeedBalanceSummary:
+      type: object
+      required:
+      - FeedId
+      - DefaultDisplayName
+      - BalancedAccounts
+      - UnbalancedAccounts
+      - OtherAccounts
+      - Status
+      - Balances
+      properties:
+        FeedId:
+          type: string
+        DefaultDisplayName:
+          type: string
+        BalancedAccounts:
+          type: integer
+          format: int32
+        UnbalancedAccounts:
+          type: integer
+          format: int32
+        OtherAccounts:
+          type: integer
+          format: int32
+        Status:
+          type: string
+        Balances:
+          type: array
+          items:
+            $ref: '#/components/schemas/FeedData_BalanceInfo'
+    FeedData_FeedProcessingSummary:
+      type: object
+      required:
+      - FeedId
+      - FundId
+      - FundCode
+      - FundName
+      - BrandId
+      - BrandCode
+      - BrandName
+      - BusinessId
+      - BusinessCode
+      - BusinessName
+      - AccountName
+      - FeedDescription
+      - ExternalIdentifier
+      - DefaultDisplayName
+      - HIN
+      - BankAccountId
+      - BSB
+      - FeedStatus
+      - FeedStatusCategory
+      - FeedStatusEffectiveDate
+      - ProductId
+      - ProductName
+      - ProductType
+      - IsContributionProduct
+      - ProviderId
+      - ProviderName
+      - FirstProcessedSpecified
+      - LastProcessedSpecified
+      - AuthorisationType
+      - AuthorisationStatus
+      - HasAuthorityProcess
+      - AuthorityUploaded
+      - AuthorityId
+      - AdviserId
+      - AdviserName
+      - AdviserCode
+      properties:
+        FeedId:
+          type: string
+        FundId:
+          type: string
+        FundCode:
+          type: string
+        FundName:
+          type: string
+        BrandId:
+          type: string
+        BrandCode:
+          type: string
+        BrandName:
+          type: string
+        BusinessId:
+          type: string
+        BusinessCode:
+          type: string
+        BusinessName:
+          type: string
+        AccountName:
+          type: string
+        FeedDescription:
+          type: string
+        ExternalIdentifier:
+          type: string
+        DefaultDisplayName:
+          type: string
+        HIN:
+          type: string
+        BankAccountId:
+          type: string
+        BSB:
+          type: string
+        FeedStatus:
+          $ref: '#/components/schemas/FeedStatus'
+        FeedStatusCategory:
+          $ref: '#/components/schemas/FeedStatusCategory'
+        FeedStatusEffectiveDate:
+          type: string
+          format: date
+        ProductId:
+          type: string
+        ProductName:
+          type: string
+        ProductType:
+          $ref: '#/components/schemas/ProductType'
+        IsContributionProduct:
+          type: boolean
+        ProviderId:
+          type: string
+        ProviderName:
+          type: string
+        FirstProcessed:
+          type: string
+          format: date
+        LastProcessed:
+          type: string
+          format: date
+        FirstProcessedSpecified:
+          type: boolean
+        LastProcessedSpecified:
+          type: boolean
+        AuthorisationType:
+          $ref: '#/components/schemas/AuthorisationType'
+        AuthorisationStatus:
+          $ref: '#/components/schemas/AuthorisationStatus'
+        HasAuthorityProcess:
+          type: boolean
+        AuthorityUploaded:
+          type: boolean
+        AuthorityId:
+          type: string
+        AdviserId:
+          type: string
+        AdviserName:
+          type: string
+        AdviserCode:
+          type: string
+    FeedStatus:
+      type: string
+      enum:
+      - Ok
+      - ManuallyImported
+      - FeedNotSupported
+      - DeclinedByAuthoriser
+      - AfterEndDate
+      - SrnNotSupported
+      - AccountClosed
+      - WaitingForStartDate
+      - WaitingOnAuthoriser
+      - WaitingOnProvider
+      - FollowUpRequested
+      - ReceivedByProvider
+      - ActivatedByProvider
+      - ActivationOverdue
+      - WaitingForVerification
+      - ProductNotSet
+      - AuthorityNotSent
+      - AdviserNotSet
+      - WrapOrBrokerAccountNotSet
+      - AccountNumberNotSet
+      - BsbNotValid
+      - RejectedByProvider
+      - UnlinkedHoldings
+      - FeedNoLongerActive
+      - Unknown
+      - AccountSuspended
+      - NonBankAccount
+      - LinkedToWrapOrBrokerAccount
+      - FeedTurnedOff
+      - WaitingForFirstData
+    FeedStatusCategory:
+      type: string
+      enum:
+      - ActionRequired
+      - Waiting
+      - NoFeed
+      - Working
+      - Disabled
+      - Error
+    ProductType:
+      type: string
+      enum:
+      - Other
+      - BankAccount
+      - BrokerAccount
+      - WrapAccount
+      - TermDeposit
+    StandardApiResponse:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/ApiResponseBase'
+    InternalErrorCommon:
+      type: object
+      properties:
+        Code:
+          type: string
+          example: API_INTERNAL_ERROR
+        Message:
+          type: string
+          example: An unexpected error occurred on the server. Please try again later.
+      xml:
+        name: Error
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          nullable: true
+        message:
+          type: string
+          nullable: true
+      additionalProperties: false
+    ForbiddenErrorCommon:
+      type: object
+      properties:
+        Code:
+          type: string
+          example: FORBIDDEN
+        Message:
+          type: string
+          example: You do not have permission to access this resource.
+      xml:
+        name: Error
+    ResourceUnavailableErrorCommon:
+      type: object
+      properties:
+        Code:
+          type: string
+          example: API_NOT_FOUND
+        Message:
+          type: string
+          example: Resource not available or user does not have access to the fund.
+      xml:
+        name: Error
+    UnauthorizedErrorCommon:
+      type: object
+      properties:
+        Code:
+          type: string
+          example: API_NOT_AUTHORISED
+        Message:
+          type: string
+          example: Not authorised
+      xml:
+        name: Error
+        wrapped: false
+  securitySchemes:
+    Class_oAuth:
+      type: oauth2
+      description: Class uses oAuth2 and OpenID for authentication and authorisation
+      flows:
+        authorizationCode:
+          authorizationUrl: 'https://app.class-test.com.au/connect/authorize'
+          tokenUrl: 'https://app.class-test.com.au/connect/token'
+          scopes:
+            business.fund.list: List summarised data of funds in the business
+            business.fund.create: Create new funds in the business
+            fund.details.read: View basic fund details
+            fund.details.maintain: View and maintain basic fund details
+            fund.member.read: View member details
+            fund.member.maintain: View and maintain member details
+            fund.read: View all fund information
+            fund.maintain: View and maintain all fund information
+        clientCredentials:
+          tokenUrl: 'https://app.class-test.com.au/connect/token'
+          scopes:
+            business.fund.list: List summarised data of funds in the business
+            business.fund.create: Create new funds in the business
+            fund.details.read: View basic fund details
+            fund.details.maintain: View and maintain basic fund details
+            fund.member.read: View member details
+            fund.member.maintain: View and maintain member details
+            fund.read: View all fund information
+            fund.maintain: View and maintain all fund information

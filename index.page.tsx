@@ -21,19 +21,19 @@ export default function () {
           Explore our comprehensive API documentation
         </h2>
         <div className="tiles">
-          <Tile to="/getting-started" icon={<img src={require('src/icons/svgs/light/rocket-launch.svg')} />} header="Getting Started">
+          <Tile to="/gettingstarted/getting-started" icon={<img src={require('src/icons/svgs/light/rocket-launch.svg')} />} header="Getting Started">
             Get started by creating an app,<br />
             and follow our guides to get connected.
           </Tile>
-          <Tile to="/apis/accounting-reports-final" icon={<img src={require('src/icons/svgs/light/gear-complex-code.svg')} />} header="API Reference">
+          <Tile to="/apis/" icon={<img src={require('src/icons/svgs/light/gear-complex-code.svg')} />} header="API Reference">
             Explore Class API specifications<br />
             and start building.<br />
           </Tile>
-          <Tile to="/guides/resources-overview" icon={<img src={require('src/icons/svgs/light/books.svg')} />} header="Resources">
+          <Tile to="/resources/overview" icon={<img src={require('src/icons/svgs/light/books.svg')} />} header="Resources">
             Learn about authentication, authorisation<br />
             and explore our technical documentation.<br />
           </Tile>
-          <Tile to="/guides" icon={<img src={require('src/icons/svgs/light/book.svg')} />} header="Guides">
+          <Tile to="/guides/practice-management" icon={<img src={require('src/icons/svgs/light/book.svg')} />} header="Guides">
             View our developer guides<br />
             to utilise our API endpoints for your specific use case.
           </Tile>

@@ -32,30 +32,28 @@ developerOnboarding:
       
 navbar:
   items:
-    - group: API Reference
-      items:
-        - page: apis/accounting-reports-final.yaml
-          label: Accounting Reports
-    - group: Guides
-      items: 
-        - page: guides/practice-management.md
-          label: Practice Management
+    - page: /gettingstarted/getting-started.md
+      label: Getting Started
+    - page: /apis
+      label: API Reference
     - group: Resources
-      items: 
-        - page: resources/resources-overview.page.tsx
+      items:
+        - page: resources/overview.md
           label: Resources Overview
         - page: resources/authorization-code-flow.md
           label: Authorization Code Flow
         - page: resources/rate-limiting.md
           label: Rate Limiting
         - page: resources/refresh-tokens.md
-          label: Refresh Token    
+          label: Refresh Token
+    - group: Guides
+      items: 
+        - page: guides/practice-management.md
+          label: Practice Management  
     - page: tools/index.md
-      label: Tools
-    - page: changelog.md
-      label: Changelog
-    - page: about.md
-      label: About this template
+      label: Change Log
+    - page: announcements.md
+      label: Announcements
 
 
 
@@ -97,5 +95,23 @@ openapi:
   hideSchemaTitles: true
   hideReplay: true
 
-
+catalogClassic:
+  business:
+    title: API Reference
+    description: 'Discover our APIs'
+    slug: /apis/
+    items:
+      - directory: ./apis
+        flatten: true
+        includeByMetadata:
+          type: [openapi, graphql]
+    filters:
+      - title: Product
+        property: tags
+        options: [Partner, ACP]
+        type: checkboxes
+      - title: API Status
+        property: tags
+        options: [deprecated, active]
+        type: checkboxes
 
