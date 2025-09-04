@@ -1,10 +1,295 @@
-/* Learn more about Realm styles: https://redocly.com/docs/realm/style/concepts/styling */
-:root .button-tone-brand {
-  background-color: var(--color-persian-green-6);
-  color: var(--text-color-on-color);
+/* =========================
+   Realm (Redocly) custom styling via CSS variables
+   Place in @theme/styles.css
+   ========================= */
+
+/* ---- Base brand + typography (Common variables) ---- */
+:root {
+  /* brand */
+  --color-primary-base: #2563eb;              /* buttons, accents */
+  --color-primary-text: #1e2f93;
+  --color-primary-bg: #eff6ff;
+
+  /* typography */
+  --font-family-base: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-family-monospaced: ui-monospace, Menlo, Monaco, Consolas, "Courier New", monospace;
+
+  /* text & surfaces */
+  --text-color-primary: #0f172a;
+  --text-color-secondary: #475569;
+  --bg-color: #ffffff;
+  --bg-color-tonal: #f8fafc;
+  --border-color-primary: #e2e8f0;
+  --border-radius: 10px;
+
+  /* spacing */
+  --spacing-unit: 4px;
 }
 
-:root.dark .button-tone-brand {
-  background-color: var(--color-persian-green-6);
-  color: #fff;
+/* ---- Global layout bits (Common / Components) ---- */
+:root {
+  --container-width: 1100px;
+  --navbar-bg-color: var(--bg-color);
+  --navbar-border: 1px solid var(--border-color-primary);
+  --navbar-height: 64px;
+
+  --sidebar-bg-color: var(--bg-color);
+  --sidebar-border-color: var(--border-color-primary);
+  --sidebar-text-color: var(--text-color-secondary);
+  --sidebar-width: 280px;
+
+  --toc-width: 240px;
+}
+
+/* ---- Code blocks (Components → Code) ---- */
+:root {
+  --code-block-font-family: var(--font-family-monospaced);
+  --code-block-font-size: 13px;
+  --code-block-line-height: 20px;
+  --code-block-bg-color: #0b1020;    /* dark panel */
+  --code-block-text-color: #e8eefc;
+  --code-block-padding: 14px 16px;
+  --code-block-max-height: calc(100vh - 260px);
+  /* token colors */
+  --code-block-tokens-string-color: #7cc6ff;
+  --code-block-tokens-keyword-color: #ff80bf;
+  --code-block-tokens-operator-color: #ffc27a;
+  --code-block-tokens-boolean-color: #7ee787;
+}
+
+/* ---- API docs panels (API docs variables) ---- */
+:root {
+  /* operation/request/response panels */
+  --panel-border: 1px solid var(--border-color-primary);
+  --panel-border-radius: 12px;
+
+  /* “Response” header ribbons by type */
+  --panel-response-success-heading-bg-color: #ecfdf5;
+  --panel-response-info-heading-bg-color: #eff6ff;
+  --panel-response-error-heading-bg-color: #fef2f2;
+  --panel-response-redirect-heading-bg-color: #fffbeb;
+
+
+  /* language/sample panel */
+  --panel-samples-bg-color: var(--bg-color);
+  --panel-samples-border: var(--panel-border);
+  --panel-samples-code-block-bg-color: var(--code-block-bg-color);
+}
+
+/* ---- HTTP verb/tag chips (Components → Tags) ---- */
+:root {
+  --http-tag-font-family: var(--font-family-monospaced);
+  --http-tag-width: 46px;            /* compact pill width */
+  --http-tag-height: 22px;
+
+  /* method colors */
+  --http-tag-operation-color-get:   #22c55e;
+  --http-tag-operation-color-post:  #2563eb;
+  --http-tag-operation-color-put:   #eab308;
+  --http-tag-operation-color-patch: #f59e0b;
+  --http-tag-operation-color-delete:#ef4444;
+}
+
+/* ---- Tables (Common / Components) ---- */
+:root {
+  --table-border-color: var(--border-color-primary);
+  --table-row-hover-bg: var(--bg-color-tonal);
+}
+
+/* ---- Links & buttons (Components → Button/Link) ---- */
+:root {
+  --button-bg-color-primary: var(--color-primary-base);
+  --button-content-color-primary: #fff;
+  --link-color: var(--color-primary-base);
+}
+
+/* Optional: compact headings (Common → headings) */
+:root {
+  --h1-font-size: 34px;
+  --h1-line-height: 42px;
+  --h2-font-size: 26px;
+  --h2-line-height: 32px;
+}
+
+/* sidebar modification */
+:root {
+  /* Sidebar container */
+  --sidebar-bg-color: #c8cdd30a;
+  --sidebar-width: 300px;
+  --menu-padding: 5px;
+  --menu-margin: 1px;
+  --menu-list-style: none;
+
+  
+
+  /* Menu item text */
+  --menu-item-text-color: #1f2937;
+  --menu-item-color-hover: #0f172a;
+  --menu-item-color-active: #0f172a;
+
+  /* Menu item backgrounds */
+  --menu-item-bg-color-hover: #d6dcda51;
+  --menu-item-bg-color-active: #d6dcda51;
+}
+
+
+/* Index Page Styling and resources overview */
+
+
+.landing-wrapper {
+  --color-gradient-1: #1677ff;
+  --color-gradient-2: #ba99ff;
+  --color-brand: #8d5bff;
+  --color-brand-hover: #7a4dd0;
+  --color-brand-active: #663eb1;
+}
+
+.button-tone-brand {
+  color: white;
+  border-color: var(--color-brand);
+  background-color: var(--color-brand);
+}
+
+.button-tone-brand:hover {
+  color: white;
+  border-color: var(--color-brand-hover);
+  background-color: var(--color-brand-hover);
+}
+
+.button-tone-brand:active {
+  color: white;
+  border-color: var(--color-brand-active);
+  background-color: var(--color-brand-active);
+}
+
+.button-size-xl {
+  --button-padding: var(--spacing-sm) var(--spacing-xxl);
+  font-size: var(--font-size-lg);
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 60px;
+}
+
+.tiles.wide {
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+}
+
+.tile-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: rgba(35, 35, 35, 0.1) 0px 10px 30px 0px;
+  padding: 30px 20px;
+  gap: 20px;
+  width: 100%;
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+}
+
+.tile-wrapper:hover {
+  transform: translateY(-2px);
+  box-shadow: rgba(35, 35, 35, 0.1) 0px 20px 60px 0px;
+}
+
+.icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90px;
+  width: 90px;
+  object-fit: contain;
+  background-color: var(--color-primary);
+}
+
+.icon-wrapper img,
+.icon-wrapper svg {
+  width: 75%;
+}
+
+.tile-header {
+  font-size: var(--font-size-xl);
+  margin-bottom: 10px;
+  color: var(--text-color-primary);
+  margin: 0;
+  width: 100%;
+}
+
+.tile-description {
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-lg);
+  color: var(--text-color-secondary);
+  margin: 0;
+}
+
+.section-header {
+  color: var(--text-color-primary);
+  font-size: 28px;
+  font-weight: 300;
+  text-align: center;
+  margin: 2.65em 0;
+  padding: 0px 20px;
+}
+
+.box {
+  display: block;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 0;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.landing-header {
+  text-align: center;
+  font-size: 56px;
+  line-height: 80px;
+  display: inline-block;
+  margin: 50px 0 0.2em 0;
+}
+
+.landing-subheader {
+  font-size: 30px;
+  font-weight: 300;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 60px;
+}
+
+.button-container {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.button-container .button {
+  margin-bottom: 10px;
+}
+
+@media screen and (min-width: 768px) {
+  .button-container {
+    flex-direction: row;
+  }
+}
+
+.jumbotron {
+  background: linear-gradient(-63.43deg, var(--color-gradient-1) 15%, var(--color-gradient-2) 85%);
+  color: var(--text-color-inverse);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }

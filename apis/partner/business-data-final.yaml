@@ -1,0 +1,3540 @@
+openapi: 3.0.1
+info:
+  x-metadata:
+    apiId: class-partner-api-v1
+    tags:
+      - Partner
+  title: Business Data API
+  version: 1.0.0000
+  description: |
+   The Class Business Data API allows you to:
+   - List all contacts in a specified business.
+   - List all brands in a specified business.
+   - Check whether fund Tbar records exist.
+   - Load fund reference data into a business; the fund will be created if it does not yet exist.
+   - Load fund Tbar history.
+
+   Environments:
+   - PIE base url: https://apigateway.class-pie.com.au/api/1.0
+   - Production base url: https://apigateway.class.com.au/api/1.0
+
+servers:
+  - url: https://apigateway.class-test.com.au/api/1.0
+    description: Test Environment
+
+paths:
+  /b/{businessCode}/business-data/contacts:
+    get:
+      summary: contactListDetail
+      description: Returns a list of all the contacts for the specific business.
+      operationId: contactListDetail
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      responses:
+        '200':
+          description: Success (Ok)
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/ContactDetailsResult'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400':
+          description: Error Message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+                      wrapped: true
+                      name: Errors
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnauthorizedErrorCommon'
+            application/xml:
+              schema:
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xmlns:xsd="http://www.w3.org/2001/XMLSchema-instance"
+                type: object
+                properties:
+                  Errors:
+                    type: object
+                    properties:
+                      ApiError:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/UnauthorizedErrorCommon'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        '404':
+          description: Resource not available or user does not have access to the
+            fund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      security:
+      - Class_oAuth:
+        - business.fund.list
+  /f/{businessCode}/{fundCode}/business-data/fund-tbar-records-exist:
+    get:
+      operationId: fundTbarRecordsExist
+      summary: fundTbarRecordsExist
+      description: Check whether fund Tbar records exist.
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      responses:
+        '200':
+          description: Success (Ok)
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    type: boolean
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400':
+          description: Error Message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+                      wrapped: true
+                      name: Errors
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnauthorizedErrorCommon'
+            application/xml:
+              schema:
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xmlns:xsd="http://www.w3.org/2001/XMLSchema-instance"
+                type: object
+                properties:
+                  Errors:
+                    type: object
+                    properties:
+                      ApiError:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/UnauthorizedErrorCommon'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        '404':
+          description: Resource not available or user does not have access to the
+            fund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      security:
+      - Class_oAuth:
+        - business.fund.create
+  /f/{businessCode}/{fundCode}/business-data/upload-fund-opening-position:
+    post:
+      operationId: uploadFundOpeningPosition
+      summary: uploadFundOpeningPosition
+      description: Loads fund reference data into the business; the fund will be created
+        if it does not yet exist.
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      responses:
+        '200':
+          description: Success (Ok)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardApiResponse'
+        '400':
+          description: Error Message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+                      wrapped: true
+                      name: Errors
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnauthorizedErrorCommon'
+            application/xml:
+              schema:
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xmlns:xsd="http://www.w3.org/2001/XMLSchema-instance"
+                type: object
+                properties:
+                  Errors:
+                    type: object
+                    properties:
+                      ApiError:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/UnauthorizedErrorCommon'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        '404':
+          description: Resource not available or user does not have access to the
+            fund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FundOpeningPositions_FundOpeningPositionDocument'
+      security:
+      - Class_oAuth:
+        - business.fund.create
+  /f/{businessCode}/{fundCode}/business-data/upload-fund-tbar-history:
+    post:
+      operationId: uploadFundTbarHistory
+      summary: uploadFundTbarHistory
+      description: Loads fund Tbar history.
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      responses:
+        '200':
+          description: Success (Ok)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardApiResponse'
+        '400':
+          description: Error Message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+                      wrapped: true
+                      name: Errors
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnauthorizedErrorCommon'
+            application/xml:
+              schema:
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xmlns:xsd="http://www.w3.org/2001/XMLSchema-instance"
+                type: object
+                properties:
+                  Errors:
+                    type: object
+                    properties:
+                      ApiError:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/UnauthorizedErrorCommon'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        '404':
+          description: Resource not available or user does not have access to the
+            fund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FundTbarHistory_FundTbarHistory'
+      security:
+      - Class_oAuth:
+        - business.fund.create
+  /b/{businessCode}/business-data/brand-list:
+    get:
+      operationId: brandList
+      summary: brandList
+      description: List all Brands in the specified Business
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      responses:
+        '200':
+          description: Success (Ok)
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/BusinessData_BrandListDetail'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400':
+          description: Error Message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+                      wrapped: true
+                      name: Errors
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnauthorizedErrorCommon'
+            application/xml:
+              schema:
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xmlns:xsd="http://www.w3.org/2001/XMLSchema-instance"
+                type: object
+                properties:
+                  Errors:
+                    type: object
+                    properties:
+                      ApiError:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/UnauthorizedErrorCommon'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        '404':
+          description: Resource not available or user does not have access to the
+            fund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      security:
+      - Class_oAuth:
+        - business.fund.list
+  /b/{businessCode}/business-data/upload-fund-reference-data:
+    post:
+      operationId: uploadFundReferenceData
+      summary: uploadFundReferenceData
+      description: Loads fund reference data into the business; the fund will be created
+        if it does not yet exist.
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - name: brand
+        in: query
+        description: The brand code thats configured within the Class Application.
+          The brand code may be the same as your business code please double check
+          within your application.
+        required: true
+        schema:
+          type: string
+          example: demo-business
+      responses:
+        '200':
+          description: Success (Ok)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardApiResponse'
+        '400':
+          description: Error Message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+                      wrapped: true
+                      name: Errors
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnauthorizedErrorCommon'
+            application/xml:
+              schema:
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xmlns:xsd="http://www.w3.org/2001/XMLSchema-instance"
+                type: object
+                properties:
+                  Errors:
+                    type: object
+                    properties:
+                      ApiError:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/UnauthorizedErrorCommon'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        '404':
+          description: Resource not available or user does not have access to the
+            fund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FundImports_FundReferenceData'
+      security:
+      - Class_oAuth:
+        - business.fund.create
+components:
+  parameters:
+    businessCodeParam:
+      name: businessCode
+      in: path
+      description: Class business code
+      required: true
+      schema:
+        type: string
+        example: demo-business
+    fundCodeParam:
+      name: fundCode
+      description: Class entity code
+      in: path
+      required: true
+      schema:
+        type: string
+        example: demo-fund
+  schemas:
+    AddressSummary:
+      type: object
+      required:
+      - AddressLine1
+      - AddressLine2
+      - AddressLine3
+      - PostCode
+      - Locality
+      - State
+      - Country
+      properties:
+        AddressLine1:
+          type: string
+        AddressLine2:
+          type: string
+        AddressLine3:
+          type: string
+        PostCode:
+          type: string
+        Locality:
+          type: string
+        State:
+          type: string
+        Country:
+          type: string
+    AdjustmentAmountType:
+      type: string
+      enum:
+      - CGTConcession
+      - FirstElement
+      - TaxDeferred
+      - TaxExempted
+      - TaxFree
+      - AMIT
+      - CGTNotionalDeferredGain
+      - CGTReliefCostBaseAdjustment
+    AnnualRetAddressCode:
+      type: string
+      enum:
+      - Default
+      - Brand
+      - Fund
+      - TaxAgent
+      - Business
+    ApiError:
+      type: object
+      required:
+      - Code
+      - Message
+      properties:
+        Code:
+          type: string
+        Message:
+          type: string
+    ApiResponseBase:
+      type: object
+      required:
+      - ErrorCodes
+      - Errors
+      - CreatedUri
+      - IsCreatedResponse
+      properties:
+        ErrorCodes:
+          type: array
+          items:
+            type: string
+        Errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+        CreatedUri:
+          type: string
+        IsCreatedResponse:
+          type: boolean
+    BeneficiaryTypeEnum:
+      type: string
+      enum:
+      - Person
+      - Organisation
+    BindingStatusType:
+      type: string
+      enum:
+      - Binding
+      - Invalid
+      - NoNomination
+      - StatementOfWishes
+      - NonBinding
+      - NonLapsingBindingDeathNomination
+    BrandListDetail_BrandSummary:
+      type: object
+      required:
+      - Code
+      - Name
+      - CanWrite
+      properties:
+        Code:
+          type: string
+        Name:
+          type: string
+        CanWrite:
+          type: boolean
+    BusinessData_BrandListDetail:
+      type: object
+      required:
+      - BrandSummaries
+      properties:
+        BrandSummaries:
+          type: array
+          items:
+            $ref: '#/components/schemas/BrandListDetail_BrandSummary'
+    BusinessData_BusinessListDetail:
+      type: object
+      required:
+      - BusinessSummaries
+      properties:
+        BusinessSummaries:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessListDetail_BusinessSummary'
+    BusinessListDetail_BusinessSummary:
+      type: object
+      required:
+      - Id
+      - IdSpecified
+      - Code
+      - Name
+      - CanWrite
+      properties:
+        Id:
+          type: string
+        IdSpecified:
+          type: boolean
+        Code:
+          type: string
+        Name:
+          type: string
+        CanWrite:
+          type: boolean
+    ContactDetailsResult:
+      type: object
+      required:
+      - Code
+      - Name
+      - Contacts
+      properties:
+        Code:
+          type: string
+        Name:
+          type: string
+        Contacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactDetailsResult_PortfolioContactDetails'
+    ContactDetailsResult_PortfolioContactDetails:
+      type: object
+      required:
+      - Type
+      - Email
+      - PhysicalAddress
+      - MailingAddress
+      - DirectPhone
+      - MobilePhone
+      - WorkPhone
+      - HomePhone
+      - Fax
+      - Funds
+      properties:
+        Type:
+          type: string
+        Email:
+          type: string
+        PhysicalAddress:
+          $ref: '#/components/schemas/AddressSummary'
+        MailingAddress:
+          $ref: '#/components/schemas/AddressSummary'
+        DirectPhone:
+          type: string
+        MobilePhone:
+          type: string
+        WorkPhone:
+          type: string
+        HomePhone:
+          type: string
+        Fax:
+          type: string
+        Funds:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortfolioScope'
+    EffectiveStatuses:
+      type: string
+      enum:
+      - Default
+      - Reportable
+      - Updatable
+      - All
+      - PendingOnly
+      - Selectable
+      - ActiveOnly
+      - CancelledOnly
+      - Inactive
+      - SuspendedOnly
+    ExpenseExemptionCalculationMethod:
+      type: string
+      enum:
+      - CalculateUsingATOFormula
+      - UseActuarialPercentage
+      - ManuallySpecifyPercentage
+    FundImports_FundReferenceData:
+      type: object
+      required:
+      - Code
+      - BrandCode
+      - LegalType
+      - ClassProductType
+      - IsComplying
+      - IsResident
+      - Administrator
+      - Name
+      - PreviousName
+      - ABN
+      - SFN
+      - TFN
+      - RSEDetails
+      - PhysicalAddress
+      - UsePhysicalAsMailing
+      - MailingAddress
+      - AnnualReturnAddressFromSpecified
+      - Phone
+      - Fax
+      - Email
+      - URL
+      - StartDateSpecified
+      - TrustDeeds
+      - TrusteeCompanyDetails
+      - NonMemberTrusteeDetails
+      - FundPolicies
+      - FundHoldingReferences
+      - FundInvestmentReturns
+      - MemberDetails
+      - BeneficiaryDetails
+      - ReserveDetails
+      - InvestmentDetails
+      - FeedsProductsDetails
+      - InvestmentStrategy
+      - AssetPoolDetails
+      - Demo
+      - ASN
+      - ShouldSerializeTrustProperties
+      properties:
+        Code:
+          type: string
+        BrandCode:
+          type: string
+        LegalType:
+          $ref: '#/components/schemas/FundLegalType'
+        ClassProductType:
+          type: string
+        TrustType:
+          $ref: '#/components/schemas/TrustTypes'
+        IsComplying:
+          type: boolean
+        IsResident:
+          type: boolean
+        Administrator:
+          type: string
+        Name:
+          type: string
+        PreviousName:
+          type: string
+        ABN:
+          type: string
+        SFN:
+          type: string
+        TFN:
+          type: string
+        RSEDetails:
+          $ref: '#/components/schemas/FundImports_FundReferenceDataRSEDetails'
+        PhysicalAddress:
+          $ref: '#/components/schemas/FundImports_PhysicalAddress'
+        UsePhysicalAsMailing:
+          type: boolean
+        MailingAddress:
+          $ref: '#/components/schemas/FundImports_PhysicalAddress'
+        AnnualReturnAddressFrom:
+          $ref: '#/components/schemas/AnnualRetAddressCode'
+        AnnualReturnAddressFromSpecified:
+          type: boolean
+        Phone:
+          type: string
+        Fax:
+          type: string
+        Email:
+          type: string
+        URL:
+          type: string
+        StartDate:
+          type: string
+          format: date
+        StartDateSpecified:
+          type: boolean
+        TrustDeeds:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundImports_FundReferenceDataTrustDeed'
+        TrusteeCompanyDetails:
+          $ref: '#/components/schemas/FundImports_FundReferenceDataTrusteeCompanyDetails'
+        NonMemberTrusteeDetails:
+          $ref: '#/components/schemas/FundImports_FundReferenceDataNonMemberTrusteeDetails'
+        FundPolicies:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundImports_FundReferenceDataFundPolicy'
+        FundHoldingReferences:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundImports_FundReferenceDataFundHoldingReference'
+        FundInvestmentReturns:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundImports_FundReferenceDataFundReturn'
+        MemberDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundImports_FundReferenceDataMemberDetail'
+        BeneficiaryDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundImports_FundReferenceDataBeneficiaryDetail'
+        ReserveDetails:
+          $ref: '#/components/schemas/FundImports_FundReferenceDataReserveDetails'
+        InvestmentDetails:
+          $ref: '#/components/schemas/FundImports_FundReferenceDataInvestmentDetails'
+        FeedsProductsDetails:
+          $ref: '#/components/schemas/FundImports_FundReferenceDataFeedsProducts'
+        InvestmentStrategy:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundImports_FundReferenceDataComponent'
+        AssetPoolDetails:
+          $ref: '#/components/schemas/FundImports_FundReferenceDataAssetPoolDetails'
+        Demo:
+          type: boolean
+        ASN:
+          type: string
+        ShouldSerializeTrustProperties:
+          type: boolean
+    FundImports_FundReferenceDataAssetPool:
+      type: object
+      required:
+      - Description
+      - IsSegregatedToPension
+      - IsSystemManaged
+      - MemberAccounts
+      - HoldingAccounts
+      properties:
+        Description:
+          type: string
+        IsSegregatedToPension:
+          type: boolean
+        IsSystemManaged:
+          type: boolean
+        MemberAccounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundImports_FundReferenceDataAssetPoolMember'
+        HoldingAccounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundImports_FundReferenceDataAssetPoolHolding'
+    FundImports_FundReferenceDataAssetPoolDetails:
+      type: object
+      required:
+      - AssetPools
+      properties:
+        AssetPools:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundImports_FundReferenceDataAssetPool'
+    FundImports_FundReferenceDataAssetPoolHolding:
+      type: object
+      required:
+      - HoldingAccountName
+      properties:
+        HoldingAccountName:
+          type: string
+    FundImports_FundReferenceDataAssetPoolMember:
+      type: object
+      required:
+      - MemberAccountName
+      properties:
+        MemberAccountName:
+          type: string
+    FundImports_FundReferenceDataBeneficiaryDetail:
+      type: object
+      required:
+      - Code
+      - TFN
+      - FamilyName
+      - GivenName
+      - MiddleNames
+      - OrganisationName
+      - Salutation
+      - Gender
+      - PreferredGreeting
+      - PreferredVoiceContact
+      - PreferredVoiceContactSpecified
+      - PreferredWrittenContact
+      - PreferredWrittenContactSpecified
+      - HomePhone
+      - WorkPhone
+      - Mobile
+      - Fax
+      - DirectPhone
+      - Email
+      - PhysicalAddress
+      - UsePhysicalAsMailing
+      - MailingAddress
+      - Roles
+      - BeneficiaryType
+      properties:
+        Code:
+          type: string
+        TFN:
+          type: string
+        FamilyName:
+          type: string
+        GivenName:
+          type: string
+        MiddleNames:
+          type: string
+        OrganisationName:
+          type: string
+        Salutation:
+          type: string
+        Gender:
+          $ref: '#/components/schemas/Gender'
+        DateOfBirth:
+          type: string
+          format: date
+        PreferredGreeting:
+          type: string
+        PreferredVoiceContact:
+          $ref: '#/components/schemas/VoiceContactType'
+        PreferredVoiceContactSpecified:
+          type: boolean
+        PreferredWrittenContact:
+          $ref: '#/components/schemas/WrittenContactType'
+        PreferredWrittenContactSpecified:
+          type: boolean
+        HomePhone:
+          type: string
+        WorkPhone:
+          type: string
+        Mobile:
+          type: string
+        Fax:
+          type: string
+        DirectPhone:
+          type: string
+        Email:
+          type: string
+        PhysicalAddress:
+          $ref: '#/components/schemas/FundImports_PhysicalAddress'
+        UsePhysicalAsMailing:
+          type: boolean
+        MailingAddress:
+          $ref: '#/components/schemas/FundImports_PhysicalAddress'
+        Roles:
+          $ref: '#/components/schemas/TrustRoles'
+        BeneficiaryType:
+          $ref: '#/components/schemas/BeneficiaryTypeEnum'
+    FundImports_FundReferenceDataComponent:
+      type: object
+      required:
+      - AssetClassCode
+      - MinPercentage
+      - MaxPercentage
+      - TargetPercentageSpecified
+      properties:
+        AssetClassCode:
+          type: string
+        MinPercentage:
+          type: number
+          format: decimal
+        MaxPercentage:
+          type: number
+          format: decimal
+        TargetPercentage:
+          type: number
+          format: decimal
+        TargetPercentageSpecified:
+          type: boolean
+    FundImports_FundReferenceDataFeedsProduct:
+      type: object
+      required:
+      - AccountNumber
+      - ProductName
+      properties:
+        AccountNumber:
+          type: string
+        ProductName:
+          type: string
+    FundImports_FundReferenceDataFeedsProducts:
+      type: object
+      required:
+      - FeedsProducts
+      properties:
+        FeedsProducts:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundImports_FundReferenceDataFeedsProduct'
+    FundImports_FundReferenceDataFundHoldingReference:
+      type: object
+      required:
+      - ExternalIdentifier
+      - ExternalIdentifierTypeSpecified
+      - Enabled
+      - StartDateSpecified
+      - EndDateSpecified
+      - FinancialInstitution
+      - ProviderName
+      - ProductName
+      - DisplayName
+      - AccountName
+      properties:
+        ExternalIdentifier:
+          type: string
+        ExternalIdentifierType:
+          $ref: '#/components/schemas/HoldingAccountExternalIdentifierType'
+        ExternalIdentifierTypeSpecified:
+          type: boolean
+        StartDate:
+          type: string
+          format: date
+        EndDate:
+          type: string
+          format: date
+        Enabled:
+          type: boolean
+        StartDateSpecified:
+          type: boolean
+        EndDateSpecified:
+          type: boolean
+        FinancialInstitution:
+          type: string
+        ProviderName:
+          type: string
+        ProductName:
+          type: string
+        DisplayName:
+          type: string
+        AccountName:
+          type: string
+    FundImports_FundReferenceDataFundPolicy:
+      type: object
+      required:
+      - GSTDetails
+      - Reserved
+      - PolicyStartDateSpecified
+      - PolicyEndDateSpecified
+      - UseSegregatedPensions
+      - UseSegregatedPensionsSpecified
+      - PensionExemptionPercentageSpecified
+      - ActuarialPensionExemptionPercentageSpecified
+      - ExpensesPensionExemptionPercentageSpecified
+      - CapitalLossProvisionRateSpecified
+      - AccountingLossProvisionRateSpecified
+      - UnrealisedTaxProvisionRateSpecified
+      - CapitalLossesProvisionRateSpecified
+      - IncomeLossesProvisionRateSpecified
+      - UnrealisedGainsProvisionRateSpecified
+      - UseTaxEffectAccountingSpecified
+      - DeferMemberTaxSpecified
+      - ExpenseExemptionCalculationMethod
+      - ElectionECPICalculationMethod
+      properties:
+        GSTDetails:
+          $ref: '#/components/schemas/FundImports_FundReferenceDataFundPolicyGSTDetails'
+        Reserved:
+          type: boolean
+        PolicyStartDate:
+          type: string
+          format: date
+        PolicyStartDateSpecified:
+          type: boolean
+        PolicyEndDate:
+          type: string
+          format: date
+        PolicyEndDateSpecified:
+          type: boolean
+        UseSegregatedPensions:
+          type: boolean
+        UseSegregatedPensionsSpecified:
+          type: boolean
+        PensionExemptionPercentage:
+          type: number
+          format: decimal
+        PensionExemptionPercentageSpecified:
+          type: boolean
+        ActuarialPensionExemptionPercentage:
+          type: number
+          format: decimal
+        ActuarialPensionExemptionPercentageSpecified:
+          type: boolean
+        ExpensesPensionExemptionPercentage:
+          type: number
+          format: decimal
+        ExpensesPensionExemptionPercentageSpecified:
+          type: boolean
+        CapitalLossProvisionRate:
+          type: number
+          format: decimal
+        CapitalLossProvisionRateSpecified:
+          type: boolean
+        AccountingLossProvisionRate:
+          type: number
+          format: decimal
+        AccountingLossProvisionRateSpecified:
+          type: boolean
+        UnrealisedTaxProvisionRate:
+          type: number
+          format: decimal
+        UnrealisedTaxProvisionRateSpecified:
+          type: boolean
+        CapitalLossesProvisionRate:
+          type: number
+          format: decimal
+        CapitalLossesProvisionRateSpecified:
+          type: boolean
+        IncomeLossesProvisionRate:
+          type: number
+          format: decimal
+        IncomeLossesProvisionRateSpecified:
+          type: boolean
+        UnrealisedGainsProvisionRate:
+          type: number
+          format: decimal
+        UnrealisedGainsProvisionRateSpecified:
+          type: boolean
+        UseTaxEffectAccounting:
+          type: boolean
+        UseTaxEffectAccountingSpecified:
+          type: boolean
+        DeferMemberTax:
+          type: boolean
+        DeferMemberTaxSpecified:
+          type: boolean
+        ExpenseExemptionCalculationMethod:
+          $ref: '#/components/schemas/ExpenseExemptionCalculationMethod'
+        ElectionECPICalculationMethod:
+          type: string
+    FundImports_FundReferenceDataFundPolicyGSTDetails:
+      type: object
+      required:
+      - GSTStatus
+      - GSTTaxPeriod
+      - GSTStatusDate
+      - GSTStatusDateSpecified
+      properties:
+        GSTStatus:
+          $ref: '#/components/schemas/FundPolicyGSTStatusCode'
+        GSTTaxPeriod:
+          $ref: '#/components/schemas/FundPolicyGSTTaxPeriodCode'
+        GSTStatusDate:
+          type: string
+          format: date
+        GSTStatusDateSpecified:
+          type: boolean
+    FundImports_FundReferenceDataFundReturn:
+      type: object
+      required:
+      - FinancialYear
+      - RateOfReturnSpecified
+      properties:
+        FinancialYear:
+          type: integer
+          format: int32
+        RateOfReturn:
+          type: number
+          format: decimal
+        RateOfReturnSpecified:
+          type: boolean
+    FundImports_FundReferenceDataInvestmentDetails:
+      type: object
+      required:
+      - Items
+      properties:
+        Items:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundImports_HoldingAccountDetail'
+    FundImports_FundReferenceDataMemberDetail:
+      type: object
+      required:
+      - Code
+      - JoinFundDate
+      - LeaveFundDate
+      - ESPStartDate
+      - ESPStartDateSpecified
+      - DateOfDisability
+      - DateOfDisabilitySpecified
+      - LastRetirementDate
+      - LastRetirementDateSpecified
+      - AustralianResident
+      - FloodLevyExempt
+      - SpouseAgreementDate
+      - SpouseAgreementDateSpecified
+      - ClaimTaxFreeThresholdSpecified
+      - DeathSumInsuredSpecified
+      - TpdSumInsuredSpecified
+      - SalaryContinuanceSumInsuredSpecified
+      - TFN
+      - FamilyName
+      - GivenName
+      - MiddleNames
+      - Salutation
+      - Gender
+      - DateOfBirthSpecified
+      - DateOfDeathSpecified
+      - PreferredGreeting
+      - PreferredSalutation
+      - PreferredVoiceContact
+      - PreferredVoiceContactSpecified
+      - PreferredWrittenContact
+      - PreferredWrittenContactSpecified
+      - HomePhone
+      - WorkPhone
+      - Mobile
+      - Fax
+      - DirectPhone
+      - Email
+      - PhysicalAddress
+      - UsePhysicalAsMailing
+      - MailingAddress
+      - MemberTransitions
+      - BeneficiaryDetails
+      - Pensions
+      properties:
+        Code:
+          type: string
+        JoinFundDate:
+          type: string
+          format: date
+        LeaveFundDate:
+          type: string
+        ESPStartDate:
+          type: string
+          format: date
+        ESPStartDateSpecified:
+          type: boolean
+        DateOfDisability:
+          type: string
+          format: date
+        DateOfDisabilitySpecified:
+          type: boolean
+        LastRetirementDate:
+          type: string
+          format: date
+        LastRetirementDateSpecified:
+          type: boolean
+        AustralianResident:
+          type: boolean
+        FloodLevyExempt:
+          type: boolean
+        SpouseAgreementDate:
+          type: string
+          format: date
+        SpouseAgreementDateSpecified:
+          type: boolean
+        ClaimTaxFreeThreshold:
+          type: boolean
+        DeathSumInsured:
+          type: number
+          format: decimal
+        TpdSumInsured:
+          type: number
+          format: decimal
+        SalaryContinuanceSumInsured:
+          type: number
+          format: decimal
+        ClaimTaxFreeThresholdSpecified:
+          type: boolean
+        DeathSumInsuredSpecified:
+          type: boolean
+        TpdSumInsuredSpecified:
+          type: boolean
+        SalaryContinuanceSumInsuredSpecified:
+          type: boolean
+        TFN:
+          type: string
+        FamilyName:
+          type: string
+        GivenName:
+          type: string
+        MiddleNames:
+          type: string
+        Salutation:
+          type: string
+        Gender:
+          $ref: '#/components/schemas/Gender'
+        DateOfBirth:
+          type: string
+          format: date
+        DateOfBirthSpecified:
+          type: boolean
+        DateOfDeath:
+          type: string
+          format: date
+        DateOfDeathSpecified:
+          type: boolean
+        PreferredGreeting:
+          type: string
+        PreferredSalutation:
+          type: string
+        PreferredVoiceContact:
+          $ref: '#/components/schemas/VoiceContactType'
+        PreferredVoiceContactSpecified:
+          type: boolean
+        PreferredWrittenContact:
+          $ref: '#/components/schemas/WrittenContactType'
+        PreferredWrittenContactSpecified:
+          type: boolean
+        HomePhone:
+          type: string
+        WorkPhone:
+          type: string
+        Mobile:
+          type: string
+        Fax:
+          type: string
+        DirectPhone:
+          type: string
+        Email:
+          type: string
+        PhysicalAddress:
+          $ref: '#/components/schemas/FundImports_PhysicalAddress'
+        UsePhysicalAsMailing:
+          type: boolean
+        MailingAddress:
+          $ref: '#/components/schemas/FundImports_PhysicalAddress'
+        MemberTransitions:
+          $ref: '#/components/schemas/FundImports_FundReferenceDataMemberTransitions'
+        BeneficiaryDetails:
+          $ref: '#/components/schemas/FundImports_FundReferenceDataMemberDetailBeneficiaryDetails'
+        Pensions:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundImports_FundReferenceDataMemberDetailPensionDetails'
+    FundImports_FundReferenceDataMemberDetailBeneficiaryDetails:
+      type: object
+      required:
+      - EffectiveDate
+      - ExpiryDate
+      - ExpiryDateSpecified
+      - BindingStatus
+      - Details
+      properties:
+        EffectiveDate:
+          type: string
+          format: date
+        ExpiryDate:
+          type: string
+          format: date
+        ExpiryDateSpecified:
+          type: boolean
+        BindingStatus:
+          $ref: '#/components/schemas/BindingStatusType'
+        Details:
+          type: string
+    FundImports_FundReferenceDataMemberDetailPensionDetails:
+      type: object
+      required:
+      - PensionAccountName
+      - StartDate
+      - PensionProductType
+      - EtpPost07ChangeDateSpecified
+      - PensionAccountIdentifier
+      properties:
+        PensionAccountName:
+          type: string
+        StartDate:
+          type: string
+          format: date
+        PensionProductType:
+          $ref: '#/components/schemas/PensionProductType'
+        EtpPost07ChangeDate:
+          type: string
+          format: date
+        EtpPost07ChangeDateSpecified:
+          type: boolean
+        PensionAccountIdentifier:
+          type: string
+    FundImports_FundReferenceDataMemberTransition:
+      type: object
+      required:
+      - EffectiveDate
+      - TransitionType
+      properties:
+        EffectiveDate:
+          type: string
+          format: date
+        TransitionType:
+          type: string
+    FundImports_FundReferenceDataMemberTransitions:
+      type: object
+      required:
+      - MemberTransitions
+      properties:
+        MemberTransitions:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundImports_FundReferenceDataMemberTransition'
+    FundImports_FundReferenceDataNonMemberTrusteeDetails:
+      type: object
+      required:
+      - FamilyName
+      - GivenName
+      - MiddleNames
+      - Title
+      - JobTitle
+      - FormerName
+      - Gender
+      - DateOfBirth
+      - DateOfBirthSpecified
+      - TFN
+      - PreferredGreeting
+      - PreferredVoiceContact
+      - PreferredVoiceContactSpecified
+      - PreferredWrittenContact
+      - PreferredWrittenContactSpecified
+      - HomePhone
+      - WorkPhone
+      - Mobile
+      - Fax
+      - DirectPhone
+      - Email
+      - PhysicalAddress
+      - UsePhysicalAsMailing
+      - MailingAddress
+      properties:
+        FamilyName:
+          type: string
+        GivenName:
+          type: string
+        MiddleNames:
+          type: string
+        Title:
+          type: string
+        JobTitle:
+          type: string
+        FormerName:
+          type: string
+        Gender:
+          type: string
+        DateOfBirth:
+          type: string
+          format: date
+        DateOfBirthSpecified:
+          type: boolean
+        TFN:
+          type: string
+        PreferredGreeting:
+          type: string
+        PreferredVoiceContact:
+          $ref: '#/components/schemas/VoiceContactType'
+        PreferredVoiceContactSpecified:
+          type: boolean
+        PreferredWrittenContact:
+          $ref: '#/components/schemas/WrittenContactType'
+        PreferredWrittenContactSpecified:
+          type: boolean
+        HomePhone:
+          type: string
+        WorkPhone:
+          type: string
+        Mobile:
+          type: string
+        Fax:
+          type: string
+        DirectPhone:
+          type: string
+        Email:
+          type: string
+        PhysicalAddress:
+          $ref: '#/components/schemas/FundImports_PhysicalAddress'
+        UsePhysicalAsMailing:
+          type: boolean
+        MailingAddress:
+          $ref: '#/components/schemas/FundImports_PhysicalAddress'
+    FundImports_FundReferenceDataRSEDetails:
+      type: object
+      required:
+      - RSE
+      - EffectiveDate
+      properties:
+        RSE:
+          type: string
+        EffectiveDate:
+          type: string
+          format: date
+    FundImports_FundReferenceDataReserveDetails:
+      type: object
+      required:
+      - ReserveDetail
+      properties:
+        ReserveDetail:
+          $ref: '#/components/schemas/FundImports_FundReferenceDataReserveDetailsReserveDetail'
+    FundImports_FundReferenceDataReserveDetailsReserveDetail:
+      type: object
+      required:
+      - JoinFundDate
+      - Reserves
+      properties:
+        JoinFundDate:
+          type: string
+          format: date
+        Reserves:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundImports_FundReferenceDataReserveDetailsReserveDetailReserveDetails'
+    FundImports_FundReferenceDataReserveDetailsReserveDetailReserveDetails:
+      type: object
+      required:
+      - ReserveAccountName
+      - StartDate
+      properties:
+        ReserveAccountName:
+          type: string
+        StartDate:
+          type: string
+          format: date
+    FundImports_FundReferenceDataTrustDeed:
+      type: object
+      required:
+      - DeedDate
+      - DatePrinted
+      - DatePrintedSpecified
+      - Jurisdiction
+      - TrusteeName
+      - DeedSource
+      - DeedType
+      - Comments
+      properties:
+        DeedDate:
+          type: string
+          format: date
+        DatePrinted:
+          type: string
+          format: date
+        DatePrintedSpecified:
+          type: boolean
+        Jurisdiction:
+          $ref: '#/components/schemas/TrustDeedJurisdiction'
+        TrusteeName:
+          type: string
+        DeedSource:
+          type: string
+        DeedType:
+          $ref: '#/components/schemas/TrustDeedType'
+        Comments:
+          type: string
+    FundImports_FundReferenceDataTrusteeCompanyDetails:
+      type: object
+      required:
+      - Name
+      - ABN
+      - ACN
+      - TFN
+      - PreferredVoiceContact
+      - PreferredVoiceContactSpecified
+      - PreferredWrittenContact
+      - PreferredWrittenContactSpecified
+      - Phone
+      - Fax
+      - Email
+      - URL
+      - PhysicalAddress
+      - UsePhysicalAsMailing
+      - MailingAddress
+      - ASN
+      properties:
+        Name:
+          type: string
+        ABN:
+          type: string
+        ACN:
+          type: string
+        TFN:
+          type: string
+        PreferredVoiceContact:
+          $ref: '#/components/schemas/VoiceContactType'
+        PreferredVoiceContactSpecified:
+          type: boolean
+        PreferredWrittenContact:
+          $ref: '#/components/schemas/WrittenContactType'
+        PreferredWrittenContactSpecified:
+          type: boolean
+        Phone:
+          type: string
+        Fax:
+          type: string
+        Email:
+          type: string
+        URL:
+          type: string
+        PhysicalAddress:
+          $ref: '#/components/schemas/FundImports_PhysicalAddress'
+        UsePhysicalAsMailing:
+          type: boolean
+        MailingAddress:
+          $ref: '#/components/schemas/FundImports_PhysicalAddress'
+        ASN:
+          type: string
+    FundImports_HoldingAccountDetail:
+      type: object
+      required:
+      - Code
+      - Description
+      - SecurityIssueCode
+      - MarketTypeCode
+      - MarketTypeCodeSpecified
+      - UnlistedSecurityTypeCode
+      - ForeignSecurityTypeCode
+      - ExternalIdentifier
+      - ExternalIdentifierType
+      - ExternalIdentifierTypeSpecified
+      - ExternalProductName
+      - ExternalProductNameSpecified
+      - InhouseAsset
+      - InhouseAssetSpecified
+      - IsSegregatedToPension
+      - IsSegregatedToPensionSpecified
+      - SegregatedToPensionAccountCode
+      - SegregatedToPensionAccountCodeSpecified
+      - SpecifiedMarketTypeCode
+      - CGInvestmentClassificationCode
+      - TaxReturnClassificationCode
+      - GLInvestmentClassificationCode
+      - HoldingTypeForGstSpecified
+      - Type
+      properties:
+        Code:
+          type: string
+        Description:
+          type: string
+        SecurityIssueCode:
+          type: string
+        MarketTypeCode:
+          $ref: '#/components/schemas/MarketTypeCode'
+        MarketTypeCodeSpecified:
+          type: boolean
+        UnlistedSecurityTypeCode:
+          type: string
+        ForeignSecurityTypeCode:
+          type: string
+        ExternalIdentifier:
+          type: string
+        ExternalIdentifierType:
+          $ref: '#/components/schemas/HoldingAccountExternalIdentifierType'
+        ExternalIdentifierTypeSpecified:
+          type: boolean
+        ExternalProductName:
+          type: string
+        ExternalProductNameSpecified:
+          type: boolean
+        InhouseAsset:
+          type: boolean
+        InhouseAssetSpecified:
+          type: boolean
+        IsSegregatedToPension:
+          type: boolean
+        IsSegregatedToPensionSpecified:
+          type: boolean
+        SegregatedToPensionAccountCode:
+          type: string
+        SegregatedToPensionAccountCodeSpecified:
+          type: boolean
+        SpecifiedMarketTypeCode:
+          type: string
+        CGInvestmentClassificationCode:
+          type: string
+        TaxReturnClassificationCode:
+          type: string
+        GLInvestmentClassificationCode:
+          type: string
+        HoldingTypeForGst:
+          $ref: '#/components/schemas/HoldingTypeForGst'
+        HoldingTypeForGstSpecified:
+          type: boolean
+        Type:
+          type: string
+    FundImports_PhysicalAddress:
+      type: object
+      required:
+      - Addressee
+      - Line1
+      - Line2
+      - Line3
+      - Line4
+      - Suburb
+      - State
+      - Postcode
+      - UseUnlistedSuburb
+      properties:
+        Addressee:
+          type: string
+        Line1:
+          type: string
+        Line2:
+          type: string
+        Line3:
+          type: string
+        Line4:
+          type: string
+        Suburb:
+          type: string
+        State:
+          type: string
+        Postcode:
+          type: string
+        UseUnlistedSuburb:
+          type: boolean
+    FundLegalType:
+      type: string
+      enum:
+      - SMSF
+      - SAF
+      - Personal
+      - Trust
+      - Company
+      - Partnership
+      - Consolidated
+    FundOpeningPositionOperatingStatementBalance_AccountBalance:
+      type: object
+      required:
+      - IncomeExpenseClassification
+      - IncomeExpenseTypeCode
+      - Balance
+      properties:
+        IncomeExpenseClassification:
+          type: string
+        IncomeExpenseTypeCode:
+          type: string
+        Balance:
+          type: number
+          format: decimal
+    FundOpeningPositions_BeneficiaryDistribution:
+      type: object
+      required:
+      - MemberAccountReference
+      properties:
+        DistributionAmount:
+          type: number
+          format: decimal
+        MemberAccountReference:
+          type: string
+    FundOpeningPositions_ConcessionalDetailField:
+      type: object
+      required:
+      - FinancialYear
+      - Amount
+      properties:
+        FinancialYear:
+          type: string
+        Amount:
+          type: number
+          format: decimal
+    FundOpeningPositions_FundOpeningPositionAssetPositions:
+      type: object
+      required:
+      - Items
+      - CashItems
+      - HoldingItems
+      properties:
+        Items:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundOpeningPositions_FundOpeningPositionAssetPositionsAssetPosition'
+        CashItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundOpeningPositions_FundOpeningPositionAssetPositionsCashPosition'
+        HoldingItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundOpeningPositions_FundOpeningPositionAssetPositionsHoldingPosition'
+    FundOpeningPositions_FundOpeningPositionAssetPositionsAssetPosition:
+      type: object
+    FundOpeningPositions_FundOpeningPositionAssetPositionsCashPosition:
+      type: object
+      required:
+      - Code
+      - ClosingBalance
+      - ForeignClosingBalance
+      - BookCost
+      - IsForeignCash
+      - ForeignCashAcquisitions
+      - AdjustmentTypeChoices
+      - BankAccountChoices
+      properties:
+        Code:
+          type: string
+        ClosingBalance:
+          type: number
+          format: decimal
+        ForeignClosingBalance:
+          type: number
+          format: decimal
+        BookCost:
+          type: number
+          format: decimal
+        IsForeignCash:
+          type: boolean
+        ForeignCashAcquisitions:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundOpeningPositions_FundOpeningPositionAssetPositionsHoldingPositionAcquisition'
+        AdjustmentTypeChoices:
+          $ref: '#/components/schemas/RestSelectableItem'
+        BankAccountChoices:
+          $ref: '#/components/schemas/RestSelectableItem'
+    FundOpeningPositions_FundOpeningPositionAssetPositionsHoldingPosition:
+      type: object
+      required:
+      - Code
+      - ClosingMarketValue
+      - ClosingCarryForwardCapitalLoss
+      - ClosingUnsettledAcquisitions
+      - ClosingUnsettledDisposals
+      - DRPResidual
+      - Acquisition
+      properties:
+        Code:
+          type: string
+        ClosingMarketValue:
+          type: number
+          format: decimal
+        ClosingCarryForwardCapitalLoss:
+          type: number
+          format: decimal
+        ClosingUnsettledAcquisitions:
+          type: number
+          format: decimal
+        ClosingUnsettledDisposals:
+          type: number
+          format: decimal
+        DRPResidual:
+          type: number
+          format: decimal
+        Acquisition:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundOpeningPositions_FundOpeningPositionAssetPositionsHoldingPositionAcquisition'
+    FundOpeningPositions_FundOpeningPositionAssetPositionsHoldingPositionAcquisition:
+      type: object
+      required:
+      - AcquisitionDate
+      - Quantity
+      - BookCost
+      - Description
+      - Adjustment
+      properties:
+        AcquisitionDate:
+          type: string
+          format: date
+        Quantity:
+          type: number
+          format: decimal
+        BookCost:
+          type: number
+          format: decimal
+        Description:
+          type: string
+        Adjustment:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundOpeningPositions_FundOpeningPositionAssetPositionsHoldingPositionAcquisitionAdjustment'
+    FundOpeningPositions_FundOpeningPositionAssetPositionsHoldingPositionAcquisitionAdjustment:
+      type: object
+      required:
+      - AdjustmentDate
+      - Description
+      - AdjustmentAmount
+      - AdjustmentType
+      - AdjustmentTypeChoices
+      - BankAccountChoices
+      properties:
+        AdjustmentDate:
+          type: string
+          format: date
+        Description:
+          type: string
+        AdjustmentAmount:
+          type: number
+          format: decimal
+        AdjustmentType:
+          $ref: '#/components/schemas/AdjustmentAmountType'
+        AdjustmentTypeChoices:
+          $ref: '#/components/schemas/RestSelectableItem'
+        BankAccountChoices:
+          $ref: '#/components/schemas/RestSelectableItem'
+    FundOpeningPositions_FundOpeningPositionBeneficiaryLevelEquityPosition:
+      type: object
+      required:
+      - EquityAccountName
+      - EquityAccountCode
+      - Balance
+      properties:
+        EquityAccountName:
+          type: string
+        EquityAccountCode:
+          type: string
+        Balance:
+          type: number
+          format: decimal
+    FundOpeningPositions_FundOpeningPositionBeneficiaryLevelPosition:
+      type: object
+      required:
+      - EquityPositions
+      - Code
+      - UnitHolding
+      properties:
+        EquityPositions:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundOpeningPositions_FundOpeningPositionBeneficiaryLevelEquityPosition'
+        Code:
+          type: string
+        UnitHolding:
+          $ref: '#/components/schemas/FundOpeningPositions_FundOpeningPositionBeneficiaryLevelUnitHolding'
+    FundOpeningPositions_FundOpeningPositionBeneficiaryLevelUnitHolding:
+      type: object
+      required:
+      - Quantity
+      - Capital
+      properties:
+        Quantity:
+          type: number
+          format: decimal
+        Capital:
+          type: number
+          format: decimal
+    FundOpeningPositions_FundOpeningPositionDocument:
+      type: object
+      required:
+      - FundDetails
+      - AssetPositions
+      - OperatingStatementBalances
+      - TrustPriorYearOperatingStatement
+      - MemberPositions
+      - ReservePositions
+      - BeneficiaryLevelEquityPositions
+      - PortfolioLevelEquityPositions
+      - OtherDetails
+      - CGTConcessionTypePresent
+      - MemberPreviousConcessionals
+      - MemberPreviousNonConcessionals
+      properties:
+        FundDetails:
+          $ref: '#/components/schemas/FundOpeningPositions_FundOpeningPositionFundDetails'
+        AssetPositions:
+          $ref: '#/components/schemas/FundOpeningPositions_FundOpeningPositionAssetPositions'
+        OperatingStatementBalances:
+          $ref: '#/components/schemas/FundOpeningPositions_FundOpeningPositionOperatingStatementBalance'
+        TrustPriorYearOperatingStatement:
+          $ref: '#/components/schemas/FundOpeningPositions_TrustPriorYearOperatingStatementComparativeModel'
+        MemberPositions:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundOpeningPositions_FundOpeningPositionMemberPosition'
+        ReservePositions:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundOpeningPositions_FundOpeningPositionReservePosition'
+        BeneficiaryLevelEquityPositions:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundOpeningPositions_FundOpeningPositionBeneficiaryLevelPosition'
+        PortfolioLevelEquityPositions:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundOpeningPositions_FundOpeningPositionPortfolioLevelEquityPosition'
+        OtherDetails:
+          $ref: '#/components/schemas/FundOpeningPositions_FundOpeningPositionOtherDetails'
+        CGTConcessionTypePresent:
+          type: boolean
+        MemberPreviousConcessionals:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundOpeningPositions_MemberPreviousConcessional'
+        MemberPreviousNonConcessionals:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundOpeningPositions_MemberPreviousNonConcessional'
+    FundOpeningPositions_FundOpeningPositionFundDetails:
+      type: object
+      required:
+      - Code
+      - BooksClosedDate
+      - CarryForwardAccountingLossSpecified
+      - CarryForwardCapitalLossSpecified
+      - CarryForwardCapitalCollectibleLossSpecified
+      - StartingNetCumulativeBalanceSpecified
+      properties:
+        Code:
+          type: string
+        BooksClosedDate:
+          type: string
+          format: date
+        CarryForwardAccountingLoss:
+          type: number
+          format: decimal
+        CarryForwardAccountingLossSpecified:
+          type: boolean
+        CarryForwardCapitalLoss:
+          type: number
+          format: decimal
+        CarryForwardCapitalLossSpecified:
+          type: boolean
+        CarryForwardCapitalCollectibleLoss:
+          type: number
+          format: decimal
+        CarryForwardCapitalCollectibleLossSpecified:
+          type: boolean
+        StartingNetCumulativeBalance:
+          type: number
+          format: decimal
+        StartingNetCumulativeBalanceSpecified:
+          type: boolean
+    FundOpeningPositions_FundOpeningPositionMemberPosition:
+      type: object
+      required:
+      - Code
+      - AccumulationPosition
+      - PensionPosition
+      properties:
+        Code:
+          type: string
+        AccumulationPosition:
+          $ref: '#/components/schemas/FundOpeningPositions_FundOpeningPositionMemberPositionAccumulationPosition'
+        PensionPosition:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundOpeningPositions_FundOpeningPositionMemberPositionPensionPosition'
+    FundOpeningPositions_FundOpeningPositionMemberPositionAccumulationPosition:
+      type: object
+      required:
+      - ETPBalances
+      - PreservationBalances
+      properties:
+        ETPBalances:
+          $ref: '#/components/schemas/FundOpeningPositions_FundOpeningPositionMemberPositionAccumulationPositionETPBalances'
+        PreservationBalances:
+          $ref: '#/components/schemas/FundOpeningPositions_FundOpeningPositionMemberPositionAccumulationPositionPreservationBalances'
+    FundOpeningPositions_FundOpeningPositionMemberPositionAccumulationPositionETPBalances:
+      type: object
+      required:
+      - CGTExempt
+      - Concessional
+      - PostJune1994Invalidity
+      - PrePostJune1983
+      - Undeducted
+      - TaxFree
+      - TaxableTaxed
+      - TaxableUntaxed
+      properties:
+        CGTExempt:
+          type: number
+          format: decimal
+        Concessional:
+          type: number
+          format: decimal
+        PostJune1994Invalidity:
+          type: number
+          format: decimal
+        PrePostJune1983:
+          type: number
+          format: decimal
+        Undeducted:
+          type: number
+          format: decimal
+        TaxFree:
+          type: number
+          format: decimal
+        TaxableTaxed:
+          type: number
+          format: decimal
+        TaxableUntaxed:
+          type: number
+          format: decimal
+    FundOpeningPositions_FundOpeningPositionMemberPositionAccumulationPositionPreservationBalances:
+      type: object
+      required:
+      - Preserved
+      - RestrictedNonPreserved
+      - UnrestrictedNonPreserved
+      properties:
+        Preserved:
+          type: number
+          format: decimal
+        RestrictedNonPreserved:
+          type: number
+          format: decimal
+        UnrestrictedNonPreserved:
+          type: number
+          format: decimal
+    FundOpeningPositions_FundOpeningPositionMemberPositionPensionPosition:
+      type: object
+      required:
+      - PensionAccountName
+      - ETPBalances
+      - PreservationBalances
+      properties:
+        PensionAccountName:
+          type: string
+        ETPBalances:
+          $ref: '#/components/schemas/FundOpeningPositions_FundOpeningPositionMemberPositionPensionPositionETPBalances'
+        PreservationBalances:
+          $ref: '#/components/schemas/FundOpeningPositions_FundOpeningPositionMemberPositionPensionPositionPreservationBalances'
+    FundOpeningPositions_FundOpeningPositionMemberPositionPensionPositionETPBalances:
+      type: object
+      required:
+      - CGTExempt
+      - Concessional
+      - PostJune1994Invalidity
+      - PreJuly1983
+      - PrePostJune1983Tax
+      - Undeducted
+      - TaxFree
+      - TaxableTaxed
+      - TaxableUntaxed
+      properties:
+        CGTExempt:
+          type: number
+          format: decimal
+        Concessional:
+          type: number
+          format: decimal
+        PostJune1994Invalidity:
+          type: number
+          format: decimal
+        PreJuly1983:
+          type: number
+          format: decimal
+        PrePostJune1983Tax:
+          type: number
+          format: decimal
+        Undeducted:
+          type: number
+          format: decimal
+        TaxFree:
+          type: number
+          format: decimal
+        TaxableTaxed:
+          type: number
+          format: decimal
+        TaxableUntaxed:
+          type: number
+          format: decimal
+    FundOpeningPositions_FundOpeningPositionMemberPositionPensionPositionPreservationBalances:
+      type: object
+      required:
+      - Preserved
+      - RestrictedNonPreserved
+      - UnrestrictedNonPreserved
+      properties:
+        Preserved:
+          type: number
+          format: decimal
+        RestrictedNonPreserved:
+          type: number
+          format: decimal
+        UnrestrictedNonPreserved:
+          type: number
+          format: decimal
+    FundOpeningPositions_FundOpeningPositionOperatingStatementBalance:
+      type: object
+      required:
+      - IsOperatingStatementEnabled
+      - Balances
+      properties:
+        IsOperatingStatementEnabled:
+          type: boolean
+        Balances:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundOpeningPositionOperatingStatementBalance_AccountBalance'
+    FundOpeningPositions_FundOpeningPositionOtherDetails:
+      type: object
+      required:
+      - Asset
+      - Liability
+      - TaxPosition
+      - FundSuspense
+      - TaxLosses
+      properties:
+        Asset:
+          $ref: '#/components/schemas/FundOpeningPositions_FundOpeningPositionOtherDetailsAsset'
+        Liability:
+          $ref: '#/components/schemas/FundOpeningPositions_FundOpeningPositionOtherDetailsLiability'
+        TaxPosition:
+          $ref: '#/components/schemas/FundOpeningPositions_FundOpeningPositionOtherDetailsTaxPosition'
+        FundSuspense:
+          $ref: '#/components/schemas/FundOpeningPositions_FundOpeningPositionOtherDetailsFundSuspense'
+        TaxLosses:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundOpeningPositions_FundOpeningPositionOtherDetailsTaxLossesTaxLoss'
+    FundOpeningPositions_FundOpeningPositionOtherDetailsAsset:
+      type: object
+      required:
+      - PrePaidExpenses
+      - SundryDebtors
+      - DividendsReceivable
+      - InterestReceivable
+      - DistributionsReceivable
+      - InvestmentIncomeReceivable
+      - FundIncomeReceivable
+      - AmountsOwingByOtherPersons
+      - TotalAssets
+      properties:
+        PrePaidExpenses:
+          type: number
+          format: decimal
+        SundryDebtors:
+          type: number
+          format: decimal
+        DividendsReceivable:
+          type: number
+          format: decimal
+        InterestReceivable:
+          type: number
+          format: decimal
+        DistributionsReceivable:
+          type: number
+          format: decimal
+        InvestmentIncomeReceivable:
+          type: number
+          format: decimal
+        FundIncomeReceivable:
+          type: number
+          format: decimal
+        AmountsOwingByOtherPersons:
+          type: number
+          format: decimal
+        TotalAssets:
+          type: number
+          format: decimal
+    FundOpeningPositions_FundOpeningPositionOtherDetailsFundSuspense:
+      type: object
+      required:
+      - FundSuspenseAmount
+      - TotalFundSuspense
+      properties:
+        FundSuspenseAmount:
+          type: number
+          format: decimal
+        TotalFundSuspense:
+          type: number
+          format: decimal
+    FundOpeningPositions_FundOpeningPositionOtherDetailsLiability:
+      type: object
+      required:
+      - AmountsOwingToOtherPersons
+      - SundryCreditors
+      - FundExpensesPayable
+      - InvestmentExpensePayable
+      - MemberExpensesPayable
+      - MemberRolloversOutPayable
+      - TotalLiabilites
+      properties:
+        AmountsOwingToOtherPersons:
+          type: number
+          format: decimal
+        SundryCreditors:
+          type: number
+          format: decimal
+        FundExpensesPayable:
+          type: number
+          format: decimal
+        InvestmentExpensePayable:
+          type: number
+          format: decimal
+        MemberExpensesPayable:
+          type: number
+          format: decimal
+        MemberRolloversOutPayable:
+          type: number
+          format: decimal
+        TotalLiabilites:
+          type: number
+          format: decimal
+    FundOpeningPositions_FundOpeningPositionOtherDetailsTaxLossesTaxLoss:
+      type: object
+      required:
+      - LossGeneratedDate
+      - LossAmount
+      properties:
+        LossGeneratedDate:
+          type: string
+          format: date
+        LossAmount:
+          type: number
+          format: decimal
+    FundOpeningPositions_FundOpeningPositionOtherDetailsTaxPosition:
+      type: object
+      required:
+      - ProvisionForDeferredIncomeTax
+      - TaxBenefitOfCarryForwardLoss
+      - IncomeTaxPayable
+      - GSTPayableOrRefundable
+      - ImputationCredits
+      - ForeignAndOtherTaxCredits
+      - TFNCredits
+      - ABNCredits
+      - PAYGPayable
+      - TotalTaxPosition
+      properties:
+        ProvisionForDeferredIncomeTax:
+          type: number
+          format: decimal
+        TaxBenefitOfCarryForwardLoss:
+          type: number
+          format: decimal
+        IncomeTaxPayable:
+          type: number
+          format: decimal
+        GSTPayableOrRefundable:
+          type: number
+          format: decimal
+        ImputationCredits:
+          type: number
+          format: decimal
+        ForeignAndOtherTaxCredits:
+          type: number
+          format: decimal
+        TFNCredits:
+          type: number
+          format: decimal
+        ABNCredits:
+          type: number
+          format: decimal
+        PAYGPayable:
+          type: number
+          format: decimal
+        TotalTaxPosition:
+          type: number
+          format: decimal
+    FundOpeningPositions_FundOpeningPositionPortfolioLevelEquityPosition:
+      type: object
+      required:
+      - EquityAccountName
+      - EquityAccountCode
+      - Balance
+      properties:
+        EquityAccountName:
+          type: string
+        EquityAccountCode:
+          type: string
+        Balance:
+          type: number
+          format: decimal
+    FundOpeningPositions_FundOpeningPositionReservePosition:
+      type: object
+      required:
+      - ReserveAccountName
+      - ETPBalances
+      - PreservationBalances
+      properties:
+        ReserveAccountName:
+          type: string
+        ETPBalances:
+          $ref: '#/components/schemas/FundOpeningPositions_FundOpeningPositionReservePositionETPBalances'
+        PreservationBalances:
+          $ref: '#/components/schemas/FundOpeningPositions_FundOpeningPositionReservePositionPreservationBalances'
+    FundOpeningPositions_FundOpeningPositionReservePositionETPBalances:
+      type: object
+      required:
+      - Unclassified
+      properties:
+        Unclassified:
+          type: number
+          format: decimal
+    FundOpeningPositions_FundOpeningPositionReservePositionPreservationBalances:
+      type: object
+      required:
+      - Unclassified
+      properties:
+        Unclassified:
+          type: number
+          format: decimal
+    FundOpeningPositions_MemberPreviousConcessional:
+      type: object
+      required:
+      - MemberCode
+      - ConcessionalDetailFields
+      properties:
+        MemberCode:
+          type: string
+        ConcessionalDetailFields:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundOpeningPositions_ConcessionalDetailField'
+    FundOpeningPositions_MemberPreviousNonConcessional:
+      type: object
+      required:
+      - MemberCode
+      - TotalPreviousNonConcessional
+      - BFRRule
+      properties:
+        MemberCode:
+          type: string
+        TotalPreviousNonConcessional:
+          type: number
+          format: decimal
+        BFRRule:
+          type: string
+    FundOpeningPositions_TrustPriorYearOperatingStatementComparativeModel:
+      type: object
+      required:
+      - BeneficiaryDistributions
+      properties:
+        PriorYearRetainedEarningsAmount:
+          type: number
+          format: decimal
+        TrustIncomeDefinitionAdjustmentToProfitAmount:
+          type: number
+          format: decimal
+        CapitalLossTransferAmount:
+          type: number
+          format: decimal
+        AssetRevaluationAmount:
+          type: number
+          format: decimal
+        BeneficiaryDistributions:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundOpeningPositions_BeneficiaryDistribution'
+    FundPolicyGSTStatusCode:
+      type: string
+      enum:
+      - Registered
+      - NonRegistered
+      - Cancelled
+    FundPolicyGSTTaxPeriodCode:
+      type: string
+      enum:
+      - Item
+      - Annually
+      - Monthly
+      - Quarterly
+    FundTbarHistory_FundTbarHistory:
+      type: object
+      required:
+      - FundDetails
+      - FundTbarDetails
+      properties:
+        FundDetails:
+          $ref: '#/components/schemas/FundTbarHistory_FundTbarHistoryFundDetails'
+        FundTbarDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundTbarHistory_FundTbarHistoryFundTbarDetail'
+    FundTbarHistory_FundTbarHistoryFundDetails:
+      type: object
+      required:
+      - Code
+      properties:
+        Code:
+          type: string
+    FundTbarHistory_FundTbarHistoryFundTbarDetail:
+      type: object
+      required:
+      - MemberCode
+      - PensionAccountName
+      - EventDate
+      - EventType
+      - Description
+      - Amount
+      - LodgmentStatus
+      properties:
+        MemberCode:
+          type: string
+        PensionAccountName:
+          type: string
+        EventDate:
+          type: string
+          format: date
+        EventType:
+          type: string
+        Description:
+          type: string
+        Amount:
+          type: number
+          format: decimal
+        LodgmentStatus:
+          type: string
+    Gender:
+      type: string
+      enum:
+      - Male
+      - Female
+      - Other
+      - NotStated
+    HoldingAccountExternalIdentifierType:
+      type: string
+      enum:
+      - Item
+      - Hin
+      - Srn
+      - WrapAccount
+      - ExternalId
+      - AccountNumber
+    HoldingTypeForGst:
+      type: string
+      enum:
+      - DoesNotAttractGst
+      - AttractsGst
+    InvestmentData_Link:
+      type: object
+      required:
+      - Url
+      - Relation
+      properties:
+        Url:
+          type: string
+        Relation:
+          type: string
+    MarketTypeCode:
+      type: string
+      enum:
+      - BK
+      - CM
+      - LD
+      - LM
+      - MF
+      - MM
+      - PD
+      - SP
+      - UN
+      - Platform
+      - FOR
+      - TD
+    PensionProductType:
+      type: string
+      enum:
+      - AccountBased
+      - AllocatedPension
+      - Complying
+      - Flexi
+      - NonCommutableAllocatedPension
+      - TAPS
+    PortfolioScope:
+      type: object
+      required:
+      - Id
+      - Name
+      - Code
+      - link
+      properties:
+        Id:
+          type: string
+        Name:
+          type: string
+        Code:
+          type: string
+        link:
+          $ref: '#/components/schemas/InvestmentData_Link'
+    QuickAddLinkType:
+      type: string
+      enum:
+      - General
+      - InvestmentAccount
+    QuickAddLinks:
+      type: object
+      required:
+      - LinkType
+      - Editor
+      - Refresh
+      - Validate
+      - EditorRouteName
+      - RefreshRouteName
+      - ValidateRouteName
+      - EditorRouteValues
+      - RefreshRouteValues
+      - ValidateRouteValues
+      - HasWriteAccess
+      - EnableRemoteValidation
+      - SecurityIssueCodes
+      properties:
+        LinkType:
+          $ref: '#/components/schemas/QuickAddLinkType'
+        Editor:
+          $ref: '#/components/schemas/RestLink'
+        Refresh:
+          $ref: '#/components/schemas/RestLink'
+        Validate:
+          $ref: '#/components/schemas/RestLink'
+        EditorRouteName:
+          type: string
+        RefreshRouteName:
+          type: string
+        ValidateRouteName:
+          type: string
+        EditorRouteValues:
+          $ref: '#/components/schemas/RouteValues'
+        RefreshRouteValues:
+          $ref: '#/components/schemas/RouteValues'
+        ValidateRouteValues:
+          $ref: '#/components/schemas/RouteValues'
+        HasWriteAccess:
+          type: boolean
+        EnableRemoteValidation:
+          type: boolean
+        SecurityIssueCodes:
+          type: array
+          items:
+            type: string
+    RenderMode:
+      type: string
+      enum:
+      - DropDownList
+      - AutoComplete
+      - MultiSelect
+      - DropDownGrid
+      - AutoCompleteWithGrid
+    RestLink:
+      type: object
+      required:
+      - Id
+      - Code
+      - ScopeCode
+      - Uid
+      - Description
+      properties:
+        Id:
+          type: string
+        Code:
+          type: string
+        ScopeCode:
+          type: string
+        Uid:
+          type: string
+        Description:
+          type: string
+    RestSelectableItem:
+      type: object
+      required:
+      - SelectedValue
+      - SelectedValues
+      - DefaultValue
+      - EmptySelectionText
+      - AllowedValues
+      - NoEmptySelection
+      - NoDefaultSelection
+      - SortByText
+      - UseKendoWidgets
+      - UseDescriptionAsValueInKendoWidgets
+      - EnableAddingNewOptions
+      - RenderMode
+      - DropDownGridColumnConfigs
+      - RenderDeferred
+      - QuickAdd
+      - SelectedDescription
+      - SelectedDescriptions
+      - Required
+      - DEFAULT_OPTION_TEXT
+      properties:
+        SelectedValue:
+          type: string
+        SelectedValues:
+          type: array
+          items:
+            type: string
+        DefaultValue:
+          type: string
+        EmptySelectionText:
+          type: string
+        AllowedValues:
+          type: array
+          items:
+            $ref: '#/components/schemas/RestSelectableItem_AllowedValue'
+        NoEmptySelection:
+          type: boolean
+        NoDefaultSelection:
+          type: boolean
+        SortByText:
+          type: boolean
+        UseKendoWidgets:
+          type: boolean
+        UseDescriptionAsValueInKendoWidgets:
+          type: boolean
+        EnableAddingNewOptions:
+          type: boolean
+        RenderMode:
+          $ref: '#/components/schemas/RenderMode'
+        DropdownHeightInPixels:
+          type: integer
+          format: int32
+        DropDownGridColumnConfigs:
+          type: array
+          items:
+            $ref: '#/components/schemas/RestSelectableItem_DropDownGridColumnConfig'
+        RenderDeferred:
+          type: boolean
+        QuickAdd:
+          $ref: '#/components/schemas/QuickAddLinks'
+        SelectedDescription:
+          type: string
+        SelectedDescriptions:
+          type: array
+          items:
+            type: string
+        Required:
+          type: boolean
+        DEFAULT_OPTION_TEXT:
+          type: string
+    RestSelectableItem_AllowedValue:
+      type: object
+      required:
+      - Value
+      - Description
+      - Url
+      - Grouping
+      - GridColumnData
+      properties:
+        Value:
+          type: string
+        Description:
+          type: string
+        Url:
+          type: string
+        Grouping:
+          type: string
+        GridColumnData:
+          type: array
+          items:
+            $ref: '#/components/schemas/stringCustomModel'
+    RestSelectableItem_DropDownGridColumnConfig:
+      type: object
+      required:
+      - DataField
+      - IsBasicData
+      - HeaderName
+      - Searchable
+      properties:
+        DataField:
+          type: string
+        IsBasicData:
+          type: boolean
+        HeaderName:
+          type: string
+        WidthInEms:
+          type: number
+          format: decimal
+        Searchable:
+          type: boolean
+    RouteValues:
+      type: object
+      required:
+      - reference
+      - filterString
+      - effectiveStatuses
+      properties:
+        reference:
+          type: integer
+          format: int32
+        filterString:
+          type: string
+        effectiveStatuses:
+          $ref: '#/components/schemas/EffectiveStatuses'
+    StandardApiResponse:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/ApiResponseBase'
+    TrustDeedJurisdiction:
+      type: string
+      enum:
+      - Item
+      - ACT
+      - WA
+      - VIC
+      - SA
+      - NSW
+      - TAS
+      - QLD
+      - NT
+    TrustDeedType:
+      type: string
+      enum:
+      - Establishment
+      - Amendment
+      - RetirementAndAppointment
+      - Upgrade
+    TrustRoles:
+      type: string
+      enum:
+      - Beneficiary
+      - Trustee
+      - BeneficiaryAndTrustee
+    TrustTypes:
+      type: number
+      enum:
+      - 67
+      - 68
+      - 70
+      - 72
+      - 73
+      - 77
+      - 80
+      - 81
+      - 83
+      - 84
+      - 85
+    VoiceContactType:
+      type: string
+      enum:
+      - Home
+      - Mobile
+      - Work
+      - Business
+      - Direct
+    WrittenContactType:
+      type: string
+      enum:
+      - Email
+      - MailingAddress
+      - Fax
+      - PhysicalAddress
+    bool:
+      type: object
+      required:
+      - TrueString
+      - FalseString
+      properties:
+        TrueString:
+          type: string
+        FalseString:
+          type: string
+    stringCustomModel:
+      type: object
+      required:
+      - key
+      - value
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+    InternalErrorCommon:
+      type: object
+      properties:
+        Code:
+          type: string
+          example: API_INTERNAL_ERROR
+        Message:
+          type: string
+          example: An unexpected error occurred on the server. Please try again later.
+      xml:
+        name: Error
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          nullable: true
+        message:
+          type: string
+          nullable: true
+      additionalProperties: false
+    ForbiddenErrorCommon:
+      type: object
+      properties:
+        Code:
+          type: string
+          example: FORBIDDEN
+        Message:
+          type: string
+          example: You do not have permission to access this resource.
+      xml:
+        name: Error
+    ResourceUnavailableErrorCommon:
+      type: object
+      properties:
+        Code:
+          type: string
+          example: API_NOT_FOUND
+        Message:
+          type: string
+          example: Resource not available or user does not have access to the fund.
+      xml:
+        name: Error
+    UnauthorizedErrorCommon:
+      type: object
+      properties:
+        Code:
+          type: string
+          example: API_NOT_AUTHORISED
+        Message:
+          type: string
+          example: Not authorised
+      xml:
+        name: Error
+        wrapped: false
+  securitySchemes:
+    Class_oAuth:
+      type: oauth2
+      description: Class uses oAuth2 and OpenID for authentication and authorisation
+      flows:
+        authorizationCode:
+          authorizationUrl: 'https://app.class-test.com.au/connect/authorize'
+          tokenUrl: 'https://app.class-test.com.au/connect/token'
+          scopes:
+            business.fund.list: List summarised data of funds in the business
+            business.fund.create: Create new funds in the business
+            fund.details.read: View basic fund details
+            fund.details.maintain: View and maintain basic fund details
+            fund.member.read: View member details
+            fund.member.maintain: View and maintain member details
+            fund.read: View all fund information
+            fund.maintain: View and maintain all fund information
+        clientCredentials:
+          tokenUrl: 'https://app.class-test.com.au/connect/token'
+          scopes:
+            business.fund.list: List summarised data of funds in the business
+            business.fund.create: Create new funds in the business
+            fund.details.read: View basic fund details
+            fund.details.maintain: View and maintain basic fund details
+            fund.member.read: View member details
+            fund.member.maintain: View and maintain member details
+            fund.read: View all fund information
+            fund.maintain: View and maintain all fund information

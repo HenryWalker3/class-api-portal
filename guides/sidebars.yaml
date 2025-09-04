@@ -1,0 +1,6 @@
+- group: Guides
+  items:
+    - page: ./practice-management.md
+      label: Practice Management Overview
+    - page: ./specs/practice-management-guide.yaml
+      label: Practice Management API Documentation

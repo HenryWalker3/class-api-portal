@@ -1,4 +1,3 @@
-```markdown
 # OAuth 2.0 Authorization Code Flow – Class API
 
 This guide explains how to obtain **access tokens**, **refresh tokens**, and **ID tokens** using the [OAuth 2.0 Authorization Code Flow](http://tools.ietf.org/html/rfc6749#section-4.1). Access tokens let you interact with the Class API for SMSF data, transactions, and accounting reports.
@@ -35,7 +34,6 @@ Authorization: Basic PGNsaWVudF9pZD46PGNsaWVudF9zZWNyZXTvu78+
 ```
 
 ---
-
 ## Step 3: Authorization Request
 
 The authorization request prompts the user for consent, then redirects them to the specified `redirect_uri`. If successful, the redirect includes an authorization `code`.

@@ -2,7 +2,11 @@ reunite:
   ignoreLint: true
   # ignoreLinkChecker: true
 extends:
-  - minimal
+  - recommended
+
+apis:
+  accounting-reports:
+    root: ./apis/accounting-reports-final.yaml
 
 links:
   # HDS requirements
@@ -27,20 +31,54 @@ seo:
   title: Warp API
   description: Warp is the groundbreaking API that allows you to navigate, manipulate, and control time.
 
+colorMode: 
+  hide: true
+
+#reunite:
+#  ignoreLinkChecker: false
+  
+developerOnboarding:
+  adapters:
+    - type: APIGEE_X
+      organizationName: class-apigee-nonprod
+      ignoreApiProducts:
+        - class-partner-api-v1
+      auth:
+        type: SERVICE_ACCOUNT
+        serviceAccountEmail: DavidL@class-apigee-nonprod.iam.gserviceaccount.com
+        serviceAccountPrivateKey: '{{ process.env.PROCESS_ENV_MAIN_PRIVATE_KEY }}'
+      allowApiProductsOutsideCatalog: true
+      
 navbar:
   items:
-    - page: tutorials/index.md
-      label: Missions
-    - page: guides/index.md
-      label: Guides
-    # - page: apis/index.yaml
-    #   label: API Reference
+    - page: /gettingstarted/getting-started.md
+      label: Getting Started
+    - page: /apis
+      label: API Reference
+    - group: Resources
+      items:
+        - page: resources/overview.md
+          label: Resources Overview
+        - page: resources/authorization-code-flow.md
+          label: Authorization Code Flow
+        - page: resources/rate-limiting.md
+          label: Rate Limiting
+        - page: resources/refresh-tokens.md
+          label: Refresh Token
+    - group: Guides
+      items: 
+        - page: guides/practice-management.md
+          label: Practice Management  
     - page: tools/index.md
-      label: Tools
-    - page: changelog.md
-      label: Changelog
-    - page: about.md
-      label: About this template
+      label: Change Log
+    - page: announcements.md
+      label: Announcements
+
+
+
+mockServer:
+  off: true 
+
 markdown:
   toc:
     depth: 2
@@ -49,13 +87,50 @@ logo:
   link: /
 footer:
   copyrightText: Copyleft © Redocly Inc. No rights reserved.
-  # items:
-  #   - page: legal/terms.md
-  #     label: Terms
-  #   - page: legal/responsible-use.md
-  #     label: Responsible Use
-  #   - href: /
-  #     label: Cookies
-requiresLogin: true
 sso:
   - GUEST
+  
+rbac:
+  reunite:
+    anonymous: none
+    authenticated: write
+    Admins: admin
+    Developers: maintain
+    Writers: write
+
+
+openapi: 
+  layout: 'three-panel'
+  codeSamples: 
+      languages: 
+      - lang: 'curl'
+        label: 'cURL'
+      - lang: 'C#'
+        label: 'C#'
+      - lang: 'Python'
+        label: 'Python'
+      - lang: 'JavaScript'
+        label: 'JavaScript'
+  hideSchemaTitles: true
+  hideReplay: true
+
+catalogClassic:
+  business:
+    title: API Reference
+    description: 'Discover our APIs'
+    slug: /apis/
+    items:
+      - directory: ./apis
+        flatten: true
+        includeByMetadata:
+          type: [openapi, graphql]
+    filters:
+      - title: Product
+        property: tags
+        options: [Partner, ACP]
+        type: checkboxes
+      - title: API Status
+        property: tags
+        options: [deprecated, active]
+        type: checkboxes
+

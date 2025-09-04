@@ -1,0 +1,14 @@
+- group: Resources
+  items:
+    - page: ./overview.md
+      label: Overview
+    - page: ./authorization-code-flow.md
+      label: Authorization Code Flow
+    - page: ./authorisation-scopes.md
+      label: Authorization Scopes
+    - page: ./rate-limiting.md
+      label: Rate Limiting
+    - page: ./resource-owner-password-flow.md
+      label: Resource Owner Password Flow
+    - page: ./refresh-tokens.md
+      label: Refresh Token

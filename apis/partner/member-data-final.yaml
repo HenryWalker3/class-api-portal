@@ -1,0 +1,1571 @@
+openapi: 3.0.1
+info:
+  x-metadata:
+    apiId: class-partner-api-v1
+    tags:
+      - Partner
+  title: Member Data API
+  version: 1.0.0000
+  description: |
+   The Member Data API provides access to member-related information 
+   within a specified fund, enabling authorized users 
+   to retrieve and manage member accounts and details. 
+   It supports querying member accounts, retrieving summaries and 
+   detailed member information, and updating member details.
+
+
+   Environments:
+   - PIE base url: https://apigateway.class-pie.com.au
+   - Production base url: https://apigateway.class.com.au
+
+servers:
+  - url: https://apigateway.class-test.com.au/api/1.0
+    description: Test Environment
+
+
+paths:
+  /f/{businessCode}/{fundCode}/member-data/find-member-accounts/{query}:
+    get:
+      operationId: findMemberAccounts
+      summary: findMemberAccounts
+      description: Searches for member accounts within a specified fund using a query parameter. Returns account details including ID, description, type, balance, status, and member name.
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - name: query
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/MemberData_FindMemberAccountQuery'
+      responses:
+        '200':
+          description: Success (Ok)
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/MemberData_MemberAccount'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400':
+          description: Error Message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+                      wrapped: true
+                      name: Errors
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnauthorizedErrorCommon'
+            application/xml:
+              schema:
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xmlns:xsd="http://www.w3.org/2001/XMLSchema-instance"
+                type: object
+                properties:
+                  Errors:
+                    type: object
+                    properties:
+                      ApiError:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/UnauthorizedErrorCommon'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        '404':
+          description: Resource not available or user does not have access to the
+            fund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      security:
+      - Class_oAuth:
+        - fund.member.read
+  /f/{businessCode}/{fundCode}/member-data/find-members/{query}:
+    get:
+      operationId: findMembers
+      summary: findMembers
+      description: Retrieves a list of member summaries for a specified fund. Returns basic member details such as member number, status, and default display name.
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - name: query
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/MemberData_FindMembersQuery'
+      responses:
+        '200':
+          description: Success (Ok)
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MemberData_MemberSummaryList'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400':
+          description: Error Message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+                      wrapped: true
+                      name: Errors
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnauthorizedErrorCommon'
+            application/xml:
+              schema:
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xmlns:xsd="http://www.w3.org/2001/XMLSchema-instance"
+                type: object
+                properties:
+                  Errors:
+                    type: object
+                    properties:
+                      ApiError:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/UnauthorizedErrorCommon'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        '404':
+          description: Resource not available or user does not have access to the
+            fund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      security:
+      - Class_oAuth:
+        - fund.member.read
+  /f/{businessCode}/{fundCode}/member-data/member-list:
+    get:
+      operationId: memberList
+      summary: memberList
+      description: The list of all the members within the fund with basic details.
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      responses:
+        '200':
+          description: Success (Ok)
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MemberData_MemberSummaryList'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400':
+          description: Error Message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+                      wrapped: true
+                      name: Errors
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnauthorizedErrorCommon'
+            application/xml:
+              schema:
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xmlns:xsd="http://www.w3.org/2001/XMLSchema-instance"
+                type: object
+                properties:
+                  Errors:
+                    type: object
+                    properties:
+                      ApiError:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/UnauthorizedErrorCommon'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        '404':
+          description: Resource not available or user does not have access to the
+            fund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      security:
+      - Class_oAuth:
+        - fund.member.read
+  /f/{businessCode}/{fundCode}/member-data/member-detail:
+    get:
+      operationId: getMembersDetail
+      summary: getMembersDetail
+      description: The list of all the members within the fund with basic details.
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      responses:
+        '200':
+          description: Success (Ok)
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/MemberData_MemberDetail'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400':
+          description: Error Message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+                      wrapped: true
+                      name: Errors
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnauthorizedErrorCommon'
+            application/xml:
+              schema:
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xmlns:xsd="http://www.w3.org/2001/XMLSchema-instance"
+                type: object
+                properties:
+                  Errors:
+                    type: object
+                    properties:
+                      ApiError:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/UnauthorizedErrorCommon'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        '404':
+          description: Resource not available or user does not have access to the
+            fund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      security:
+      - Class_oAuth:
+        - fund.member.read
+  /f/{businessCode}/{fundCode}/member-data/member-detail/{id}:
+    get:
+      operationId: getMemberDetail
+      summary: getMemberDetail
+      description: The complete details of a member within the fund.
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/Api_RequestId'
+      responses:
+        '200':
+          description: Success (Ok)
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/MemberData_MemberDetail'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400':
+          description: Error Message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+                      wrapped: true
+                      name: Errors
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnauthorizedErrorCommon'
+            application/xml:
+              schema:
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xmlns:xsd="http://www.w3.org/2001/XMLSchema-instance"
+                type: object
+                properties:
+                  Errors:
+                    type: object
+                    properties:
+                      ApiError:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/UnauthorizedErrorCommon'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        '404':
+          description: Resource not available or user does not have access to the
+            fund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      security:
+      - Class_oAuth:
+        - fund.member.read
+    post:
+      operationId: postMemberDetail
+      summary: postMemberDetail
+      description: Update the complete details of a member within the fund.
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/Api_RequestId'
+      responses:
+        '200':
+          description: Success (Ok)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardApiResponse'
+        '400':
+          description: Error Message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+                      wrapped: true
+                      name: Errors
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnauthorizedErrorCommon'
+            application/xml:
+              schema:
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xmlns:xsd="http://www.w3.org/2001/XMLSchema-instance"
+                type: object
+                properties:
+                  Errors:
+                    type: object
+                    properties:
+                      ApiError:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/UnauthorizedErrorCommon'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        '404':
+          description: Resource not available or user does not have access to the
+            fund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MemberData_MemberDetail'
+      security:
+      - Class_oAuth:
+        - fund.member.maintain
+components:
+  parameters:
+    fundCodeParam:
+      name: fundCode
+      description: Class entity code
+      in: path
+      required: true
+      schema:
+        type: string
+        example: demo-fund
+    businessCodeParam:
+      name: businessCode
+      in: path
+      description: Class business code
+      required: true
+      schema:
+        type: string
+        example: demo-business
+  
+  schemas:
+    ApiError:
+      type: object
+      required:
+      - Code
+      - Message
+      properties:
+        Code:
+          type: string
+        Message:
+          type: string
+    ApiResponseBase:
+      type: object
+      required:
+      - ErrorCodes
+      - Errors
+      - CreatedUri
+      - IsCreatedResponse
+      properties:
+        ErrorCodes:
+          type: array
+          items:
+            type: string
+        Errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+        CreatedUri:
+          type: string
+        IsCreatedResponse:
+          type: boolean
+    ApiRestLink:
+      type: object
+      required:
+      - Id
+      - Url
+      properties:
+        Id:
+          type: string
+        Url:
+          type: string
+    Api_RequestId:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          $ref: '#/components/schemas/guid'
+    EffectiveStatuses:
+      type: string
+      enum:
+      - All
+      - ActiveOnly
+      - Default
+    Gender:
+      type: string
+      enum:
+      - Male
+      - Female
+      - Other
+      - NotStated
+    MemberData_FindMemberAccountQuery:
+      type: object
+      required:
+      - FundId
+      properties:
+        FundId:
+          $ref: '#/components/schemas/Api_RequestId'
+        EffectiveStatuses:
+          $ref: '#/components/schemas/EffectiveStatuses'
+    MemberData_FindMembersQuery:
+      type: object
+      required:
+      - FundId
+      properties:
+        FundId:
+          $ref: '#/components/schemas/Api_RequestId'
+        EffectiveStatuses:
+          $ref: '#/components/schemas/EffectiveStatuses'
+    MemberData_MemberAccount:
+      type: object
+      required:
+      - Id
+      - Description
+      - Type
+      - Balance
+      - Status
+      - MemberName
+      properties:
+        Id:
+          type: string
+        Description:
+          type: string
+        Type:
+          type: string
+        Balance:
+          type: number
+          format: decimal
+        Status:
+          $ref: '#/components/schemas/StatusCode'
+        MemberName:
+          type: string
+    MemberData_MemberDetail:
+      type: object
+      required:
+      - Link
+      - Status
+      - PersonalDetails
+      - MembersDetails
+      - ContactDetails
+      - BeneficiaryDetails
+      - MemberTransitionDetails
+      properties:
+        Link:
+          $ref: '#/components/schemas/ApiRestLink'
+        Status:
+          $ref: '#/components/schemas/StatusCode'
+        PersonalDetails:
+          $ref: '#/components/schemas/MemberDetail_PersonalDetail'
+        MembersDetails:
+          $ref: '#/components/schemas/MemberDetail_MemberDetails'
+        ContactDetails:
+          $ref: '#/components/schemas/MemberDetail_MemberContactDetail'
+        BeneficiaryDetails:
+          $ref: '#/components/schemas/MemberDetail_BeneficiaryDetail'
+        MemberTransitionDetails:
+          $ref: '#/components/schemas/MemberDetail_MemberTransitionDetail'
+    MemberData_MemberSummary:
+      type: object
+      required:
+      - Link
+      - Status
+      - DefaulDisplayName
+      - MemberNumber
+      properties:
+        Link:
+          $ref: '#/components/schemas/ApiRestLink'
+        Status:
+          $ref: '#/components/schemas/StatusCode'
+        DefaulDisplayName:
+          type: string
+        MemberNumber:
+          type: string
+    MemberData_MemberSummaryList:
+      type: object
+      required:
+      - MemberSummaries
+      properties:
+        MemberSummaries:
+          type: array
+          items:
+            $ref: '#/components/schemas/MemberData_MemberSummary'
+    MemberDetail_BeneficiaryDetail:
+      type: object
+      required:
+      - EffectiveDateSpecified
+      - ExpiryDateSpecified
+      - NominationType
+      - Details
+      properties:
+        EffectiveDate:
+          type: string
+          format: date-time
+        EffectiveDateSpecified:
+          type: boolean
+        ExpiryDate:
+          type: string
+          format: date-time
+        ExpiryDateSpecified:
+          type: boolean
+        NominationType:
+          type: string
+        Details:
+          type: string
+    MemberDetail_InvitationDetail:
+      type: object
+      required:
+      - InvitationStatus
+      - CanInviteUsers
+      - PersistedEmailAddress
+      - MemberId
+      properties:
+        InvitationStatus:
+          $ref: '#/components/schemas/PartyRoleUserInvitationStatus'
+        CanInviteUsers:
+          type: boolean
+        PersistedEmailAddress:
+          type: string
+        MemberId:
+          type: string
+    MemberDetail_MemberContactDetail:
+      type: object
+      required:
+      - HomePhone
+      - WorkPhone
+      - Mobile
+      - Direct
+      - InvitationDetails
+      properties:
+        PreferredVoiceContact:
+          $ref: '#/components/schemas/VoiceContactType'
+        PreferredWrittenContact:
+          $ref: '#/components/schemas/WrittenContactType'
+        HomePhone:
+          type: string
+        WorkPhone:
+          type: string
+        Mobile:
+          type: string
+        Direct:
+          type: string
+        InvitationDetails:
+          $ref: '#/components/schemas/MemberDetail_InvitationDetail'
+    MemberDetail_MemberDetails:
+      type: object
+      required:
+      - Number
+      - LeaveFundDateSpecified
+      - EligibleServicePeriodStartDateSpecified
+      - EligibleServicePeriodStartDateBackupSpecified
+      - AustralianResident
+      - TaxFileNumber
+      - ClaimTaxFreeThreshold
+      - FloodLevyExempt
+      - CentrelinkDVAReferenceNumber
+      properties:
+        Number:
+          type: string
+        JoinFundDate:
+          type: string
+          format: date-time
+        LeaveFundDate:
+          type: string
+          format: date-time
+        LeaveFundDateSpecified:
+          type: boolean
+        EligibleServicePeriodStartDate:
+          type: string
+          format: date-time
+        EligibleServicePeriodStartDateSpecified:
+          type: boolean
+        EligibleServicePeriodStartDateBackup:
+          type: string
+          format: date-time
+        EligibleServicePeriodStartDateBackupSpecified:
+          type: boolean
+        AustralianResident:
+          type: boolean
+        TaxFileNumber:
+          type: string
+        ClaimTaxFreeThreshold:
+          type: boolean
+        DeathSumInsured:
+          type: number
+          format: decimal
+        TpdSumInsured:
+          type: number
+          format: decimal
+        SalaryContinuanceSumInsured:
+          type: number
+          format: decimal
+        FloodLevyExempt:
+          type: boolean
+        CentrelinkDVAReferenceNumber:
+          type: string
+    MemberDetail_MemberTransitionDetail:
+      type: object
+      required:
+      - MemberId
+      - Transitions
+      properties:
+        MemberId:
+          type: string
+        Transitions:
+          type: array
+          items:
+            $ref: '#/components/schemas/MemberTransitionDetail_Transition'
+    MemberDetail_PersonalDetail:
+      type: object
+      required:
+      - Title
+      - FirstName
+      - MiddleNames
+      - LastName
+      - Gender
+      - DateOfDeathSpecified
+      - PreferredSalutation
+      - PreferredName
+      properties:
+        Title:
+          type: string
+        FirstName:
+          type: string
+        MiddleNames:
+          type: string
+        LastName:
+          type: string
+        Gender:
+          $ref: '#/components/schemas/Gender'
+        DateOfBirth:
+          type: string
+          format: date-time
+        DateOfDeath:
+          type: string
+          format: date-time
+        DateOfDeathSpecified:
+          type: boolean
+        PreferredSalutation:
+          type: string
+        PreferredName:
+          type: string
+    MemberTransitionDetail_Transition:
+      type: object
+      required:
+      - TransitionId
+      - Date
+      - Type
+      - Status
+      properties:
+        TransitionId:
+          type: string
+        Date:
+          type: string
+          format: date-time
+        Type:
+          type: string
+        Status:
+          $ref: '#/components/schemas/StatusCode'
+    PartyRoleUserInvitationStatus:
+      type: string
+      enum:
+      - NotApplicable
+      - NotInvited
+      - Invited
+      - AccessGranted
+      - AccessSuspended
+      - CantBeInvited
+    StandardApiResponse:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/ApiResponseBase'
+    StatusCode:
+      type: string
+      enum:
+      - Active
+      - Cancelled
+      - Pending
+      - Suspended
+    VoiceContactType:
+      type: string
+      enum:
+      - Home
+      - Mobile
+      - Work
+      - Business
+      - Direct
+    WrittenContactType:
+      type: string
+      enum:
+      - Email
+      - MailingAddress
+      - Fax
+      - PhysicalAddress
+    guid:
+      type: string
+    InternalErrorCommon:
+      type: object
+      properties:
+        Code:
+          type: string
+          example: API_INTERNAL_ERROR
+        Message:
+          type: string
+          example: An unexpected error occurred on the server. Please try again later.
+      xml:
+        name: Error
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          nullable: true
+        message:
+          type: string
+          nullable: true
+      additionalProperties: false
+    ForbiddenErrorCommon:
+      type: object
+      properties:
+        Code:
+          type: string
+          example: FORBIDDEN
+        Message:
+          type: string
+          example: You do not have permission to access this resource.
+      xml:
+        name: Error
+    ResourceUnavailableErrorCommon:
+      type: object
+      properties:
+        Code:
+          type: string
+          example: API_NOT_FOUND
+        Message:
+          type: string
+          example: Resource not available or user does not have access to the fund.
+      xml:
+        name: Error
+    UnauthorizedErrorCommon:
+      type: object
+      properties:
+        Code:
+          type: string
+          example: API_NOT_AUTHORISED
+        Message:
+          type: string
+          example: Not authorised
+      xml:
+        name: Error
+        wrapped: false
+  securitySchemes:
+    Class_oAuth:
+      type: oauth2
+      description: Class uses oAuth2 and OpenID for authentication and authorisation
+      flows:
+        authorizationCode:
+          authorizationUrl: 'https://app.class-test.com.au/connect/authorize'
+          tokenUrl: 'https://app.class-test.com.au/connect/token'
+          scopes:
+            business.fund.list: List summarised data of funds in the business
+            business.fund.create: Create new funds in the business
+            fund.details.read: View basic fund details
+            fund.details.maintain: View and maintain basic fund details
+            fund.member.read: View member details
+            fund.member.maintain: View and maintain member details
+            fund.read: View all fund information
+            fund.maintain: View and maintain all fund information
+        clientCredentials:
+          tokenUrl: 'https://app.class-test.com.au/connect/token'
+          scopes:
+            business.fund.list: List summarised data of funds in the business
+            business.fund.create: Create new funds in the business
+            fund.details.read: View basic fund details
+            fund.details.maintain: View and maintain basic fund details
+            fund.member.read: View member details
+            fund.member.maintain: View and maintain member details
+            fund.read: View all fund information
+            fund.maintain: View and maintain all fund information

@@ -6,9 +6,10 @@ The **Resource Owner Password Credentials (ROPC)** grant is an OAuth 2.0 flow fo
 With the Resource Owner Password Flow, you can:
 - Authenticate a user by sending their credentials to the authorization server.
 - Obtain an **access token** to call protected Class API endpoints.
-- Optionally receive a **refresh token** (via the `offline_access` scope) and an **ID token** (if supported).
+- To receive a **refresh token** (via the `offline_access` scope) and an **ID token** (if supported).
 
-> **Use ROPC only** for first-party apps that can securely handle user credentials.
+
+![Diagram](/images/resource-owner-password-flow.png)
 
 ---
 
