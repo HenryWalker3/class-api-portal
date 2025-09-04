@@ -1,9 +1,5 @@
 openapi: 3.0.0
 info:
-  x-metadata:
-    apiId: class-partner-api-v1
-    tags:
-      - Partner
   title: Accounting Reports API
   version: 1.0.0000
   description: "The Accounting Reports API provides a comprehensive suite of endpoints \nto generate various financial and accounting reports for funds \nmanaged within Class. It allows users to retrieve detailed \ndata for bank movements, cash reconciliation, depreciation, investment \ntransactions, capital gains, and more.\n\nEnvironments:\n- PIE: https://apigateway.class-pie.com.au/api/1.0\n- Production: https://apigateway.class.com.au/api/1.0\n"
@@ -13,7 +9,7 @@ servers:
 paths:
   /f/{businessCode}/{fundCode}/report-data/accounting-reports/tax-accounting-reconciliation:
     get:
-      Overvfdddfsummary: TaxAccountingReconciliation
+      summary: TaxAccountingReconciliation
       description: Generates a tax accounting reconciliation report for the fund for a specified financial year.
       operationId: taxAccountingReconciliation
       parameters:
