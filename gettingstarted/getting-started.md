@@ -1,1 +1,1 @@
-getting started content
+getting started page
