@@ -12,3 +12,5 @@
       label: Resource Owner Password Flow
     - page: ./refresh-tokens.md
       label: Refresh Token
+    - page: ./authorising-partner-application-api-access.md
+      label: Authorising Partner API Access

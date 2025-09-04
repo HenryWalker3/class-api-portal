@@ -4,3 +4,6 @@ package-lock.json
 
 # Redocly build output
 /build
+
+# Ignore local environment files
+.env

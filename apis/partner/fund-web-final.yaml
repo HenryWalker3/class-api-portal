@@ -1,0 +1,7025 @@
+openapi: 3.0.1
+info:
+  x-metadata:
+    apiId: class-partner-api-v1
+    tags:
+      - Partner
+  title: Member Data API
+  version: 1.0.0000
+  description: |
+   Description
+
+   Environments:
+   - PIE base url: https://apigateway.class-pie.com.au
+   - Production base url: https://apigateway.class.com.au
+
+servers:
+  - url: https://apigateway.class-test.com.au/api/1.0
+    description: Test Environment
+
+
+paths:
+  /f/{businessCode}/{fundCode}/client-view/consolidated-menu:
+    get:
+      operationId: consolidatedMenuOptions
+      parameters:
+      - $ref: '#/components/parameters/versionParam'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/ConsolidatedMenuOptions'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': &id001
+          description: Error Message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorResponse'
+                      wrapped: true
+                      name: Errors
+        '401': &id002
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnauthorizedErrorCommon'
+            application/xml:
+              schema:
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xmlns:xsd="http://www.w3.org/2001/XMLSchema-instance"
+                type: object
+                properties:
+                  Errors:
+                    type: object
+                    properties:
+                      ApiError:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/UnauthorizedErrorCommon'
+        '403': &id003
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ForbiddenErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        '404': &id004
+          description: Resource not available or user does not have access to the
+            fund
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceUnavailableErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        '500': &id005
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        default: &id006
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+            application/xml:
+              schema:
+                type: object
+                properties:
+                  Errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InternalErrorCommon'
+                    xml:
+                      wrapped: true
+                      name: Errors
+                xml:
+                  wrapped: false
+                  name: ApiResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      security:
+      - BearerAuth: []
+  /f/{businessCode}/{fundCode}/fund-web/all-members-statement-with-auditor-details/{startdate}/{enddate}:
+    get:
+      operationId: allMembersStatement
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - $ref: '#/components/parameters/versionParam'
+      - name: startdate
+        in: path
+        required: true
+        schema:
+          type: string
+          format: date-time
+      - name: enddate
+        in: path
+        required: true
+        schema:
+          type: string
+          format: date-time
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/AllMemberStatementsWithAuditorDetails'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/fund-web/asset-class-details/{atdate}:
+    get:
+      operationId: assetClassDetails
+      parameters:
+      - $ref: '#/components/parameters/versionParam'
+      - name: atdate
+        in: path
+        required: true
+        schema:
+          type: string
+          format: date-time
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FundAssetPosition_AssetClassSummary'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/fund-web/bank-accounts:
+    get:
+      operationId: bankAccounts
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - $ref: '#/components/parameters/versionParam'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/BankAccountList'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/fund-web/bank-statement-report:
+    get:
+      operationId: bankStatementReport
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - $ref: '#/components/parameters/versionParam'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/BankStatementReport'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                bankaccountid:
+                  type: string
+                start:
+                  type: string
+                  format: date-time
+                end:
+                  type: string
+                  format: date-time
+              required:
+              - bankaccountid
+              - start
+              - end
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/fund-web/benchmark-options:
+    get:
+      operationId: benchmarkOptions
+      parameters:
+      - $ref: '#/components/parameters/versionParam'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/RestSelectableItem'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/fund-web/contribution-caps:
+    get:
+      operationId: contributionCaps
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - $ref: '#/components/parameters/versionParam'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/MemberContributionCapSummary'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                year:
+                  type: integer
+                  format: int32
+              required:
+              - year
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/fund-web/cv-portfolio-performance-split-enabled:
+    get:
+      operationId: getClientViewPortfolioPerformanceSplitEnabled
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/versionParam'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    type: boolean
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/fund-web/detailed-fund-asset-position/{atdate}:
+    get:
+      operationId: detailedFundAssetPosition
+      parameters:
+      - $ref: '#/components/parameters/versionParam'
+      - name: atdate
+        in: path
+        required: true
+        schema:
+          type: string
+          format: date-time
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/DetailedFundAssetPosition'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                includeassetcodes:
+                  type: boolean
+              required:
+              - includeassetcodes
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/fund-web/fund-asset-position/{atdate}:
+    get:
+      operationId: fundAssetPosition
+      parameters:
+      - $ref: '#/components/parameters/versionParam'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/FundAssetPosition'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/fund-web/fund-deeds:
+    get:
+      operationId: fundDeeds
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - $ref: '#/components/parameters/versionParam'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TrustDeedVersionList'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/fund-web/fund-detail:
+    get:
+      operationId: fundDetails
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - $ref: '#/components/parameters/versionParam'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/FundDetail'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/fund-web/fund-financial-dates:
+    get:
+      operationId: financialDates
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - $ref: '#/components/parameters/versionParam'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    type: string
+                    format: date-time
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/fund-web/fund-relationships:
+    get:
+      operationId: fundRelationships
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - $ref: '#/components/parameters/versionParam'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FundRelationshipsList'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/fund-web/fundweb-settings:
+    get:
+      operationId: fundWebSettings
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - $ref: '#/components/parameters/versionParam'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/FundWebSettings'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/fund-web/gains-source:
+    get:
+      operationId: gainsSource
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - $ref: '#/components/parameters/versionParam'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/GainsSource'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                startyear:
+                  type: integer
+                  format: int32
+                endyear:
+                  type: integer
+                  format: int32
+                includeincomeexpected:
+                  type: boolean
+              required:
+              - startyear
+              - endyear
+              - includeincomeexpected
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/fund-web/holding-performance/{startdate}/{enddate}/{groupby}/{calculationmethod}:
+    get:
+      operationId: holdingPerformanceReport
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - $ref: '#/components/parameters/versionParam'
+      - name: startdate
+        in: path
+        required: true
+        schema:
+          type: string
+          format: date-time
+      - name: enddate
+        in: path
+        required: true
+        schema:
+          type: string
+          format: date-time
+      - name: groupby
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/InvestmentGroupingType'
+      - name: calculationmethod
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/PerformanceCalculationMethod'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InvestmentPerformanceReport_HoldingSummary'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                includeassetcodes:
+                  type: boolean
+              required:
+              - includeassetcodes
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/fund-web/investment-income-by-period/{startdate}/{enddate}/{groupby}:
+    get:
+      operationId: investmentIncomeByPeriod
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - $ref: '#/components/parameters/versionParam'
+      - name: startdate
+        in: path
+        required: true
+        schema:
+          type: string
+          format: date-time
+      - name: enddate
+        in: path
+        required: true
+        schema:
+          type: string
+          format: date-time
+      - name: groupby
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/InvestmentGroupingType'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/InvestmentIncome'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                includeassetcodes:
+                  type: boolean
+              required:
+              - includeassetcodes
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/fund-web/investment-performance-graph:
+    get:
+      operationId: investmentPerformanceGraph
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - $ref: '#/components/parameters/versionParam'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PortfolioPerformanceData'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                startdate:
+                  type: string
+                  format: date-time
+                enddate:
+                  type: string
+                  format: date-time
+                groupby:
+                  $ref: '#/components/schemas/HoldingAccountGrouping'
+                benchmarkid:
+                  type: string
+                usecacheddata:
+                  type: boolean
+              required:
+              - startdate
+              - enddate
+              - groupby
+              - benchmarkid
+              - usecacheddata
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/fund-web/investment-performance/{startdate}/{enddate}/{groupby}/{calculationmethod}:
+    get:
+      operationId: investmentPerformanceReport
+      parameters:
+      - name: startdate
+        in: path
+        required: true
+        schema:
+          type: string
+          format: date-time
+      - name: enddate
+        in: path
+        required: true
+        schema:
+          type: string
+          format: date-time
+      - name: groupby
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/InvestmentGroupingType'
+      - name: calculationmethod
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/PerformanceCalculationMethod'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/InvestmentPerformanceReport'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                includeassetcodes:
+                  type: boolean
+              required:
+              - includeassetcodes
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/fund-web/investment-summary-total/{atdate}/{groupby}:
+    get:
+      operationId: investmentSummaryTotal
+      parameters:
+      - $ref: '#/components/parameters/versionParam'
+      - name: atdate
+        in: path
+        required: true
+        schema:
+          type: string
+          format: date-time
+      - name: groupby
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/InvestmentGroupingType'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    type: number
+                    format: decimal
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                includeassetcodes:
+                  type: boolean
+              required:
+              - includeassetcodes
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/fund-web/investment-summary/{atdate}/{groupby}:
+    get:
+      operationId: investmentSummary
+      parameters:
+      - $ref: '#/components/parameters/versionParam'
+      - name: atdate
+        in: path
+        required: true
+        schema:
+          type: string
+          format: date-time
+      - name: groupby
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/InvestmentGroupingType'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/InvestmentSummary'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                includeassetcodes:
+                  type: boolean
+              required:
+              - includeassetcodes
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/fund-web/latest-bank-movements:
+    get:
+      operationId: latestBankMovements
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - $ref: '#/components/parameters/versionParam'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/LatestBankMovementsSummary'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/fund-web/logo:
+    get:
+      operationId: logo
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - $ref: '#/components/parameters/versionParam'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpResponseMessage'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/fund-web/market-valuation/{usecacheddata}/{usegivenrange}/{serialisationtype}:
+    get:
+      operationId: marketValuation
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - $ref: '#/components/parameters/versionParam'
+      - name: usecacheddata
+        in: path
+        required: true
+        schema:
+          type: boolean
+      - name: usegivenrange
+        in: path
+        required: true
+        schema:
+          type: boolean
+      - name: serialisationtype
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/S3CacheSerializationType'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/MarketValuationResults'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                startdate:
+                  type: string
+                  format: date-time
+                enddate:
+                  type: string
+                  format: date-time
+                marketgrouping:
+                  $ref: '#/components/schemas/MarketValuationGrouping'
+              required:
+              - startdate
+              - enddate
+              - marketgrouping
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/fund-web/member-contribution-cap-data:
+    get:
+      operationId: getMemberContributionCapSavedData
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - $ref: '#/components/parameters/versionParam'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/MemberContributionCapSavedData'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                year:
+                  type: integer
+                  format: int32
+                memberid:
+                  type: string
+              required:
+              - year
+              - memberid
+      security:
+      - BearerAuth: []
+    post:
+      operationId: postMemberContributionCapSavedData
+      parameters:
+      - name: business
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: fund
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardApiResponse'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MemberContributionCapSavedData'
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/fund-web/member-summaries:
+    get:
+      operationId: memberSummaries
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - $ref: '#/components/parameters/versionParam'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MemberList'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                balancedate:
+                  type: string
+                  format: date-time
+              required:
+              - balancedate
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/fund-web/menu:
+    get:
+      operationId: menu
+      parameters:
+      - $ref: '#/components/parameters/versionParam'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/MenuModel'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/fund-web/operating-statement/{startdate}/{enddate}/{issummary}:
+    get:
+      operationId: operatingStatement
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - $ref: '#/components/parameters/versionParam'
+      - name: startdate
+        in: path
+        required: true
+        schema:
+          type: string
+          format: date-time
+      - name: enddate
+        in: path
+        required: true
+        schema:
+          type: string
+          format: date-time
+      - name: issummary
+        in: path
+        required: true
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/OperatingStatement'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/fund-web/password-policy:
+    get:
+      operationId: passwordPolicy
+      parameters:
+      - $ref: '#/components/parameters/versionParam'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/Cryptography_PasswordPolicy'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/fund-web/pension-limits:
+    get:
+      operationId: pensionLimitDetails
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - $ref: '#/components/parameters/versionParam'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/PensionLimitDetails'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                year:
+                  type: integer
+                  format: int32
+              required:
+              - year
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/fund-web/portfolio-child-summary/{atdate}:
+    get:
+      operationId: portfolioChildSummary
+      parameters:
+      - $ref: '#/components/parameters/versionParam'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PortfolioSummaryWithValue'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                includeassetcodes:
+                  type: boolean
+              required:
+              - includeassetcodes
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/fund-web/portfolio-detail:
+    get:
+      operationId: portfolioDetails
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - $ref: '#/components/parameters/versionParam'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/FundDetail'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/fund-web/portfolio-member-summaries:
+    get:
+      operationId: portfolioMemberSummaries
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - $ref: '#/components/parameters/versionParam'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PortfolioMemberList'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                balancedate:
+                  type: string
+                  format: date-time
+              required:
+              - balancedate
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/fund-web/portfolio-performance-data/{startdate}/{enddate}/{usecacheddata}:
+    get:
+      operationId: portfolioPerformanceReportData
+      parameters:
+      - $ref: '#/components/parameters/versionParam'
+      - name: startdate
+        in: path
+        required: true
+        schema:
+          type: string
+          format: date-time
+      - name: enddate
+        in: path
+        required: true
+        schema:
+          type: string
+          format: date-time
+      - name: usecacheddata
+        in: path
+        required: true
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/PortfolioPerformanceDataReport'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                benchmarkid:
+                  type: string
+                includeassetcodes:
+                  type: boolean
+              required:
+              - benchmarkid
+              - includeassetcodes
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/fund-web/published-dates:
+    get:
+      operationId: publishedDates
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - $ref: '#/components/parameters/versionParam'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PublishedDatesList'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/report-data/accounting-reports/cash-reconciliation/{startdate}/{enddate}:
+    get:
+      operationId: cashReconciliation
+      parameters:
+      - $ref: '#/components/parameters/businessCodeParam'
+      - $ref: '#/components/parameters/fundCodeParam'
+      - $ref: '#/components/parameters/versionParam'
+      - name: startdate
+        in: path
+        required: true
+        schema:
+          type: string
+          format: date-time
+      - name: enddate
+        in: path
+        required: true
+        schema:
+          type: string
+          format: date-time
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/CashReconciliationReport'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/report-data/accounting-reports/disposal-capital-gains/{startdate}/{enddate}/{groupby}:
+    get:
+      operationId: realisedCapitalGains
+      parameters:
+      - $ref: '#/components/parameters/versionParam'
+      - name: startdate
+        in: path
+        required: true
+        schema:
+          type: string
+          format: date-time
+      - name: enddate
+        in: path
+        required: true
+        schema:
+          type: string
+          format: date-time
+      - name: groupby
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/InvestmentGroupingType'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/DisposalCapitalGainsSummary'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                includeassetcodes:
+                  type: boolean
+              required:
+              - includeassetcodes
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/report-data/accounting-reports/financial-position-statement/{issummary}:
+    get:
+      operationId: statementOfFinancialPosition
+      parameters:
+      - $ref: '#/components/parameters/versionParam'
+      - name: issummary
+        in: path
+        required: true
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/StatementOfFinancialPosition'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                atdate:
+                  type: string
+                  format: date-time
+              required:
+              - atdate
+      security:
+      - BearerAuth: []
+  /api/1.0/f/{businessCode}/{fundCode}/report-data/accounting-reports/unrealised-capital-gains/{atdate}/{groupby}:
+    get:
+      operationId: unrealisedCapitalGains
+      parameters:
+      - $ref: '#/components/parameters/versionParam'
+      - name: atdate
+        in: path
+        required: true
+        schema:
+          type: string
+          format: date-time
+      - name: groupby
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/InvestmentGroupingType'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    $ref: '#/components/schemas/DisposalCapitalGainsSummary'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                includeassetcodes:
+                  type: boolean
+              required:
+              - includeassetcodes
+      security:
+      - BearerAuth: []
+  /api/1.0/u/client-view/menu-list/{query}:
+    get:
+      operationId: menuListForActivePortfolio
+      parameters:
+      - $ref: '#/components/parameters/versionParam'
+      - name: query
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/ActivePortfolioMenuQuery'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ActivePortfolioMenuList'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      security:
+      - BearerAuth: []
+  /api/1.0/u/client-view/portfolio-list/{query}:
+    get:
+      operationId: myPortfolios
+      parameters:
+      - $ref: '#/components/parameters/versionParam'
+      - name: query
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/PortfolioQuery'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PortfolioList'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      security:
+      - BearerAuth: []
+  /api/1.0/u/fund-web/fund-list:
+    get:
+      operationId: myFunds
+      parameters:
+      - $ref: '#/components/parameters/versionParam'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - Data
+                properties:
+                  Data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FundList'
+                allOf:
+                - $ref: '#/components/schemas/ApiResponseBase'
+        '400': *id001
+        '401': *id002
+        '403': *id003
+        '404': *id004
+        '500': *id005
+        default: *id006
+      security:
+      - BearerAuth: []
+components:
+  schemas:
+    ActivePortfolioMenuList:
+      type: object
+      required:
+      - Total
+      - ConsolidatedPortfolioParent
+      - HasMultipleConsolidatedPortfolioParents
+      - MenuListType
+      - PortfolioSummaries
+      properties:
+        Total:
+          type: integer
+          format: int32
+        ConsolidatedPortfolioParent:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortfolioList_PortfolioSummary'
+        HasMultipleConsolidatedPortfolioParents:
+          type: boolean
+        MenuListType:
+          type: array
+          items:
+            $ref: '#/components/schemas/MenuListType'
+        PortfolioSummaries:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortfolioList_PortfolioSummary'
+    ActivePortfolioMenuQuery:
+      type: object
+      required:
+      - ActivePortfolioId
+      - KnownParentId
+      - ConsolidatedPageSize
+      properties:
+        ActivePortfolioId:
+          type: string
+        KnownParentId:
+          type: string
+        ConsolidatedPageSize:
+          type: integer
+          format: int32
+    Address:
+      type: object
+      required:
+      - AddressLine1
+      - AddressLine2
+      - AddressLine3
+      - Locality
+      - State
+      - Postcode
+      - Country
+      properties:
+        AddressLine1:
+          type: string
+        AddressLine2:
+          type: string
+        AddressLine3:
+          type: string
+        Locality:
+          type: string
+        State:
+          type: string
+        Postcode:
+          type: string
+        Country:
+          type: string
+    AddressSummary:
+      type: object
+      required:
+      - AddressLine1
+      - AddressLine2
+      - AddressLine3
+      - PostCode
+      - Locality
+      - State
+      - Country
+      properties:
+        AddressLine1:
+          type: string
+        AddressLine2:
+          type: string
+        AddressLine3:
+          type: string
+        PostCode:
+          type: string
+        Locality:
+          type: string
+        State:
+          type: string
+        Country:
+          type: string
+    AllMemberStatementsWithAuditorDetails:
+      type: object
+      required:
+      - AllMemberStatements
+      properties:
+        AllMemberStatements:
+          type: array
+          items:
+            $ref: '#/components/schemas/MemberStatementWithAuditorDetails'
+    ApiError:
+      type: object
+      required:
+      - Code
+      - Message
+      properties:
+        Code:
+          type: string
+        Message:
+          type: string
+    ApiResponseBase:
+      type: object
+      required:
+      - ErrorCodes
+      - Errors
+      - CreatedUri
+      - IsCreatedResponse
+      properties:
+        ErrorCodes:
+          type: array
+          items:
+            type: string
+        Errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+        CreatedUri:
+          type: string
+        IsCreatedResponse:
+          type: boolean
+    BankAccount:
+      type: object
+      required:
+      - Id
+      - Name
+      - IsDefaultAccount
+      properties:
+        Id:
+          type: string
+        Name:
+          type: string
+        IsDefaultAccount:
+          type: boolean
+    BankAccountList:
+      type: object
+      required:
+      - BankAccounts
+      properties:
+        BankAccounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/BankAccount'
+    BankStatementReport:
+      type: object
+      required:
+      - FocusId
+      - StartDate
+      - EndDate
+      - HoldingAccountId
+      - OpeningBalance
+      - BankStatementItems
+      - CurrencyCode
+      properties:
+        FocusId:
+          type: string
+        StartDate:
+          type: string
+          format: date-time
+        EndDate:
+          type: string
+          format: date-time
+        HoldingAccountId:
+          type: string
+        OpeningBalance:
+          type: number
+          format: decimal
+        BankStatementItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/BankStatementReport_BankStatementItem'
+        OnSystemStartDate:
+          type: string
+          format: date-time
+        CurrencyCode:
+          type: string
+    BankStatementReport_BankStatementItem:
+      type: object
+      required:
+      - Id
+      - TransactionDate
+      - Description
+      - DebitCreditIndicator
+      - Amount
+      - MatchedAmount
+      - MatchStatus
+      - MatchDetails
+      - CurrencyCode
+      properties:
+        Id:
+          type: string
+        TransactionDate:
+          type: string
+          format: date-time
+        Description:
+          type: string
+        DebitCreditIndicator:
+          $ref: '#/components/schemas/DebitCreditIndicator'
+        Amount:
+          type: number
+          format: decimal
+        MatchedAmount:
+          type: number
+          format: decimal
+        MatchStatus:
+          $ref: '#/components/schemas/MatchStatusType'
+        MatchDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/BankStatementReport_MatchDetail'
+        CurrencyCode:
+          type: string
+    BankStatementReport_MatchDetail:
+      type: object
+      required:
+      - Id
+      - AccountName
+      - Classification
+      - EventTypeId
+      - Description
+      - DistinguishedDate
+      - ValueMatched
+      - MatchStatus
+      - Direction
+      properties:
+        Id:
+          type: string
+        AccountName:
+          type: string
+        Classification:
+          type: string
+        EventTypeId:
+          type: string
+        Description:
+          type: string
+        DistinguishedDate:
+          type: string
+          format: date-time
+        ValueMatched:
+          type: number
+          format: decimal
+        MatchStatus:
+          $ref: '#/components/schemas/MatchStatusType'
+        Direction:
+          $ref: '#/components/schemas/DebitCreditIndicator'
+    CashReconciliationReport:
+      type: object
+      required:
+      - StartDate
+      - EndDate
+      - AccountsPerPortfolio
+      - IsConsolidated
+      - BankAccounts
+      - FundDetails
+      properties:
+        StartDate:
+          type: string
+          format: date-time
+        EndDate:
+          type: string
+          format: date-time
+        AccountsPerPortfolio:
+          type: array
+          items:
+            $ref: '#/components/schemas/CashReconciliationReport_CashRecAccountsPerPortfolio'
+        IsConsolidated:
+          type: boolean
+        BankAccounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/CashReconciliationReport_CashRecBankAccount'
+        FundDetails:
+          $ref: '#/components/schemas/FundReportingDetails'
+    CashReconciliationReport_CashRecAccountEntry:
+      type: object
+      required:
+      - Value
+      - Description
+      properties:
+        Value:
+          type: string
+        Description:
+          type: string
+    CashReconciliationReport_CashRecAccountsPerPortfolio:
+      type: object
+      required:
+      - FundId
+      - FundName
+      - Accounts
+      properties:
+        FundId:
+          type: string
+        FundName:
+          type: string
+        Accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/CashReconciliationReport_CashRecAccountEntry'
+    CashReconciliationReport_CashRecBankAccount:
+      type: object
+      required:
+      - StartDate
+      - EndDate
+      - FundId
+      - FundName
+      - HoldingAccountId
+      - HoldingCode
+      - HoldingDescription
+      - OpeningBalance
+      - ClosingBalance
+      - UnmatchedCredits
+      - UnmatchedDebits
+      - CashReconciliationItems
+      - AccountType
+      - IsForeign
+      - CurrencyCode
+      - IsDefaultAccount
+      properties:
+        StartDate:
+          type: string
+          format: date-time
+        EndDate:
+          type: string
+          format: date-time
+        FundId:
+          type: string
+        FundName:
+          type: string
+        HoldingAccountId:
+          type: string
+        HoldingCode:
+          type: string
+        HoldingDescription:
+          type: string
+        OpeningBalance:
+          type: number
+          format: decimal
+        ClosingBalance:
+          type: number
+          format: decimal
+        UnmatchedCredits:
+          type: number
+          format: decimal
+        UnmatchedDebits:
+          type: number
+          format: decimal
+        CashReconciliationItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/CashReconciliationReport_CashRecItem'
+        AccountType:
+          type: string
+        IsForeign:
+          type: boolean
+        CurrencyCode:
+          type: string
+        IsDefaultAccount:
+          type: boolean
+    CashReconciliationReport_CashRecItem:
+      type: object
+      required:
+      - Id
+      - TransactionDate
+      - Description
+      - Amount
+      - CurrencyCode
+      - MatchedAmount
+      - ResidualAmount
+      - Balance
+      - DebitCreditIndicator
+      - MatchDetails
+      - MatchStatus
+      properties:
+        Id:
+          type: string
+        TransactionDate:
+          type: string
+          format: date-time
+        Description:
+          type: string
+        Amount:
+          type: number
+          format: decimal
+        ForeignAmount:
+          type: number
+          format: decimal
+        CurrencyCode:
+          type: string
+        MatchedAmount:
+          type: number
+          format: decimal
+        ResidualAmount:
+          type: number
+          format: decimal
+        Balance:
+          type: number
+          format: decimal
+        DebitCreditIndicator:
+          $ref: '#/components/schemas/DebitCreditIndicator'
+        MatchDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/CashReconciliationReport_MatchDetail'
+        MatchStatus:
+          $ref: '#/components/schemas/MatchStatusType'
+    CashReconciliationReport_MatchDetail:
+      type: object
+      required:
+      - Id
+      - AccountName
+      - Classification
+      - EventTypeId
+      - Description
+      - DistinguishedDate
+      - ValueMatched
+      - MatchStatus
+      - Direction
+      properties:
+        Id:
+          type: string
+        AccountName:
+          type: string
+        Classification:
+          type: string
+        EventTypeId:
+          type: string
+        Description:
+          type: string
+        DistinguishedDate:
+          type: string
+          format: date-time
+        ValueMatched:
+          type: number
+          format: decimal
+        MatchStatus:
+          $ref: '#/components/schemas/MatchStatusType'
+        Direction:
+          $ref: '#/components/schemas/DebitCreditIndicator'
+    ConsolidatedMenuOptions:
+      type: object
+      required:
+      - ShowContributions
+      - ShowPensions
+      properties:
+        ShowContributions:
+          type: boolean
+        ShowPensions:
+          type: boolean
+    ContributionBreakdown_ContributionBreakdownTotal:
+      type: object
+      required:
+      - ContributionType
+      - ContributionName
+      - Amount
+      properties:
+        ContributionType:
+          type: string
+        ContributionName:
+          type: string
+        Amount:
+          type: number
+          format: decimal
+    ContributionClassificationType:
+      type: string
+      enum:
+      - Concessional
+      - NonConcessional
+      - Other
+      - Adjustment
+    ContributionSummaryRowType:
+      type: string
+      enum:
+      - Generic
+      - Caps
+      - ToThisFund
+      - ToOtherFunds
+      - AsAllocated
+      - AboveCaps
+      - Available
+      - CarryOverCap
+    CostbaseType:
+      type: string
+      enum:
+      - AccountingCostbase
+      - CGTCostbase
+    Cryptography_PasswordPolicy:
+      type: object
+      required:
+      - RequiresMixedCase
+      - RequiresNumbers
+      - RequiresSpecial
+      - CharFrequencyReducesStrength
+      - MinimumCharacterSets
+      - MinimumLength
+      properties:
+        RequiresMixedCase:
+          type: boolean
+        RequiresNumbers:
+          type: boolean
+        RequiresSpecial:
+          type: boolean
+        CharFrequencyReducesStrength:
+          type: boolean
+        MinimumCharacterSets:
+          type: integer
+          format: int32
+        MinimumLength:
+          type: integer
+          format: uint32
+    DateRange:
+      type: object
+      required:
+      - StartPeriodDate
+      - EndPeriodDate
+      - IsEmpty
+      - IsPopulated
+      - NumberOfDaysContained
+      - EpochStart
+      - EpochEnd
+      - MinDatePeriodUpdate
+      properties:
+        StartPeriodDate:
+          type: string
+          format: date-time
+        EndPeriodDate:
+          type: string
+          format: date-time
+        IsEmpty:
+          type: boolean
+        IsPopulated:
+          type: boolean
+        NumberOfDaysContained:
+          type: integer
+          format: int32
+        EpochStart:
+          type: string
+          format: date-time
+        EpochEnd:
+          type: string
+          format: date-time
+        MinDatePeriodUpdate:
+          type: string
+          format: date-time
+    DebitCreditIndicator:
+      type: string
+      enum:
+      - Undefined
+      - Credit
+      - Debit
+    DetailedFundAssetPosition:
+      type: object
+      required:
+      - FundCode
+      - FundName
+      - AtDate
+      - PortfolioAssetPositions
+      properties:
+        FundCode:
+          type: string
+        FundName:
+          type: string
+        AtDate:
+          type: string
+          format: date-time
+        PortfolioAssetPositions:
+          type: array
+          items:
+            $ref: '#/components/schemas/DetailedFundAssetPosition_DetailedPortfolioAssetPosition'
+    DetailedFundAssetPosition_AssetClassBreakdown:
+      type: object
+      required:
+      - Id
+      - Description
+      - AssetClassDescription
+      - MarketValueOfAssetsHeld
+      - UnsettledPositionOnAssetsHeld
+      - TotalValueOfAssetsHeld
+      properties:
+        Id:
+          type: string
+        Description:
+          type: string
+        AssetClassDescription:
+          type: string
+        MarketValueOfAssetsHeld:
+          type: number
+          format: decimal
+        UnsettledPositionOnAssetsHeld:
+          type: number
+          format: decimal
+        TotalValueOfAssetsHeld:
+          type: number
+          format: decimal
+    DetailedFundAssetPosition_AssetClassDesc:
+      type: object
+      required:
+      - Id
+      - Name
+      - StrategyMinPercent
+      - StrategyMaxPercent
+      - TotalMarketValue
+      - TotalUnsettledPosition
+      - TotalValue
+      properties:
+        Id:
+          type: string
+        Name:
+          type: string
+        StrategyMinPercent:
+          type: number
+          format: decimal
+        StrategyMaxPercent:
+          type: number
+          format: decimal
+        TotalMarketValue:
+          type: number
+          format: decimal
+        TotalUnsettledPosition:
+          type: number
+          format: decimal
+        TotalValue:
+          type: number
+          format: decimal
+    DetailedFundAssetPosition_DetailedPortfolioAssetPosition:
+      type: object
+      required:
+      - PortfolioId
+      - PortfolioName
+      - AssetClassDescs
+      - HoldingAssetPositionList
+      - StrategyEffectiveDateSpecified
+      properties:
+        PortfolioId:
+          type: string
+        PortfolioName:
+          type: string
+        AssetClassDescs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DetailedFundAssetPosition_AssetClassDesc'
+        HoldingAssetPositionList:
+          type: array
+          items:
+            $ref: '#/components/schemas/DetailedFundAssetPosition_HoldingAssetPosition'
+        StrategyEffectiveDate:
+          type: string
+          format: date-time
+        StrategyEffectiveDateSpecified:
+          type: boolean
+    DetailedFundAssetPosition_HoldingAssetPosition:
+      type: object
+      required:
+      - Description
+      - Code
+      - MarketType
+      - MarketTypeCode
+      - Reference
+      - Units
+      - MarketPriceSpecified
+      - AssetClassBreakdownList
+      - MarketAndSecurityInfo
+      properties:
+        Description:
+          type: string
+        Code:
+          type: string
+        MarketType:
+          type: string
+        MarketTypeCode:
+          type: string
+        Reference:
+          type: string
+        Units:
+          type: number
+          format: decimal
+        MarketPrice:
+          type: number
+          format: decimal
+        MarketPriceSpecified:
+          type: boolean
+        AssetClassBreakdownList:
+          type: array
+          items:
+            $ref: '#/components/schemas/DetailedFundAssetPosition_AssetClassBreakdown'
+        MarketAndSecurityInfo:
+          $ref: '#/components/schemas/MarketAndSecurityInfo'
+    DisposalCapitalGainsSummary:
+      type: object
+      required:
+      - FundCode
+      - FundName
+      - ErrorCode
+      - Period
+      - PortfolioDetails
+      properties:
+        FundCode:
+          type: string
+        FundName:
+          type: string
+        ErrorCode:
+          type: string
+        Period:
+          type: string
+          format: date-time
+        PortfolioDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/DisposalCapitalGainsSummary_PortfolioDisposalCapitalGainsDetails'
+    DisposalCapitalGainsSummary_CapitalEventDetails:
+      type: object
+      required:
+      - Type
+      - Date
+      - Quantity
+      - MatchedQuantity
+      - BookCost
+      - Proceeds
+      - CapitalLossApplied
+      - Description
+      - ParcelMatches
+      properties:
+        Type:
+          type: string
+        Date:
+          type: string
+          format: date-time
+        Quantity:
+          type: number
+          format: decimal
+        MatchedQuantity:
+          type: number
+          format: decimal
+        BookCost:
+          type: number
+          format: decimal
+        TaxFreeAmount:
+          type: number
+          format: decimal
+        TaxDeferredAmount:
+          type: number
+          format: decimal
+        Proceeds:
+          type: number
+          format: decimal
+        AdjustedCostBase:
+          type: number
+          format: decimal
+        ReducedCostBase:
+          type: number
+          format: decimal
+        IndexedCostBase:
+          type: number
+          format: decimal
+        IndexedGain:
+          type: number
+          format: decimal
+        DiscountableGain:
+          type: number
+          format: decimal
+        OtherGain:
+          type: number
+          format: decimal
+        CapitalLoss:
+          type: number
+          format: decimal
+        CapitalLossApplied:
+          type: number
+          format: decimal
+        AppliedDiscount:
+          type: number
+          format: decimal
+        NetTaxableGain:
+          type: number
+          format: decimal
+        AccountingGainLoss:
+          type: number
+          format: decimal
+        Description:
+          type: string
+        DeferredGain:
+          type: number
+          format: decimal
+        RecognisedDeferredGain:
+          type: number
+          format: decimal
+        ParcelMatches:
+          type: array
+          items:
+            $ref: '#/components/schemas/DisposalCapitalGainsSummary_ParcelMatcheDetails'
+    DisposalCapitalGainsSummary_CategorisedPortfolioCapitalGainDetails:
+      type: object
+      required:
+      - CategoryName
+      - GrossIndexedGain
+      - GrossDiscountGain
+      - GrossOtherGain
+      - GrossCapitalLoss
+      properties:
+        CategoryName:
+          type: string
+        GrossIndexedGain:
+          type: number
+          format: decimal
+        GrossDiscountGain:
+          type: number
+          format: decimal
+        GrossOtherGain:
+          type: number
+          format: decimal
+        GrossCapitalLoss:
+          type: number
+          format: decimal
+    DisposalCapitalGainsSummary_CustomHoldingCapitalGainDetails:
+      type: object
+      required:
+      - AccountId
+      - AccountCode
+      - AccountDescription
+      - GainLossAmount
+      - TaxProvisionRate
+      - TaxProvisionAmount
+      - MarketValue
+      - BookCost
+      properties:
+        AccountId:
+          type: string
+        AccountCode:
+          type: string
+        AccountDescription:
+          type: string
+        GainLossAmount:
+          type: number
+          format: decimal
+        TaxProvisionRate:
+          type: number
+          format: decimal
+        TaxProvisionAmount:
+          type: number
+          format: decimal
+        MarketValue:
+          type: number
+          format: decimal
+        BookCost:
+          type: number
+          format: decimal
+    DisposalCapitalGainsSummary_HoldingDisposalCapitalGainDetails:
+      type: object
+      required:
+      - Name
+      - Grouping
+      - Description
+      - MarketTypeId
+      - MarketAndSecurityInfo
+      - HoldingAccountId
+      - TotalQuantity
+      - TotalProceeds
+      - TotalBookCost
+      - TotalOtherGain
+      - TotalAdjustedCostBase
+      - TotalReducedCostBase
+      - TotalIndexedCostBase
+      - TotalIndexedGain
+      - TotalDiscountableGain
+      - TotalCapitalLoss
+      - TotalDeferredGain
+      - TotalRecognisedDeferredGain
+      - TotalTaxFreeAmount
+      - TotalTaxDeferredAmount
+      - CapitalEvents
+      properties:
+        Name:
+          type: string
+        Grouping:
+          $ref: '#/components/schemas/HoldingGroupingDetails'
+        Description:
+          type: string
+        MarketTypeId:
+          type: string
+        MarketAndSecurityInfo:
+          $ref: '#/components/schemas/MarketAndSecurityInfo'
+        HoldingAccountId:
+          type: string
+        TotalQuantity:
+          type: number
+          format: decimal
+        TotalProceeds:
+          type: number
+          format: decimal
+        TotalBookCost:
+          type: number
+          format: decimal
+        TotalOtherGain:
+          type: number
+          format: decimal
+        TotalAdjustedCostBase:
+          type: number
+          format: decimal
+        TotalReducedCostBase:
+          type: number
+          format: decimal
+        TotalIndexedCostBase:
+          type: number
+          format: decimal
+        TotalIndexedGain:
+          type: number
+          format: decimal
+        TotalDiscountableGain:
+          type: number
+          format: decimal
+        TotalCapitalLoss:
+          type: number
+          format: decimal
+        TotalDeferredGain:
+          type: number
+          format: decimal
+        TotalRecognisedDeferredGain:
+          type: number
+          format: decimal
+        TotalTaxFreeAmount:
+          type: number
+          format: decimal
+        TotalTaxDeferredAmount:
+          type: number
+          format: decimal
+        CapitalEvents:
+          type: array
+          items:
+            $ref: '#/components/schemas/DisposalCapitalGainsSummary_CapitalEventDetails'
+    DisposalCapitalGainsSummary_MarketTypeDetails:
+      type: object
+      required:
+      - MarketTypeId
+      - MarketTypeName
+      - MarketTypeCode
+      - TotalQuantity
+      - TotalProceeds
+      - TotalBookCost
+      - TotalOtherGain
+      - TotalAdjustedCostBase
+      - TotalReducedCostBase
+      - TotalIndexedCostBase
+      - TotalIndexedGain
+      - TotalDiscountableGain
+      - TotalCapitalLoss
+      - TotalDeferredGain
+      - TotalRecognisedDeferredGain
+      - TotalTaxFreeAmount
+      - TotalTaxDeferredAmount
+      - HoldingDetails
+      properties:
+        MarketTypeId:
+          type: string
+        MarketTypeName:
+          type: string
+        MarketTypeCode:
+          type: string
+        TotalQuantity:
+          type: number
+          format: decimal
+        TotalProceeds:
+          type: number
+          format: decimal
+        TotalBookCost:
+          type: number
+          format: decimal
+        TotalOtherGain:
+          type: number
+          format: decimal
+        TotalAdjustedCostBase:
+          type: number
+          format: decimal
+        TotalReducedCostBase:
+          type: number
+          format: decimal
+        TotalIndexedCostBase:
+          type: number
+          format: decimal
+        TotalIndexedGain:
+          type: number
+          format: decimal
+        TotalDiscountableGain:
+          type: number
+          format: decimal
+        TotalCapitalLoss:
+          type: number
+          format: decimal
+        TotalDeferredGain:
+          type: number
+          format: decimal
+        TotalRecognisedDeferredGain:
+          type: number
+          format: decimal
+        TotalTaxFreeAmount:
+          type: number
+          format: decimal
+        TotalTaxDeferredAmount:
+          type: number
+          format: decimal
+        HoldingDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/DisposalCapitalGainsSummary_HoldingDisposalCapitalGainDetails'
+    DisposalCapitalGainsSummary_ParcelMatcheDetails:
+      type: object
+      required:
+      - Type
+      - Date
+      - Quantity
+      - MatchedQuantity
+      - BookCost
+      - Proceeds
+      - CapitalLossApplied
+      - Description
+      properties:
+        Type:
+          type: string
+        Date:
+          type: string
+          format: date-time
+        Quantity:
+          type: number
+          format: decimal
+        MatchedQuantity:
+          type: number
+          format: decimal
+        BookCost:
+          type: number
+          format: decimal
+        TaxFreeAmount:
+          type: number
+          format: decimal
+        TaxDeferredAmount:
+          type: number
+          format: decimal
+        Proceeds:
+          type: number
+          format: decimal
+        AdjustedCostBase:
+          type: number
+          format: decimal
+        ReducedCostBase:
+          type: number
+          format: decimal
+        IndexedCostBase:
+          type: number
+          format: decimal
+        IndexedGain:
+          type: number
+          format: decimal
+        DiscountableGain:
+          type: number
+          format: decimal
+        OtherGain:
+          type: number
+          format: decimal
+        CapitalLoss:
+          type: number
+          format: decimal
+        CapitalLossApplied:
+          type: number
+          format: decimal
+        AppliedDiscount:
+          type: number
+          format: decimal
+        NetTaxableGain:
+          type: number
+          format: decimal
+        Description:
+          type: string
+        DeferredGain:
+          type: number
+          format: decimal
+        RecognisedDeferredGain:
+          type: number
+          format: decimal
+    DisposalCapitalGainsSummary_PortfolioCapitalLossesApplied:
+      type: object
+      required:
+      - CurrentYearIndexed
+      - CurrentYearDiscount
+      - CurrentYearOther
+      - PriorYearsIndexed
+      - PriorYearsDiscount
+      - PriorYearsOther
+      properties:
+        CurrentYearIndexed:
+          type: number
+          format: decimal
+        CurrentYearDiscount:
+          type: number
+          format: decimal
+        CurrentYearOther:
+          type: number
+          format: decimal
+        PriorYearsIndexed:
+          type: number
+          format: decimal
+        PriorYearsDiscount:
+          type: number
+          format: decimal
+        PriorYearsOther:
+          type: number
+          format: decimal
+    DisposalCapitalGainsSummary_PortfolioDisposalCapitalGainsDetails:
+      type: object
+      required:
+      - Name
+      - CapitalLossesApplied
+      - NetCapitalGains
+      - CustomHoldingCapitalGainDetails
+      - MarketTypeDetails
+      - CategorisedCapitalGainDetails
+      properties:
+        Name:
+          type: string
+        CapitalLossesApplied:
+          $ref: '#/components/schemas/DisposalCapitalGainsSummary_PortfolioCapitalLossesApplied'
+        NetCapitalGains:
+          $ref: '#/components/schemas/DisposalCapitalGainsSummary_PortfolioNetCapitalGains'
+        CustomHoldingCapitalGainDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/DisposalCapitalGainsSummary_CustomHoldingCapitalGainDetails'
+        MarketTypeDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/DisposalCapitalGainsSummary_MarketTypeDetails'
+        CategorisedCapitalGainDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/DisposalCapitalGainsSummary_CategorisedPortfolioCapitalGainDetails'
+    DisposalCapitalGainsSummary_PortfolioNetCapitalGains:
+      type: object
+      required:
+      - NetIndexedAfterLosses
+      - NetDiscountAfterLosses
+      - NetOtherAfterLosses
+      - DiscountAmount
+      properties:
+        NetIndexedAfterLosses:
+          type: number
+          format: decimal
+        NetDiscountAfterLosses:
+          type: number
+          format: decimal
+        NetOtherAfterLosses:
+          type: number
+          format: decimal
+        DiscountAmount:
+          type: number
+          format: decimal
+    EffectiveStatuses:
+      type: string
+      enum:
+      - Default
+      - Reportable
+      - Updatable
+      - All
+      - PendingOnly
+      - Selectable
+      - ActiveOnly
+      - CancelledOnly
+      - Inactive
+      - SuspendedOnly
+    ElectronicContact:
+      type: object
+      required:
+      - Name
+      - Value
+      properties:
+        Name:
+          type: string
+        Value:
+          type: string
+    EventMatchSummary_EventDetail:
+      type: object
+      required:
+      - DistinguishedDate
+      - UnmatchedAmount
+      - EventId
+      - EventTypeId
+      - Classification
+      - Description
+      - Evidences
+      - ExtraDetails
+      properties:
+        DistinguishedDate:
+          type: string
+          format: date-time
+        EventValue:
+          type: number
+          format: decimal
+        UnmatchedAmount:
+          type: number
+          format: decimal
+        EventId:
+          type: string
+        EventTypeId:
+          type: string
+        Classification:
+          type: string
+        Description:
+          type: string
+        Evidences:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventMatchSummary_Evidence'
+        ExtraDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventMatchSummary_ExtraEventDetail'
+    EventMatchSummary_Evidence:
+      type: object
+      required:
+      - Direction
+      - Value
+      - ValueMatched
+      - RemainingValue
+      properties:
+        Direction:
+          $ref: '#/components/schemas/DebitCreditIndicator'
+        Value:
+          type: number
+          format: decimal
+        ValueMatched:
+          type: number
+          format: decimal
+        RemainingValue:
+          type: number
+          format: decimal
+    EventMatchSummary_ExtraEventDetail:
+      type: object
+      required:
+      - Label
+      - Value
+      properties:
+        Label:
+          type: string
+        Value:
+          type: string
+    EventMatchSummary_MatchedEventDetail:
+      type: object
+      required:
+      - Event
+      - AccountName
+      - MatchStatus
+      - ValueMatched
+      - Direction
+      properties:
+        Event:
+          $ref: '#/components/schemas/EventMatchSummary_EventDetail'
+        AccountName:
+          type: string
+        MatchStatus:
+          $ref: '#/components/schemas/MatchStatusType'
+        ValueMatched:
+          type: number
+          format: decimal
+        Direction:
+          $ref: '#/components/schemas/DebitCreditIndicator'
+    FundAssetPosition:
+      type: object
+      required:
+      - PortfolioAssetPositions
+      - FundCode
+      - FundName
+      - atDate
+      properties:
+        PortfolioAssetPositions:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundAssetPosition_PortfolioAssetPosition'
+        FundCode:
+          type: string
+        FundName:
+          type: string
+        atDate:
+          type: string
+          format: date-time
+    FundAssetPosition_AssetClassDetails:
+      type: object
+      required:
+      - AssetClassId
+      - AssetClassName
+      - ValueOfAssetsHeld
+      - MarketValueOfAssetsHeld
+      - UnsettledPositionOnAssetsHeld
+      - AssetStrategyMinPercent
+      - AssetStrategyMaxPercent
+      - AssetStrategyOverallPercent
+      - MinimumAdjustmentRequiredValue
+      - MinimumAdjustmentRequiredPercent
+      properties:
+        AssetClassId:
+          type: string
+        AssetClassName:
+          type: string
+        ValueOfAssetsHeld:
+          type: number
+          format: decimal
+        MarketValueOfAssetsHeld:
+          type: number
+          format: decimal
+        UnsettledPositionOnAssetsHeld:
+          type: number
+          format: decimal
+        AssetStrategyMinPercent:
+          type: number
+          format: decimal
+        AssetStrategyMaxPercent:
+          type: number
+          format: decimal
+        AssetStrategyOverallPercent:
+          type: number
+          format: decimal
+        MinimumAdjustmentRequiredValue:
+          type: number
+          format: decimal
+        MinimumAdjustmentRequiredPercent:
+          type: number
+          format: decimal
+    FundAssetPosition_AssetClassSummary:
+      type: object
+      required:
+      - AssetClassId
+      - AssetClassName
+      - MarketValueOfAssetsHeld
+      - AssetStrategyOverallPercent
+      properties:
+        AssetClassId:
+          type: string
+        AssetClassName:
+          type: string
+        MarketValueOfAssetsHeld:
+          type: number
+          format: decimal
+        AssetStrategyOverallPercent:
+          type: number
+          format: decimal
+    FundAssetPosition_PortfolioAssetPosition:
+      type: object
+      required:
+      - PortfolioId
+      - PortfolioName
+      - AssetClassDetailList
+      - OverallValue
+      - AssetPercentagesInvalid
+      - AssetStrategyEffectiveDate
+      properties:
+        PortfolioId:
+          type: string
+        PortfolioName:
+          type: string
+        AssetClassDetailList:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundAssetPosition_AssetClassDetails'
+        OverallValue:
+          type: number
+          format: decimal
+        AssetPercentagesInvalid:
+          type: boolean
+        AssetStrategyEffectiveDate:
+          type: string
+          format: date-time
+    FundAuditorDetails:
+      type: object
+      required:
+      - FundName
+      - FundCode
+      - Period
+      - ABN
+      - TFN
+      - RMP_RiskManagementPlan_DateSpecified
+      - RMS_RiskManagementStrategy_DateSpecified
+      - RSE_RegisterableSuperanuationEntities_License
+      - ApprovedTrusteeName
+      - FundAddress
+      - Telephone
+      - Fax
+      - Auditor_Details
+      properties:
+        FundName:
+          type: string
+        FundCode:
+          type: string
+        Period:
+          type: string
+          format: date-time
+        ABN:
+          type: string
+        TFN:
+          type: string
+        RMP_RiskManagementPlan_Date:
+          type: string
+          format: date-time
+        RMP_RiskManagementPlan_DateSpecified:
+          type: boolean
+        RMS_RiskManagementStrategy_Date:
+          type: string
+          format: date-time
+        RMS_RiskManagementStrategy_DateSpecified:
+          type: boolean
+        RSE_RegisterableSuperanuationEntities_License:
+          type: string
+        ApprovedTrusteeName:
+          type: string
+        FundAddress:
+          $ref: '#/components/schemas/AddressSummary'
+        Telephone:
+          type: string
+        Fax:
+          type: string
+        Auditor_Details:
+          $ref: '#/components/schemas/FundAuditorDetails_AuditorDetails'
+    FundAuditorDetails_AuditorDetails:
+      type: object
+      required:
+      - AuditorName
+      - AuditorAddress
+      - BusinessName
+      - BusinessAddress
+      - Telephone
+      - Fax
+      - ProfessionalOrganisation
+      - ProfessionalRegistrationNumber
+      - TFN
+      properties:
+        AuditorName:
+          type: string
+        AuditorAddress:
+          $ref: '#/components/schemas/AddressSummary'
+        BusinessName:
+          type: string
+        BusinessAddress:
+          $ref: '#/components/schemas/AddressSummary'
+        Telephone:
+          type: string
+        Fax:
+          type: string
+        ProfessionalOrganisation:
+          type: string
+        ProfessionalRegistrationNumber:
+          type: string
+        TFN:
+          type: string
+    FundDetail:
+      type: object
+      required:
+      - TFN
+      - ABN
+      - SFN
+      - RSE
+      - LegalType
+      - StartDate
+      - StartDateSpecified
+      - PhysicalAddress
+      - MailingAddress
+      - UsePhysicalForMailingAddress
+      - PublishedDates
+      - FullCode
+      - FundCode
+      - FundName
+      - IsNonSuper
+      - Phone
+      - Url
+      - Fax
+      - Email
+      properties:
+        TFN:
+          type: string
+        ABN:
+          type: string
+        SFN:
+          type: string
+        RSE:
+          type: string
+        LegalType:
+          $ref: '#/components/schemas/LegalEntityType'
+        StartDate:
+          type: string
+          format: date-time
+        StartDateSpecified:
+          type: boolean
+        OnSystemDate:
+          type: string
+          format: date-time
+        PUpdateDisplayDate:
+          type: string
+          format: date-time
+        PhysicalAddress:
+          $ref: '#/components/schemas/Address'
+        MailingAddress:
+          $ref: '#/components/schemas/Address'
+        UsePhysicalForMailingAddress:
+          type: boolean
+        PublishedDates:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublishedDatesList'
+        FullCode:
+          type: string
+        FundCode:
+          type: string
+        FundName:
+          type: string
+        IsNonSuper:
+          type: boolean
+        Phone:
+          type: string
+        Url:
+          type: string
+        Fax:
+          type: string
+        Email:
+          type: string
+    FundFinancialDates:
+      type: object
+      required:
+      - ThisFinancialYear
+      - ThisFinancialQuarter
+      - PreviousFinancialYear
+      - PreviousFinancialQuarter
+      - ThisFinancialYearLastYear
+      - ThisFinancialQuarterLastYear
+      - PreviousFinancialYearLastYear
+      - PreviousFinancialQuarterLastYear
+      properties:
+        ThisFinancialYear:
+          type: string
+          format: date-time
+        ThisFinancialQuarter:
+          type: string
+          format: date-time
+        PreviousFinancialYear:
+          type: string
+          format: date-time
+        PreviousFinancialQuarter:
+          type: string
+          format: date-time
+        ThisFinancialYearLastYear:
+          type: string
+          format: date-time
+        ThisFinancialQuarterLastYear:
+          type: string
+          format: date-time
+        PreviousFinancialYearLastYear:
+          type: string
+          format: date-time
+        PreviousFinancialQuarterLastYear:
+          type: string
+          format: date-time
+    FundList:
+      type: object
+      required:
+      - FundSummaries
+      properties:
+        FundSummaries:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundList_FundListSummary'
+    FundList_FundListSummary:
+      type: object
+      required:
+      - Id
+      - Url
+      - Description
+      - FundCode
+      - BusinessCode
+      - BrandCode
+      - FriendlyCode
+      - BusinessFriendlyCode
+      - ScopeUrl
+      - FriendlyScopeUrl
+      properties:
+        Id:
+          type: string
+        Url:
+          type: string
+        Description:
+          type: string
+        FundCode:
+          type: string
+        BusinessCode:
+          type: string
+        BrandCode:
+          type: string
+        FriendlyCode:
+          type: string
+        BusinessFriendlyCode:
+          type: string
+        ScopeUrl:
+          type: string
+        FriendlyScopeUrl:
+          type: string
+    FundRelationshipsList:
+      type: object
+      required:
+      - FundRelationships
+      properties:
+        FundRelationships:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundRelationshipsList_FundRelationship'
+    FundRelationshipsList_FundRelationship:
+      type: object
+      required:
+      - Id
+      - Type
+      - Description
+      - Title
+      - FirstName
+      - MiddleNames
+      - FamilyName
+      - MemberNumber
+      - MobileNumber
+      - HomePhoneNumber
+      - DirectPhoneNumber
+      - Email
+      properties:
+        Id:
+          type: string
+        Type:
+          type: string
+        Description:
+          type: string
+        Title:
+          type: string
+        FirstName:
+          type: string
+        MiddleNames:
+          type: string
+        FamilyName:
+          type: string
+        MemberNumber:
+          type: string
+        MobileNumber:
+          type: string
+        HomePhoneNumber:
+          type: string
+        DirectPhoneNumber:
+          type: string
+        Email:
+          type: string
+    FundReportingDetails:
+      type: object
+      required:
+      - FundName
+      - FundCode
+      - PhysicalAddress
+      - PostalAddress
+      - ABN
+      - HasTFN
+      - FundTrusteeSummary
+      - AuditorDetails
+      - Administrator
+      - FundPhone
+      - FundEmail
+      - AccountSequenceNumber
+      properties:
+        FundName:
+          type: string
+        FundCode:
+          type: string
+        PhysicalAddress:
+          $ref: '#/components/schemas/AddressSummary'
+        PostalAddress:
+          $ref: '#/components/schemas/AddressSummary'
+        ABN:
+          type: string
+        HasTFN:
+          type: boolean
+        FundTrusteeSummary:
+          $ref: '#/components/schemas/FundTrusteeSummary'
+        AuditorDetails:
+          $ref: '#/components/schemas/FundAuditorDetails_AuditorDetails'
+        Administrator:
+          $ref: '#/components/schemas/FundReportingDetails_AdministratorDetails'
+        FundPhone:
+          type: string
+        FundEmail:
+          type: string
+        AccountSequenceNumber:
+          type: string
+    FundReportingDetails_AdministratorDetails:
+      type: object
+      required:
+      - Name
+      - PostalAddress
+      properties:
+        Name:
+          type: string
+        PostalAddress:
+          $ref: '#/components/schemas/AddressSummary'
+    FundTrusteeSummary:
+      type: object
+      required:
+      - FundLegalType
+      - FundName
+      - TrusteeNames
+      - TrusteeNamesString
+      - ChairpersonName
+      - ChairpersonGivenName
+      - ChairpersonLastName
+      - ChairpersonPreferredName
+      - ChairpersonPartyId
+      - IsCorporateTrustee
+      - ChairpersonTitle
+      - ChairpersonEmail
+      - ChairpersonEmailSpecified
+      - CorporateTrusteeACN
+      - CorporateTrusteeABN
+      properties:
+        FundLegalType:
+          type: string
+        FundName:
+          type: string
+        TrusteeNames:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundTrusteeSummary_TrusteeName'
+        TrusteeNamesString:
+          type: string
+        ChairpersonName:
+          type: string
+        ChairpersonGivenName:
+          type: string
+        ChairpersonLastName:
+          type: string
+        ChairpersonPreferredName:
+          type: string
+        ChairpersonPartyId:
+          type: string
+        IsCorporateTrustee:
+          type: boolean
+        ChairpersonTitle:
+          type: string
+        ChairpersonEmail:
+          type: string
+        ChairpersonEmailSpecified:
+          type: boolean
+        CorporateTrusteeACN:
+          type: string
+        CorporateTrusteeABN:
+          type: string
+    FundTrusteeSummary_TrusteeName:
+      type: object
+      required:
+      - Id
+      - Name
+      - PartyType
+      - Title
+      - FirstName
+      - MiddleNames
+      - LastName
+      - PreferredName
+      - Email
+      - EmailSpecified
+      - DefaultAddress
+      - DisplayName
+      - IsErrorMessage
+      properties:
+        Id:
+          type: string
+        Name:
+          type: string
+        PartyType:
+          type: string
+        Title:
+          type: string
+        FirstName:
+          type: string
+        MiddleNames:
+          type: string
+        LastName:
+          type: string
+        PreferredName:
+          type: string
+        Email:
+          type: string
+        EmailSpecified:
+          type: boolean
+        DefaultAddress:
+          $ref: '#/components/schemas/AddressSummary'
+        JoinFundDate:
+          type: string
+          format: date-time
+        DisplayName:
+          type: string
+        IsErrorMessage:
+          type: boolean
+    FundWebSetting:
+      type: object
+      required:
+      - FullyQualifiedCode
+      - Value
+      properties:
+        FullyQualifiedCode:
+          type: string
+        Value:
+          type: string
+    FundWebSettings:
+      type: object
+      required:
+      - Settings
+      properties:
+        Settings:
+          type: array
+          items:
+            $ref: '#/components/schemas/FundWebSetting'
+    GainsSource:
+      type: object
+      required:
+      - FundName
+      - FundCode
+      - StartYear
+      - EndYear
+      - YearsGainsSource
+      properties:
+        FundName:
+          type: string
+        FundCode:
+          type: string
+        StartYear:
+          type: integer
+          format: int32
+        EndYear:
+          type: integer
+          format: int32
+        YearsGainsSource:
+          type: array
+          items:
+            $ref: '#/components/schemas/GainsSource_YearGainsSource'
+    GainsSource_YearGainsSource:
+      type: object
+      required:
+      - Year
+      - Income
+      - CapitalGain
+      - Other
+      properties:
+        Year:
+          type: integer
+          format: int32
+        Income:
+          type: number
+          format: decimal
+        CapitalGain:
+          type: number
+          format: decimal
+        Other:
+          type: number
+          format: decimal
+    HoldingAccountGrouping:
+      type: string
+      enum:
+      - Fund
+      - MarketType
+      - AssetClass
+      - AssetPool
+      - Feed
+      - None
+      - GLClassification
+    HoldingAccountType:
+      type: string
+      enum:
+      - BankAccount
+      - ForeignBankAccount
+      - InvestmentAccount
+      - PropertyAccount
+      - CollectibleAccount
+      - PlatformAccount
+      - TermDepositAccount
+    HoldingDailyAccountFlowDetails:
+      type: object
+      required:
+      - FlowAmount
+      - Acquisitions
+      - Disposals
+      properties:
+        FlowAmount:
+          type: number
+          format: decimal
+        Acquisitions:
+          type: number
+          format: decimal
+        Disposals:
+          type: number
+          format: decimal
+    HoldingDailyValuation:
+      type: object
+      required:
+      - HoldingAccountId
+      - HoldingAccountCode
+      - Date
+      - Quantity
+      - QuantityChange
+      - MarketValue
+      - MarketValueChange
+      - WeightInPortfolio
+      - NetMarketValue
+      - NetMarketValueChange
+      properties:
+        HoldingAccountId:
+          type: string
+        HoldingAccountCode:
+          type: string
+        Date:
+          type: string
+          format: date-time
+        Quantity:
+          type: number
+          format: decimal
+        QuantityChange:
+          type: number
+          format: decimal
+        MarketValue:
+          type: number
+          format: decimal
+        MarketValueChange:
+          type: number
+          format: decimal
+        WeightInPortfolio:
+          type: number
+          format: decimal
+        NetMarketValue:
+          type: number
+          format: decimal
+        NetMarketValueChange:
+          type: number
+          format: decimal
+        PriceDate:
+          type: string
+          format: date-time
+    HoldingGroupingDetails:
+      type: object
+      required:
+      - NO_FHR_CAPTION
+      - Tags
+      properties:
+        NO_FHR_CAPTION:
+          type: string
+        Tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/HoldingGroupingDetails_Tag'
+    HoldingGroupingDetails_Tag:
+      type: object
+      required:
+      - Type
+      - Value
+      properties:
+        Type:
+          $ref: '#/components/schemas/InvestmentGroupingType'
+        Value:
+          type: string
+    HttpContent:
+      type: object
+      required:
+      - contentType
+      - content
+      properties:
+        contentType:
+          type: string
+        content:
+          type: string
+    HttpRequestHeader:
+      type: object
+      required:
+      - name
+      - values
+      properties:
+        name:
+          type: string
+        values:
+          type: array
+          items:
+            type: string
+    HttpRequestHeaders:
+      type: object
+      required:
+      - headers
+      properties:
+        headers:
+          $ref: '#/components/schemas/HttpRequestHeader'
+    HttpRequestMessage:
+      type: object
+      required:
+      - Method
+      - RequestUri
+      - Headers
+      - Content
+      - Version
+      properties:
+        Method:
+          type: string
+        RequestUri:
+          type: string
+        Headers:
+          $ref: '#/components/schemas/HttpRequestHeaders'
+        Content:
+          $ref: '#/components/schemas/HttpContent'
+        Version:
+          type: string
+    HttpResponseHeader:
+      type: object
+      required:
+      - name
+      - values
+      properties:
+        name:
+          type: string
+        values:
+          type: array
+          items:
+            type: string
+    HttpResponseHeaders:
+      type: object
+      required:
+      - headers
+      properties:
+        headers:
+          type: array
+          items:
+            $ref: '#/components/schemas/HttpResponseHeader'
+    HttpResponseMessage:
+      type: object
+      required:
+      - Version
+      - Content
+      - StatusCode
+      - ReasonPhrase
+      - Headers
+      - RequestMessage
+      - IsSuccessStatusCode
+      properties:
+        Version:
+          type: string
+        Content:
+          $ref: '#/components/schemas/HttpContent'
+        StatusCode:
+          type: integer
+          format: int32
+        ReasonPhrase:
+          type: string
+        Headers:
+          $ref: '#/components/schemas/HttpResponseHeaders'
+        RequestMessage:
+          $ref: '#/components/schemas/HttpRequestMessage'
+        IsSuccessStatusCode:
+          type: boolean
+    InvestmentGroupingType:
+      type: string
+      enum:
+      - MarketType
+      - Reference
+      - AssetPool
+      - GL
+    InvestmentIncome:
+      type: object
+      required:
+      - Totals
+      - MarketTypeItems
+      - FundName
+      - FundCode
+      - Period
+      properties:
+        Totals:
+          $ref: '#/components/schemas/InvestmentIncome_InvestmentIncomeSummary'
+        MarketTypeItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvestmentIncome_MarketTypeItem'
+        FundName:
+          type: string
+        FundCode:
+          type: string
+        Period:
+          type: string
+          format: date-time
+    InvestmentIncome_HoldingAccountItem:
+      type: object
+      required:
+      - Summary
+      - MarketAndSecurityInfo
+      - InvestmentName
+      - Grouping
+      properties:
+        Summary:
+          $ref: '#/components/schemas/InvestmentIncome_InvestmentIncomeSummary'
+        MarketAndSecurityInfo:
+          $ref: '#/components/schemas/MarketAndSecurityInfo'
+        InvestmentName:
+          type: string
+        Grouping:
+          $ref: '#/components/schemas/HoldingGroupingDetails'
+    InvestmentIncome_InvestmentIncomeSummary:
+      type: object
+      required:
+      - IncomeTotal
+      - FrankingCredits
+      - ForeignCredits
+      - TFNCredits
+      - TaxFree
+      - TaxExempt
+      - TaxDeferred
+      - Expenses
+      - DistributedCapitalGains
+      - GST
+      - TaxableIncomeExclCapitalGains
+      - CapitalGainsIndexed
+      - CapitalGainsDiscounted
+      - CapitalGainsOther
+      - CapitalGainsCGTConcession
+      properties:
+        IncomeTotal:
+          type: number
+          format: decimal
+        FrankingCredits:
+          type: number
+          format: decimal
+        ForeignCredits:
+          type: number
+          format: decimal
+        TFNCredits:
+          type: number
+          format: decimal
+        TaxFree:
+          type: number
+          format: decimal
+        TaxExempt:
+          type: number
+          format: decimal
+        TaxDeferred:
+          type: number
+          format: decimal
+        Expenses:
+          type: number
+          format: decimal
+        DistributedCapitalGains:
+          type: number
+          format: decimal
+        GST:
+          type: number
+          format: decimal
+        TaxableIncomeExclCapitalGains:
+          type: number
+          format: decimal
+        CapitalGainsIndexed:
+          type: number
+          format: decimal
+        CapitalGainsDiscounted:
+          type: number
+          format: decimal
+        CapitalGainsOther:
+          type: number
+          format: decimal
+        CapitalGainsCGTConcession:
+          type: number
+          format: decimal
+    InvestmentIncome_MarketTypeItem:
+      type: object
+      required:
+      - HoldingAccountItems
+      - Totals
+      - MarketTypeName
+      properties:
+        HoldingAccountItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvestmentIncome_HoldingAccountItem'
+        Totals:
+          $ref: '#/components/schemas/InvestmentIncome_InvestmentIncomeSummary'
+        MarketTypeName:
+          type: string
+    InvestmentPerformanceReport:
+      type: object
+      required:
+      - FundCode
+      - FundName
+      - DateRange
+      - CalculationMethod
+      - GroupingType
+      - PortfolioSummaries
+      - IncludeIncomeDeclared
+      - DefaultPortfolioName
+      properties:
+        FundCode:
+          type: string
+        FundName:
+          type: string
+        DateRange:
+          type: string
+          format: date-time
+        CalculationMethod:
+          $ref: '#/components/schemas/PerformanceCalculationMethod'
+        GroupingType:
+          $ref: '#/components/schemas/InvestmentGroupingType'
+        PortfolioSummaries:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvestmentPerformanceReport_Portfolio'
+        IncludeIncomeDeclared:
+          type: boolean
+        DefaultPortfolioName:
+          type: string
+    InvestmentPerformanceReport_HoldingGroup:
+      type: object
+      required:
+      - Name
+      - Holdings
+      - PerformanceSummary
+      properties:
+        Name:
+          type: string
+        Holdings:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvestmentPerformanceReport_HoldingSummary'
+        PerformanceSummary:
+          $ref: '#/components/schemas/InvestmentPerformanceReport_InvestmentPerformanceSummary'
+    InvestmentPerformanceReport_HoldingSummary:
+      type: object
+      required:
+      - Name
+      - Code
+      - PortfolioCode
+      - PerformanceSummary
+      - HoldingAccountType
+      - IncludeInPerformanceReports
+      - MarketAndSecurityInfo
+      properties:
+        Name:
+          type: string
+        Code:
+          type: string
+        PortfolioCode:
+          type: string
+        PerformanceSummary:
+          $ref: '#/components/schemas/InvestmentPerformanceReport_InvestmentPerformanceSummary'
+        HoldingAccountType:
+          $ref: '#/components/schemas/HoldingAccountType'
+        IncludeInPerformanceReports:
+          type: boolean
+        MarketAndSecurityInfo:
+          $ref: '#/components/schemas/MarketAndSecurityInfo'
+    InvestmentPerformanceReport_InvestmentPerformanceSummary:
+      type: object
+      required:
+      - OpeningBalance
+      - TotalAcquisitions
+      - TotalDisposals
+      - ClosingBalance
+      - NetInflow
+      - ChangeInValue
+      - Income
+      - TotalReturn
+      - TotalReturnPercentageSpecified
+      - OpeningPriceDateSpecified
+      - ClosingPriceDateSpecified
+      - FallbackToSimpleRateOfReturn
+      properties:
+        OpeningBalance:
+          type: number
+          format: decimal
+        TotalAcquisitions:
+          type: number
+          format: decimal
+        TotalDisposals:
+          type: number
+          format: decimal
+        ClosingBalance:
+          type: number
+          format: decimal
+        NetInflow:
+          type: number
+          format: decimal
+        ChangeInValue:
+          type: number
+          format: decimal
+        Income:
+          type: number
+          format: decimal
+        TotalReturn:
+          type: number
+          format: decimal
+        TotalReturnPercentage:
+          type: number
+          format: decimal
+        TotalReturnPercentageSpecified:
+          type: boolean
+        OpeningPriceDate:
+          type: string
+          format: date-time
+        OpeningPriceDateSpecified:
+          type: boolean
+        ClosingPriceDate:
+          type: string
+          format: date-time
+        ClosingPriceDateSpecified:
+          type: boolean
+        FallbackToSimpleRateOfReturn:
+          type: boolean
+    InvestmentPerformanceReport_Portfolio:
+      type: object
+      required:
+      - PortfolioName
+      - PerformanceSummary
+      - HoldingGroups
+      properties:
+        PortfolioName:
+          type: string
+        PerformanceSummary:
+          $ref: '#/components/schemas/InvestmentPerformanceReport_InvestmentPerformanceSummary'
+        HoldingGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvestmentPerformanceReport_HoldingGroup'
+    InvestmentSummary:
+      type: object
+      required:
+      - FundName
+      - FundCode
+      - DateAsAt
+      - MarketTypeItems
+      - ChildPortfolios
+      - TotalCost
+      - TotalMarket
+      - TotalUnsettled
+      - TotalUnrealisedGain
+      - TotalGainPercentage
+      - TotalTotalPercentage
+      - CostbaseType
+      - IncludeExpectedIncome
+      - ShowEstimatedIncomeAndYield
+      properties:
+        FundName:
+          type: string
+        FundCode:
+          type: string
+        DateAsAt:
+          type: string
+          format: date-time
+        MarketTypeItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvestmentSummary_MarketTypeItem'
+        ChildPortfolios:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvestmentSummary'
+        TotalCost:
+          type: number
+          format: decimal
+        TotalMarket:
+          type: number
+          format: decimal
+        TotalUnsettled:
+          type: number
+          format: decimal
+        TotalUnrealisedGain:
+          type: number
+          format: decimal
+        TotalGainPercentage:
+          type: number
+          format: decimal
+        TotalTotalPercentage:
+          type: number
+          format: decimal
+        TotalEstimatedIncome:
+          type: number
+          format: decimal
+        TotalEstimatedYield:
+          type: number
+          format: decimal
+        CostbaseType:
+          $ref: '#/components/schemas/CostbaseType'
+        IncludeExpectedIncome:
+          type: boolean
+        ShowEstimatedIncomeAndYield:
+          type: boolean
+    InvestmentSummary_HoldingAccountItem:
+      type: object
+      required:
+      - Summary
+      - MarketAndSecurityInfo
+      - HoldingAccountName
+      - HoldingAccountId
+      - HoldingAccountCode
+      - SecurityCode
+      - Grouping
+      properties:
+        Summary:
+          $ref: '#/components/schemas/InvestmentSummary_InvestmentPeformanceSummary'
+        MarketAndSecurityInfo:
+          $ref: '#/components/schemas/MarketAndSecurityInfo'
+        HoldingAccountName:
+          type: string
+        HoldingAccountId:
+          type: string
+        HoldingAccountCode:
+          type: string
+        SecurityCode:
+          type: string
+        Grouping:
+          $ref: '#/components/schemas/HoldingGroupingDetails'
+    InvestmentSummary_InvestmentPeformanceSummary:
+      type: object
+      required:
+      - AverageCost
+      - Market
+      - UnsettledMarketValue
+      - NetMarketValue
+      - UnrealisedGain
+      - GainPercentage
+      - TotalPercentage
+      - SuppressZeroes
+      properties:
+        Units:
+          type: number
+          format: decimal
+        AverageCost:
+          type: number
+          format: decimal
+        MarketPrice:
+          type: number
+          format: decimal
+        Cost:
+          type: number
+          format: decimal
+        Market:
+          type: number
+          format: decimal
+        UnsettledMarketValue:
+          type: number
+          format: decimal
+        NetMarketValue:
+          type: number
+          format: decimal
+        UnrealisedGain:
+          type: number
+          format: decimal
+        GainPercentage:
+          type: number
+          format: decimal
+        TotalPercentage:
+          type: number
+          format: decimal
+        EstimatedIncome:
+          type: number
+          format: decimal
+        EstimatedYield:
+          type: number
+          format: decimal
+        SuppressZeroes:
+          type: boolean
+    InvestmentSummary_MarketTypeItem:
+      type: object
+      required:
+      - HoldingAccountItems
+      - MarketTypeName
+      - TotalCost
+      - TotalMarket
+      - TotalUnsettled
+      - TotalUnrealisedGain
+      - TotalGainPercentage
+      - TotalTotalPercentage
+      properties:
+        HoldingAccountItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvestmentSummary_HoldingAccountItem'
+        MarketTypeName:
+          type: string
+        TotalCost:
+          type: number
+          format: decimal
+        TotalMarket:
+          type: number
+          format: decimal
+        TotalUnsettled:
+          type: number
+          format: decimal
+        TotalUnrealisedGain:
+          type: number
+          format: decimal
+        TotalGainPercentage:
+          type: number
+          format: decimal
+        TotalTotalPercentage:
+          type: number
+          format: decimal
+        TotalEstimatedIncome:
+          type: number
+          format: decimal
+        TotalEstimatedYield:
+          type: number
+          format: decimal
+        UnpaidIncome:
+          type: number
+          format: decimal
+        UnpaidIncomePercentage:
+          type: number
+          format: decimal
+    LatestBankMovementsSummary:
+      type: object
+      required:
+      - FundId
+      - BankAccountId
+      - BankAccountName
+      - Movements
+      - ClosingBalance
+      properties:
+        FundId:
+          type: string
+        BankAccountId:
+          type: string
+        BankAccountName:
+          type: string
+        Movements:
+          type: array
+          items:
+            $ref: '#/components/schemas/LatestBankMovementsSummary_BankMovement'
+        ClosingBalance:
+          type: number
+          format: decimal
+    LatestBankMovementsSummary_BankMovement:
+      type: object
+      required:
+      - Id
+      - TransactionDate
+      - Description
+      - Amount
+      - DebitCreditIndicator
+      properties:
+        Id:
+          type: string
+        TransactionDate:
+          type: string
+          format: date-time
+        Description:
+          type: string
+        Amount:
+          type: number
+          format: decimal
+        DebitCreditIndicator:
+          $ref: '#/components/schemas/DebitCreditIndicator'
+    LegalEntityType:
+      type: string
+      enum:
+      - SMSF
+      - SAF
+      - Personal
+      - Trust
+      - Company
+      - Partnership
+      - Consolidated
+    MarketAndSecurityInfo:
+      type: object
+      required:
+      - SecurityCode
+      - SecurityName
+      - MarketCode
+      - MarketAcronym
+      properties:
+        SecurityCode:
+          type: string
+        SecurityName:
+          type: string
+        MarketCode:
+          type: string
+        MarketAcronym:
+          type: string
+    MarketValuationGrouping:
+      type: string
+      enum:
+      - MarketValue
+      - MarketType
+      - AssetClass
+      - AssetPool
+      - HoldingReference
+      - HoldingAccount
+      - Portfolio
+    MarketValuationResults:
+      type: object
+      required:
+      - FundId
+      - GroupingType
+      - SearchRange
+      - MarketGroups
+      - MarketValueRange
+      - StackedMarketValueRange
+      - ShowEstimatedIncomeAndYield
+      - IncludeExpectedIncome
+      properties:
+        FundId:
+          type: string
+        GroupingType:
+          $ref: '#/components/schemas/MarketValuationGrouping'
+        SearchRange:
+          type: string
+          format: date-time
+        MarketGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/MarketValuationResults_MarketGroup'
+        MarketValueRange:
+          $ref: '#/components/schemas/MarketValuationResults_MinMaxValues'
+        StackedMarketValueRange:
+          $ref: '#/components/schemas/MarketValuationResults_MinMaxValues'
+        ShowEstimatedIncomeAndYield:
+          type: boolean
+        IncludeExpectedIncome:
+          type: boolean
+    MarketValuationResults_MarketGroup:
+      type: object
+      required:
+      - Id
+      - Description
+      - DailyValues
+      - MarketValueRange
+      properties:
+        Id:
+          type: string
+        Description:
+          type: string
+        DailyValues:
+          type: array
+          items:
+            $ref: '#/components/schemas/MarketValuationResults_MarketGroupDailyValue'
+        MarketValueRange:
+          $ref: '#/components/schemas/MarketValuationResults_MinMaxValues'
+    MarketValuationResults_MarketGroupDailyValue:
+      type: object
+      required:
+      - MarketVectorId
+      - Date
+      - MarketValue
+      - MarketValueFormatted
+      properties:
+        MarketVectorId:
+          type: string
+        Date:
+          type: string
+          format: date-time
+        MarketValue:
+          type: number
+          format: decimal
+        MarketValueFormatted:
+          type: string
+    MarketValuationResults_MinMaxValues:
+      type: object
+      required:
+      - MinValue
+      - MinValueFormatted
+      - MaxValue
+      - MaxValueFormatted
+      properties:
+        MinValue:
+          type: number
+          format: decimal
+        MinValueFormatted:
+          type: string
+        MaxValue:
+          type: number
+          format: decimal
+        MaxValueFormatted:
+          type: string
+    MatchStatusType:
+      type: string
+      enum:
+      - Unmatched
+      - PartiallyMatched
+      - FullyMatched
+      - AwaitingApproval
+    Member:
+      type: object
+      required:
+      - Id
+      - DisplayName
+      - Accounts
+      - TotalAccountBalance
+      - MemberNumber
+      - JoinFundDate
+      - AustralianResident
+      - RecordedTaxFileNumber
+      - MemberInsurance
+      - MailingAddress
+      - PhysicalAddress
+      - UsePhysicalForMailingAddress
+      - ElectronicContacts
+      - Gender
+      - BeneficiaryDetails
+      - IsABeneficiary
+      - IsABeneficiaryOrg
+      properties:
+        Id:
+          type: string
+        DisplayName:
+          type: string
+        Accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/MemberAccount'
+        TotalAccountBalance:
+          type: number
+          format: decimal
+        MemberNumber:
+          type: string
+        JoinFundDate:
+          type: string
+          format: date-time
+        LeaveFundDate:
+          type: string
+          format: date-time
+        AustralianResident:
+          type: boolean
+        RecordedTaxFileNumber:
+          type: boolean
+        ClaimTaxFreeThreshold:
+          type: boolean
+        MemberInsurance:
+          $ref: '#/components/schemas/MemberInsurance'
+        MailingAddress:
+          $ref: '#/components/schemas/Address'
+        PhysicalAddress:
+          $ref: '#/components/schemas/Address'
+        UsePhysicalForMailingAddress:
+          type: boolean
+        ElectronicContacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ElectronicContact'
+        DateOfBirth:
+          type: string
+          format: date-time
+        DateOfDeath:
+          type: string
+          format: date-time
+        Gender:
+          type: string
+        BeneficiaryDetails:
+          $ref: '#/components/schemas/MemberBeneficiary'
+        IsABeneficiary:
+          type: boolean
+        IsABeneficiaryOrg:
+          type: boolean
+    MemberAccount:
+      type: object
+      required:
+      - Id
+      - Description
+      - Type
+      - Balance
+      properties:
+        Id:
+          type: string
+        Description:
+          type: string
+        Type:
+          type: string
+        Balance:
+          type: number
+          format: decimal
+    MemberBeneficiary:
+      type: object
+      required:
+      - HasBeenNominated
+      - BindingStatus
+      - NominationDetails
+      properties:
+        HasBeenNominated:
+          type: boolean
+        ExpiryDate:
+          type: string
+          format: date-time
+        BindingStatus:
+          type: string
+        NominationDetails:
+          type: string
+    MemberContributionCapSavedData:
+      type: object
+      required:
+      - MemberId
+      - Year
+      - PriorYearContributionType
+      - TotalPreviousNonConcessional
+      - TotalPreviousConcessional
+      - OtherFundNonConcessional
+      - OtherFundConcessional
+      - ExternalAccumulationBalance
+      - ExternalRetirementBalance
+      - AllowEditTotalPreviousConcessional
+      - PreviousConcessionalDetails
+      - LastAcknowledgedOtherFundContribs
+      - LastAcknowledgedBy
+      properties:
+        MemberId:
+          type: string
+        Year:
+          type: integer
+          format: int32
+        PriorYearContributionType:
+          $ref: '#/components/schemas/PriorYearContribCapType'
+        TotalPreviousNonConcessional:
+          type: number
+          format: decimal
+        TotalPreviousConcessional:
+          type: number
+          format: decimal
+        OtherFundNonConcessional:
+          type: number
+          format: decimal
+        OtherFundConcessional:
+          type: number
+          format: decimal
+        ExternalAccumulationBalance:
+          type: number
+          format: decimal
+        ExternalRetirementBalance:
+          type: number
+          format: decimal
+        AllowEditTotalPreviousConcessional:
+          type: boolean
+        PreviousConcessionalDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/MemberContributionCapSummary_PreviousConcessionalDetail'
+        LastAcknowledgedOtherFundContribs:
+          type: string
+          format: date-time
+        LastAcknowledgedBy:
+          type: string
+    MemberContributionCapSummary:
+      type: object
+      required:
+      - Year
+      - FinancialYearPeriod
+      - AllowedFinancialYears
+      - Members
+      - UnmatchedCashAmount
+      - EarliestTransactionDate
+      - LatestTransactionDate
+      - UnmatchedCashAccount
+      properties:
+        Year:
+          type: integer
+          format: int32
+        FinancialYearPeriod:
+          type: string
+          format: date-time
+        AllowedFinancialYears:
+          type: array
+          items:
+            $ref: '#/components/schemas/MemberContributionCapSummary_FinancialYearDetails'
+        Members:
+          type: array
+          items:
+            $ref: '#/components/schemas/MemberContributionCapSummary_MemberDetails'
+        UnmatchedCashAmount:
+          type: number
+          format: decimal
+        EarliestTransactionDate:
+          type: string
+          format: date-time
+        LatestTransactionDate:
+          type: string
+          format: date-time
+        UnmatchedCashAccount:
+          type: string
+    MemberContributionCapSummary_ContributionBreakdown:
+      type: object
+      required:
+      - Classification
+      - SubTotals
+      - Total
+      - ClassificationDisplay
+      properties:
+        Classification:
+          $ref: '#/components/schemas/ContributionClassificationType'
+        SubTotals:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContributionBreakdown_ContributionBreakdownTotal'
+        Total:
+          type: number
+          format: decimal
+        ClassificationDisplay:
+          type: string
+    MemberContributionCapSummary_ContributionNote:
+      type: object
+      required:
+      - Number
+      - Text
+      properties:
+        Number:
+          type: integer
+          format: int32
+        Text:
+          type: string
+    MemberContributionCapSummary_ContributionTotals:
+      type: object
+      required:
+      - Concessional
+      - NonConcessional
+      - Other
+      properties:
+        Concessional:
+          type: number
+          format: decimal
+        NonConcessional:
+          type: number
+          format: decimal
+        Other:
+          type: number
+          format: decimal
+    MemberContributionCapSummary_ContributionTransaction:
+      type: object
+      required:
+      - TransactionDate
+      - ContributionType
+      - Classification
+      - Amount
+      - EventMatchSummary
+      - DisplayName
+      - DisplayOrder
+      - Source
+      properties:
+        TransactionDate:
+          type: string
+          format: date-time
+        ContributionType:
+          type: string
+        Classification:
+          $ref: '#/components/schemas/ContributionClassificationType'
+        Amount:
+          type: number
+          format: decimal
+        EventMatchSummary:
+          $ref: '#/components/schemas/ReportData_EventMatchSummary'
+        DisplayName:
+          type: string
+        DisplayOrder:
+          type: integer
+          format: int32
+        AmountConcessional:
+          type: number
+          format: decimal
+        AmountNonConcessional:
+          type: number
+          format: decimal
+        AmountOther:
+          type: number
+          format: decimal
+        EventMatchDate:
+          type: string
+          format: date-time
+        Source:
+          type: string
+    MemberContributionCapSummary_FinancialYearDetails:
+      type: object
+      required:
+      - Year
+      - Description
+      properties:
+        Year:
+          type: integer
+          format: int32
+        Description:
+          type: string
+    MemberContributionCapSummary_MemberContributionCapDetails:
+      type: object
+      required:
+      - Id
+      - PriorYearContributionType
+      - PriorYearContributionMode
+      - PriorYearContributionRules
+      - TotalPreviousNonConcessional
+      - CapInEffectFromPreviousYears
+      - TotalPriorYearMinValue
+      - TotalPrior2YearMinValue
+      - EditPriorYearContributionType
+      - TriggeredBfrThisYear
+      - LastAcknowledgedBy
+      - IsPersisted
+      - CanCalculateFromPriorYear
+      - BfrAvailable
+      - Notes
+      - TotalPreviousConcessional
+      - ExternalAccumulationBalance
+      - ExternalRetirementBalance
+      - ClassAccumulationBalance
+      - ClassRetirementBalance
+      - BalanceAdjustmentAmount
+      - PersonalInjuryBalance
+      - TotalClassSuperannuationBalance
+      - TotalExternalSuperannuationBalance
+      - TotalSuperannuationBalance
+      properties:
+        Id:
+          type: string
+        PriorYearContributionType:
+          $ref: '#/components/schemas/PriorYearContributionType'
+        PriorYearContributionMode:
+          $ref: '#/components/schemas/PriorYearContributionMode'
+        PriorYearContributionRules:
+          $ref: '#/components/schemas/MemberContributionCapSummary_PriorYearContributionRules'
+        TotalPreviousNonConcessional:
+          type: number
+          format: decimal
+        CapInEffectFromPreviousYears:
+          type: number
+          format: decimal
+        TotalPriorYearMinValue:
+          type: number
+          format: decimal
+        TotalPrior2YearMinValue:
+          type: number
+          format: decimal
+        EditPriorYearContributionType:
+          type: boolean
+        TriggeredBfrThisYear:
+          type: boolean
+        LastAcknowledgedBy:
+          type: string
+        LastAcknowledgedByDate:
+          type: string
+          format: date-time
+        IsPersisted:
+          type: boolean
+        CanCalculateFromPriorYear:
+          type: boolean
+        BfrAvailable:
+          type: boolean
+        Notes:
+          type: array
+          items:
+            type: string
+        TotalPreviousConcessional:
+          type: number
+          format: decimal
+        ExternalAccumulationBalance:
+          type: number
+          format: decimal
+        ExternalRetirementBalance:
+          type: number
+          format: decimal
+        ClassAccumulationBalance:
+          type: number
+          format: decimal
+        ClassRetirementBalance:
+          type: number
+          format: decimal
+        BalanceAdjustmentAmount:
+          type: number
+          format: decimal
+        PersonalInjuryBalance:
+          type: number
+          format: decimal
+        TotalClassSuperannuationBalance:
+          type: number
+          format: decimal
+        TotalExternalSuperannuationBalance:
+          type: number
+          format: decimal
+        TotalSuperannuationBalance:
+          type: number
+          format: decimal
+    MemberContributionCapSummary_MemberDetails:
+      type: object
+      required:
+      - Year
+      - Id
+      - Name
+      - MemberNumber
+      - MemberDeathDateIsSet
+      - MemberBirthdayIsSet
+      - AgeAtEndFinancialYear
+      - AgeAtStartFinancialYear
+      - Status
+      - YearBreakdown
+      - ContributionTransactions
+      - ContributionTotals
+      - ContributionBreakdowns
+      properties:
+        Year:
+          type: integer
+          format: int32
+        Id:
+          type: string
+        Name:
+          type: string
+        MemberNumber:
+          type: string
+        MemberDeathDateIsSet:
+          type: boolean
+        MemberBirthdayIsSet:
+          type: boolean
+        MemberBirthday:
+          type: string
+          format: date-time
+        AgeAtEndFinancialYear:
+          type: integer
+          format: int32
+        AgeAtStartFinancialYear:
+          type: integer
+          format: int32
+        Status:
+          type: string
+        YearBreakdown:
+          $ref: '#/components/schemas/MemberContributionCapSummary_YearBreakdownDetails'
+        ContributionTransactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/MemberContributionCapSummary_ContributionTransaction'
+        ContributionTotals:
+          $ref: '#/components/schemas/MemberContributionCapSummary_ContributionTotals'
+        ContributionBreakdowns:
+          type: array
+          items:
+            $ref: '#/components/schemas/MemberContributionCapSummary_ContributionBreakdown'
+    MemberContributionCapSummary_MemberYearBalanceDetail:
+      type: object
+      required:
+      - ExternalAccumulationBalance
+      - ExternalRetirementBalance
+      - ClassAccumulationBalance
+      - ClassRetirementBalance
+      - BalanceAdjustmentAmount
+      - PersonalInjuryBalance
+      - TotalClassSuperannuationBalance
+      - TotalExternalSuperannuationBalance
+      - TotalSuperannuationBalance
+      properties:
+        ExternalAccumulationBalance:
+          type: number
+          format: decimal
+        ExternalRetirementBalance:
+          type: number
+          format: decimal
+        ClassAccumulationBalance:
+          type: number
+          format: decimal
+        ClassRetirementBalance:
+          type: number
+          format: decimal
+        BalanceAdjustmentAmount:
+          type: number
+          format: decimal
+        PersonalInjuryBalance:
+          type: number
+          format: decimal
+        TotalClassSuperannuationBalance:
+          type: number
+          format: decimal
+        TotalExternalSuperannuationBalance:
+          type: number
+          format: decimal
+        TotalSuperannuationBalance:
+          type: number
+          format: decimal
+    MemberContributionCapSummary_PreviousConcessionalDetail:
+      type: object
+      required:
+      - FinancialYear
+      - FinancialYearDescription
+      - Amount
+      properties:
+        FinancialYear:
+          type: integer
+          format: int32
+        FinancialYearDescription:
+          type: string
+        Amount:
+          type: number
+          format: decimal
+    MemberContributionCapSummary_PriorYearContributionDetails:
+      type: object
+      required:
+      - RuleText
+      - CapText
+      - TotalText
+      - SuggestedDisplayIfInvalid
+      - CapAmount
+      - TotalAmount
+      properties:
+        RuleText:
+          type: string
+        CapText:
+          type: string
+        TotalText:
+          type: string
+        SuggestedDisplayIfInvalid:
+          type: string
+        CapAmount:
+          type: number
+          format: decimal
+        TotalAmount:
+          type: number
+          format: decimal
+    MemberContributionCapSummary_PriorYearContributionRules:
+      type: object
+      required:
+      - Rules
+      - RuleExtraNote
+      - RulesList
+      properties:
+        Rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/PriorYearContributionTypeCustomModel'
+        RuleExtraNote:
+          type: string
+        RulesList:
+          type: array
+          items:
+            $ref: '#/components/schemas/PriorYearContributionRules_PriorYearContributionRule'
+    MemberContributionCapSummary_YearBreakdownDetails:
+      type: object
+      required:
+      - Year
+      - MemberContributionCapDetails
+      - CalculatedFromPreviousYear
+      - ContributionDetails
+      - Notes
+      - PriorYearDetails
+      - PriorYearTotalNonConcessional
+      - ExcessConcessionalContributionAdjustment
+      - Warnings
+      - MemberYearBalanceDetail
+      - PreviousConcessionalDetails
+      - EditMemberContribAllowed
+      - AllowEditTotalPreviousConcessional
+      properties:
+        Year:
+          type: integer
+          format: int32
+        MemberContributionCapDetails:
+          $ref: '#/components/schemas/MemberContributionCapSummary_MemberContributionCapDetails'
+        CalculatedFromPreviousYear:
+          $ref: '#/components/schemas/MemberContributionCapSummary_MemberContributionCapDetails'
+        ContributionDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/MemberContributionCapSummary_YearContributionDetails'
+        Notes:
+          type: array
+          items:
+            $ref: '#/components/schemas/MemberContributionCapSummary_ContributionNote'
+        PriorYearDetails:
+          $ref: '#/components/schemas/MemberContributionCapSummary_PriorYearContributionDetails'
+        PriorYearTotalNonConcessional:
+          type: number
+          format: decimal
+        ExcessConcessionalContributionAdjustment:
+          type: number
+          format: decimal
+        Warnings:
+          type: array
+          items:
+            type: string
+        MemberYearBalanceDetail:
+          $ref: '#/components/schemas/MemberContributionCapSummary_MemberYearBalanceDetail'
+        PreviousConcessionalDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/MemberContributionCapSummary_PreviousConcessionalDetail'
+        EditMemberContribAllowed:
+          type: boolean
+        AllowEditTotalPreviousConcessional:
+          type: boolean
+    MemberContributionCapSummary_YearContributionDetails:
+      type: object
+      required:
+      - RowType
+      - DetailName
+      - FootNoteNumbers
+      - ShowingWithBfr
+      - Concessional
+      - NonConcessional
+      - NonConcessionalBfr
+      - RowNotes
+      properties:
+        RowType:
+          $ref: '#/components/schemas/ContributionSummaryRowType'
+        DetailName:
+          type: string
+        FootNoteNumbers:
+          type: string
+        ShowingWithBfr:
+          type: boolean
+        Concessional:
+          type: number
+          format: decimal
+        NonConcessional:
+          type: number
+          format: decimal
+        NonConcessionalBfr:
+          type: number
+          format: decimal
+        RowNotes:
+          type: array
+          items:
+            $ref: '#/components/schemas/MemberContributionCapSummary_ContributionNote'
+    MemberInsurance:
+      type: object
+      properties:
+        SalaryContinuanceSum:
+          type: number
+          format: decimal
+        DeathSum:
+          type: number
+          format: decimal
+        TpdSum:
+          type: number
+          format: decimal
+    MemberList:
+      type: object
+      required:
+      - PortfolioId
+      - TotalIncludingReserves
+      - TotalMembersBalance
+      - TotalReserveBalance
+      - Members
+      - ReserveMember
+      properties:
+        PortfolioId:
+          type: string
+        TotalIncludingReserves:
+          type: number
+          format: decimal
+        TotalMembersBalance:
+          type: number
+          format: decimal
+        TotalReserveBalance:
+          type: number
+          format: decimal
+        Members:
+          type: array
+          items:
+            $ref: '#/components/schemas/Member'
+        ReserveMember:
+          $ref: '#/components/schemas/ReserveMember'
+    MemberStatement:
+      type: object
+      required:
+      - OpeningBalanceDate
+      - AsAtDate
+      - MemberId
+      - MemberName
+      - FundCode
+      - FundType
+      - FundName
+      - FundABN
+      - IsCorporateTrustee
+      - MemberDetails
+      - BrandEntityDetails
+      - FundEntityDetails
+      - AuditorEntityDetails
+      - InvestmentManagerEntityDetails
+      - SMSFOtherInformation
+      - SAFOtherInformation
+      - Balances
+      - OpeningBalance
+      - ClosingBalance
+      - InsuranceBenefits
+      - BeneficiaryDetails
+      - ReserveAccountBalances
+      - BalanceGraphBase64String
+      - RateOfReturns
+      - DirectorsNames
+      - TotalEtpComponentBalances
+      - TotalPreservationBalances
+      - MemberAccountDetails
+      properties:
+        OpeningBalanceDate:
+          type: string
+          format: date-time
+        AsAtDate:
+          type: string
+          format: date-time
+        MemberId:
+          type: string
+        MemberName:
+          type: string
+        FundCode:
+          type: string
+        FundType:
+          type: string
+        FundName:
+          type: string
+        FundABN:
+          type: string
+        IsCorporateTrustee:
+          type: boolean
+        MemberDetails:
+          $ref: '#/components/schemas/MemberStatement_MemberStatementMemberDetails'
+        BrandEntityDetails:
+          $ref: '#/components/schemas/MemberStatement_MemberStatementEntityDetails'
+        FundEntityDetails:
+          $ref: '#/components/schemas/MemberStatement_MemberStatementEntityDetails'
+        AuditorEntityDetails:
+          $ref: '#/components/schemas/MemberStatement_MemberStatementEntityDetails'
+        InvestmentManagerEntityDetails:
+          $ref: '#/components/schemas/MemberStatement_MemberStatementEntityDetails'
+        SMSFOtherInformation:
+          $ref: '#/components/schemas/MemberStatement_MemberStatementSMSFOtherInformation'
+        SAFOtherInformation:
+          $ref: '#/components/schemas/MemberStatement_MemberStatementSAFOtherInformation'
+        Balances:
+          type: array
+          items:
+            $ref: '#/components/schemas/MemberStatement_MemberAccountBalanceDetails'
+        OpeningBalance:
+          type: number
+          format: decimal
+        ClosingBalance:
+          type: number
+          format: decimal
+        InsuranceBenefits:
+          $ref: '#/components/schemas/MemberStatement_MemberStatementInsuranceBenefits'
+        BeneficiaryDetails:
+          $ref: '#/components/schemas/MemberStatement_NominatedBeneficiaryDetail'
+        ReserveAccountBalances:
+          type: array
+          items:
+            $ref: '#/components/schemas/MemberStatement_MemberStatementReserveAccountBalanceDetails'
+        BalanceGraphBase64String:
+          type: string
+        RateOfReturns:
+          type: array
+          items:
+            $ref: '#/components/schemas/MemberStatement_MemberStatementRateOfReturn'
+        DirectorsNames:
+          type: array
+          items:
+            type: string
+        TotalEtpComponentBalances:
+          type: array
+          items:
+            $ref: '#/components/schemas/MemberStatement_MemberStatementAmountDetail'
+        TotalPreservationBalances:
+          type: array
+          items:
+            $ref: '#/components/schemas/MemberStatement_MemberStatementAmountDetail'
+        MemberAccountDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/MemberStatement_MemberStatementAccountDetails'
+    MemberStatementInsuranceBenefits_InsuranceBenefitDetail:
+      type: object
+      required:
+      - CoverProvided
+      - TotalBenefitPayable
+      - Balance
+      properties:
+        CoverProvided:
+          type: number
+          format: decimal
+        TotalBenefitPayable:
+          type: number
+          format: decimal
+        Balance:
+          type: number
+          format: decimal
+    MemberStatementWithAuditorDetails:
+      type: object
+      required:
+      - FundName
+      - FundCode
+      - AsAtDate
+      - PeriodFromDate
+      - PeriodToDate
+      - MemberStatement
+      - AuditorDetails
+      properties:
+        FundName:
+          type: string
+        FundCode:
+          type: string
+        AsAtDate:
+          type: string
+          format: date-time
+        PeriodFromDate:
+          type: string
+          format: date-time
+        PeriodToDate:
+          type: string
+          format: date-time
+        MemberStatement:
+          $ref: '#/components/schemas/MemberStatement'
+        AuditorDetails:
+          $ref: '#/components/schemas/FundAuditorDetails'
+    MemberStatement_EtpBalances:
+      type: object
+      required:
+      - TotalBalance
+      - Balances
+      properties:
+        TotalBalance:
+          type: number
+          format: decimal
+        Balances:
+          type: array
+          items:
+            $ref: '#/components/schemas/MemberStatement_MemberStatementAmountDetail'
+    MemberStatement_ExpenseAmounts:
+      type: object
+      required:
+      - TotalExpenses
+      - Expenses
+      properties:
+        TotalExpenses:
+          type: number
+          format: decimal
+        Expenses:
+          type: array
+          items:
+            $ref: '#/components/schemas/MemberStatement_TypelessIncomeExpenseDetail'
+    MemberStatement_IncomeAmounts:
+      type: object
+      required:
+      - TotalIncome
+      - Incomes
+      properties:
+        TotalIncome:
+          type: number
+          format: decimal
+        Incomes:
+          type: array
+          items:
+            $ref: '#/components/schemas/MemberStatement_TypelessIncomeExpenseDetail'
+    MemberStatement_IncomeExpenseDetail:
+      type: object
+      required:
+      - Type
+      - Name
+      - Amount
+      properties:
+        Type:
+          type: string
+        Name:
+          type: string
+        Amount:
+          type: number
+          format: decimal
+    MemberStatement_MemberAccountBalanceDetails:
+      type: object
+      required:
+      - BalanceType
+      - MemberAccountName
+      - Balance
+      properties:
+        BalanceType:
+          type: string
+        MemberAccountName:
+          type: string
+        Balance:
+          type: number
+          format: decimal
+    MemberStatement_MemberStatementAccountDetails:
+      type: object
+      required:
+      - AccountDetails_ID
+      - AccountDescription
+      - OpeningBalance
+      - ClosingBalance
+      - AccountType
+      - AccountStartDate
+      - IncomeAmounts
+      - ExpenseAmounts
+      - TaxableProportionSpecified
+      - PensionAccountStartDate
+      - PensionAccountStartDateSpecified
+      - ReversionaryBeneficiaryName
+      - IncomeExpenseAmounts
+      - EtpClosingBalances
+      - PreservationClosingBalances
+      - InsuranceBenefits
+      properties:
+        AccountDetails_ID:
+          type: string
+        AccountDescription:
+          type: string
+        OpeningBalance:
+          type: number
+          format: decimal
+        ClosingBalance:
+          type: number
+          format: decimal
+        AccountType:
+          type: string
+        AccountStartDate:
+          type: string
+          format: date-time
+        IncomeAmounts:
+          $ref: '#/components/schemas/MemberStatement_IncomeAmounts'
+        ExpenseAmounts:
+          $ref: '#/components/schemas/MemberStatement_ExpenseAmounts'
+        TaxableProportion:
+          type: number
+          format: decimal
+        TaxableProportionSpecified:
+          type: boolean
+        PensionAccountStartDate:
+          type: string
+          format: date-time
+        PensionAccountStartDateSpecified:
+          type: boolean
+        ReversionaryBeneficiaryName:
+          type: string
+        IncomeExpenseAmounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/MemberStatement_IncomeExpenseDetail'
+        EtpClosingBalances:
+          $ref: '#/components/schemas/MemberStatement_EtpBalances'
+        PreservationClosingBalances:
+          type: array
+          items:
+            $ref: '#/components/schemas/MemberStatement_MemberStatementAmountDetail'
+        InsuranceBenefits:
+          $ref: '#/components/schemas/MemberStatement_MemberStatementInsuranceBenefits'
+    MemberStatement_MemberStatementAmountDetail:
+      type: object
+      required:
+      - Name
+      - Amount
+      - Percentage
+      properties:
+        Name:
+          type: string
+        Amount:
+          type: number
+          format: decimal
+        Percentage:
+          type: number
+          format: decimal
+    MemberStatement_MemberStatementEntityDetails:
+      type: object
+      required:
+      - Id
+      - Name
+      - Address
+      - Telephone
+      - Fax
+      - ContactName
+      - Email
+      properties:
+        Id:
+          type: string
+        Name:
+          type: string
+        Address:
+          $ref: '#/components/schemas/AddressSummary'
+        Telephone:
+          type: string
+        Fax:
+          type: string
+        ContactName:
+          type: string
+        Email:
+          type: string
+    MemberStatement_MemberStatementInsuranceBenefits:
+      type: object
+      required:
+      - InsuranceRecorded
+      - LifeInsurance
+      - DisabilityInsurance
+      - SalaryContinuationInsurance
+      properties:
+        InsuranceRecorded:
+          type: boolean
+        LifeInsurance:
+          $ref: '#/components/schemas/MemberStatementInsuranceBenefits_InsuranceBenefitDetail'
+        DisabilityInsurance:
+          $ref: '#/components/schemas/MemberStatementInsuranceBenefits_InsuranceBenefitDetail'
+        SalaryContinuationInsurance:
+          $ref: '#/components/schemas/MemberStatementInsuranceBenefits_InsuranceBenefitDetail'
+    MemberStatement_MemberStatementMemberDetails:
+      type: object
+      required:
+      - FullName
+      - DateOfBirth
+      - ResidentialAddress
+      - TFNRecorded
+      - DateJoinedFund
+      - ESPStartDate
+      - DateLeftFundSpecified
+      - Telephone
+      - Fax
+      - MemberNumber
+      properties:
+        FullName:
+          type: string
+        DateOfBirth:
+          type: string
+          format: date-time
+        ResidentialAddress:
+          $ref: '#/components/schemas/AddressSummary'
+        TFNRecorded:
+          type: boolean
+        DateJoinedFund:
+          type: string
+          format: date-time
+        ESPStartDate:
+          type: string
+          format: date-time
+        DateLeftFund:
+          type: string
+          format: date-time
+        DateLeftFundSpecified:
+          type: boolean
+        Telephone:
+          type: string
+        Fax:
+          type: string
+        MemberNumber:
+          type: string
+    MemberStatement_MemberStatementRateOfReturn:
+      type: object
+      required:
+      - Year
+      - RateSpecified
+      properties:
+        Year:
+          type: string
+        Rate:
+          type: number
+          format: decimal
+        RateSpecified:
+          type: boolean
+    MemberStatement_MemberStatementReserveAccountBalanceDetails:
+      type: object
+      required:
+      - AccountName
+      - AccountBalance
+      properties:
+        AccountName:
+          type: string
+        AccountBalance:
+          type: number
+          format: decimal
+    MemberStatement_MemberStatementSAFOtherInformation:
+      type: object
+      required:
+      - FundCode
+      - TrusteeEntityDetails
+      - AuditorFirmName
+      - EligibleRolloverFundEntityDetails
+      - IndividualTrusteeDetails
+      - IndividualTrusteeNames
+      properties:
+        FundCode:
+          type: string
+        TrusteeEntityDetails:
+          $ref: '#/components/schemas/MemberStatement_MemberStatementEntityDetails'
+        AuditorFirmName:
+          type: string
+        EligibleRolloverFundEntityDetails:
+          $ref: '#/components/schemas/MemberStatement_MemberStatementEntityDetails'
+        IndividualTrusteeDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/MemberStatement_MemberStatementEntityDetails'
+        IndividualTrusteeNames:
+          type: array
+          items:
+            type: string
+    MemberStatement_MemberStatementSMSFOtherInformation:
+      type: object
+      required:
+      - FundCode
+      - TrusteeCompanyName
+      - TrusteeNamesHeading
+      - Trustees
+      - TrusteeNames
+      properties:
+        FundCode:
+          type: string
+        TrusteeCompanyName:
+          type: string
+        TrusteeNamesHeading:
+          type: string
+        Trustees:
+          type: array
+          items:
+            $ref: '#/components/schemas/MemberStatement_Trustee'
+        TrusteeNames:
+          type: array
+          items:
+            type: string
+    MemberStatement_NominatedBeneficiaryDetail:
+      type: object
+      required:
+      - BeneficiaryDetailsRecorded
+      - NominationType
+      - Details
+      properties:
+        BeneficiaryDetailsRecorded:
+          type: boolean
+        NominationType:
+          type: string
+        EffectiveDate:
+          type: string
+          format: date-time
+        ExpiryDate:
+          type: string
+          format: date-time
+        Details:
+          type: string
+    MemberStatement_Trustee:
+      type: object
+      required:
+      - Name
+      properties:
+        Name:
+          type: string
+    MemberStatement_TypelessIncomeExpenseDetail:
+      type: object
+      required:
+      - Name
+      - Amount
+      properties:
+        Name:
+          type: string
+        Amount:
+          type: number
+          format: decimal
+    MenuListType:
+      type: string
+      enum:
+      - Default
+      - Consolidated
+      - Child
+    MenuModel:
+      type: object
+      required:
+      - Menus
+      properties:
+        Menus:
+          type: array
+          items:
+            $ref: '#/components/schemas/MenuModel_MenuEntryModel'
+    MenuModel_MenuEntryModel:
+      type: object
+      required:
+      - MenuItemId
+      - Enabled
+      - Name
+      - Index
+      - ExternalLink
+      - Anchor
+      - Pattern
+      - Children
+      properties:
+        MenuItemId:
+          type: string
+        Enabled:
+          type: boolean
+        Name:
+          type: string
+        Index:
+          type: integer
+          format: int32
+        ExternalLink:
+          type: string
+        Anchor:
+          type: string
+        Pattern:
+          $ref: '#/components/schemas/UrlPattern'
+        Children:
+          type: array
+          items:
+            $ref: '#/components/schemas/MenuModel_MenuEntryModel'
+    MovementType:
+      type: string
+      enum:
+      - CapitalHoldingTransaction
+      - CostBaseAdjustmentTransaction
+      - QuantityAdjustmentTransaction
+      - IncomeExpenseTransaction
+    OperatingStatement:
+      type: object
+      required:
+      - FundName
+      - FundCode
+      - Period
+      - TotalValue
+      - Items
+      properties:
+        FundName:
+          type: string
+        FundCode:
+          type: string
+        Period:
+          type: string
+          format: date-time
+        TotalValue:
+          type: number
+          format: decimal
+        Items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OperatingStatement_IncomeExpenseDetailsItem'
+    OperatingStatement_IncomeExpenseDetailsItem:
+      type: object
+      required:
+      - Description
+      - TotalValue
+      - Children
+      properties:
+        Description:
+          type: string
+        TotalValue:
+          type: number
+          format: decimal
+        Children:
+          type: array
+          items:
+            $ref: '#/components/schemas/OperatingStatement_IncomeExpenseDetailsItem'
+    PensionBalanceStateType:
+      type: string
+      enum:
+      - OverMax
+      - UnderMax
+      - UnderPlan
+      - UnderMin
+    PensionLimitDetails:
+      type: object
+      required:
+      - FinancialYear
+      - FinancialYearId
+      - AsAtDate
+      - UnmatchedCashItems
+      - FinancialYearsActive
+      - Members
+      - Totals
+      properties:
+        FinancialYear:
+          type: string
+          format: date-time
+        FinancialYearId:
+          type: string
+        AsAtDate:
+          type: string
+          format: date-time
+        UnmatchedCashItems:
+          $ref: '#/components/schemas/ReportData_UnmatchedCashItemDetails'
+        FinancialYearsActive:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportData_FundFinancialYearDetail'
+        Members:
+          type: array
+          items:
+            $ref: '#/components/schemas/PensionLimitDetails_MemberDetail'
+        Totals:
+          $ref: '#/components/schemas/PensionLimitDetails_SummaryBalances'
+    PensionLimitDetails_BalanceBreakdown:
+      type: object
+      required:
+      - YearToDate
+      - Minimum
+      - RequiredForMinimum
+      - Selected
+      - RequiredForSelected
+      properties:
+        YearToDate:
+          type: number
+          format: decimal
+        Minimum:
+          type: number
+          format: decimal
+        RequiredForMinimum:
+          type: number
+          format: decimal
+        Selected:
+          type: number
+          format: decimal
+        RequiredForSelected:
+          type: number
+          format: decimal
+        Maximum:
+          type: number
+          format: decimal
+        RemainingUntilMax:
+          type: number
+          format: decimal
+        OverMax:
+          type: number
+          format: decimal
+    PensionLimitDetails_MemberDetail:
+      type: object
+      required:
+      - Id
+      - MemberName
+      - MemberNumber
+      - PensionDetails
+      - Totals
+      properties:
+        Id:
+          type: string
+        MemberName:
+          type: string
+        MemberNumber:
+          type: string
+        PensionDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/PensionLimitDetails_PensionDetail'
+        Totals:
+          $ref: '#/components/schemas/PensionLimitDetails_SummaryBalances'
+    PensionLimitDetails_PensionDetail:
+      type: object
+      required:
+      - AccountId
+      - AccountName
+      - PensionAccountType
+      - OpeningBalance
+      - MinimumDrawdownRate
+      - ProjectedMinimumDrawdownRate
+      - StartDateInPeriod
+      - PensionStartDate
+      - Balances
+      - PensionDrawdowns
+      - TotalDrawdowns
+      - BalanceState
+      - ReviewState
+      properties:
+        AccountId:
+          type: string
+        AccountName:
+          type: string
+        PensionAccountType:
+          type: string
+        OpeningBalance:
+          type: number
+          format: decimal
+        MinimumDrawdownRate:
+          type: number
+          format: decimal
+        ProjectedMinimumDrawdownRate:
+          type: number
+          format: decimal
+        StartDateInPeriod:
+          type: string
+          format: date-time
+        PensionStartDate:
+          type: string
+          format: date-time
+        PensionEndDate:
+          type: string
+          format: date-time
+        Balances:
+          $ref: '#/components/schemas/PensionLimitDetails_BalanceBreakdown'
+        PensionDrawdowns:
+          type: array
+          items:
+            $ref: '#/components/schemas/PensionLimitDetails_PensionDrawdown'
+        TotalDrawdowns:
+          $ref: '#/components/schemas/PensionLimitDetails_SummaryDrawdowns'
+        BalanceState:
+          $ref: '#/components/schemas/PensionBalanceStateType'
+        ReviewState:
+          $ref: '#/components/schemas/ReviewState'
+    PensionLimitDetails_PensionDrawdown:
+      type: object
+      required:
+      - PaymentDate
+      - GrossAmount
+      - NetAmount
+      - PaygAmount
+      - EventMatchSummary
+      - OriginEventId
+      properties:
+        PaymentDate:
+          type: string
+          format: date-time
+        GrossAmount:
+          type: number
+          format: decimal
+        NetAmount:
+          type: number
+          format: decimal
+        PaygAmount:
+          type: number
+          format: decimal
+        EventMatchSummary:
+          $ref: '#/components/schemas/ReportData_EventMatchSummary'
+        OriginEventId:
+          type: string
+    PensionLimitDetails_SummaryBalances:
+      type: object
+      required:
+      - GrossDrawdowns
+      - Payg
+      - NetCash
+      properties:
+        GrossDrawdowns:
+          $ref: '#/components/schemas/PensionLimitDetails_BalanceBreakdown'
+        Payg:
+          $ref: '#/components/schemas/PensionLimitDetails_BalanceBreakdown'
+        NetCash:
+          $ref: '#/components/schemas/PensionLimitDetails_BalanceBreakdown'
+    PensionLimitDetails_SummaryDrawdowns:
+      type: object
+      required:
+      - GrossAmount
+      - PaygAmount
+      - NetAmount
+      properties:
+        GrossAmount:
+          type: number
+          format: decimal
+        PaygAmount:
+          type: number
+          format: decimal
+        NetAmount:
+          type: number
+          format: decimal
+    PerformanceCalculationMethod:
+      type: string
+      enum:
+      - SimpleDietz
+      - ModifiedDietz
+      - TimeWeightedReturn
+    PerformancePeriod:
+      type: object
+      required:
+      - StartDate
+      - EndDate
+      - StartingPortfolioValue
+      - EndingPortfolioValue
+      - FundExpenses
+      - NetFlows
+      - CumulativeReturn
+      - CumulativeReturnCalcFailed
+      - CumulativeReturnPercentage
+      - PeriodReturn
+      properties:
+        StartDate:
+          type: string
+          format: date-time
+        EndDate:
+          type: string
+          format: date-time
+        StartingPortfolioValue:
+          type: number
+          format: decimal
+        EndingPortfolioValue:
+          type: number
+          format: decimal
+        FundExpenses:
+          type: number
+          format: decimal
+        NetFlows:
+          type: number
+          format: decimal
+        CumulativeReturn:
+          type: number
+          format: decimal
+        CumulativeReturnCalcFailed:
+          type: boolean
+        CumulativeReturnPercentage:
+          type: number
+          format: decimal
+        PeriodReturn:
+          type: number
+          format: decimal
+    Portfolio:
+      type: object
+      required:
+      - Key
+      - Name
+      - SortingValue
+      - HoldingAccounts
+      properties:
+        Key:
+          type: string
+        Name:
+          type: string
+        SortingValue:
+          type: string
+        HoldingAccounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Portfolio_HoldingSummary'
+    PortfolioList:
+      type: object
+      required:
+      - Total
+      - PortfolioSummaries
+      properties:
+        Total:
+          type: integer
+          format: int32
+        PortfolioSummaries:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortfolioList_PortfolioSummary'
+    PortfolioList_PortfolioSummary:
+      type: object
+      required:
+      - Id
+      - BusinessCode
+      - Code
+      - Name
+      - Type
+      - IsNonSuper
+      - IsConsolidated
+      - IsChild
+      - BrandCode
+      - ChildPortfolioIds
+      properties:
+        Id:
+          type: string
+        BusinessCode:
+          type: string
+        Code:
+          type: string
+        Name:
+          type: string
+        Type:
+          type: string
+        IsNonSuper:
+          type: boolean
+        IsConsolidated:
+          type: boolean
+        IsChild:
+          type: boolean
+        BrandCode:
+          type: string
+        ChildPortfolioIds:
+          type: array
+          items:
+            type: string
+    PortfolioMemberList:
+      type: object
+      required:
+      - IsConsolidated
+      - MembersPerPortfolio
+      properties:
+        IsConsolidated:
+          type: boolean
+        MembersPerPortfolio:
+          type: array
+          items:
+            $ref: '#/components/schemas/MemberList'
+    PortfolioPerformanceData:
+      type: object
+      required:
+      - Portfolio
+      - StartDate
+      - EndDate
+      - Movements
+      - ExpectedMovements
+      - Valuations
+      - DailyFlows
+      - Periods
+      - IsBenchmark
+      - BenchmarkId
+      properties:
+        Portfolio:
+          $ref: '#/components/schemas/Portfolio'
+        StartDate:
+          type: string
+          format: date-time
+        EndDate:
+          type: string
+          format: date-time
+        Movements:
+          type: array
+          items:
+            $ref: '#/components/schemas/Summaries_HoldingAccountMovement'
+        ExpectedMovements:
+          type: array
+          items:
+            $ref: '#/components/schemas/Summaries_HoldingAccountMovement'
+        Valuations:
+          type: array
+          items:
+            $ref: '#/components/schemas/HoldingDailyValuation'
+        DailyFlows:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortfolioPerformanceData_HoldingDailyFlowDetails'
+        Periods:
+          type: array
+          items:
+            $ref: '#/components/schemas/PerformancePeriod'
+        IsBenchmark:
+          type: boolean
+        BenchmarkId:
+          type: string
+    PortfolioPerformanceDataReport:
+      type: object
+      required:
+      - CapitalGains
+      - Income
+      - FrankingCredits
+      - TotalReturn
+      - SimpleDietzReturns
+      - FallbackToSimpleRateOfReturn
+      - AverageMarketValue
+      - TimeWeightedReturn
+      - BenchmarkTimeWeightedReturn
+      - StartDate
+      - EndDate
+      - SelectedBenchmark
+      - PortfolioPerformances
+      properties:
+        CapitalGains:
+          type: number
+          format: decimal
+        Income:
+          type: number
+          format: decimal
+        FrankingCredits:
+          type: number
+          format: decimal
+        TotalReturn:
+          type: number
+          format: decimal
+        SimpleDietzReturns:
+          type: number
+          format: decimal
+        FallbackToSimpleRateOfReturn:
+          type: boolean
+        AverageMarketValue:
+          type: number
+          format: decimal
+        TimeWeightedReturn:
+          type: number
+          format: decimal
+        BenchmarkTimeWeightedReturn:
+          type: number
+          format: decimal
+        StartDate:
+          type: string
+          format: date-time
+        EndDate:
+          type: string
+          format: date-time
+        SelectedBenchmark:
+          type: string
+        PortfolioPerformances:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortfolioPerformanceDataReport_PortfolioPerformance'
+    PortfolioPerformanceDataReport_PortfolioPerformance:
+      type: object
+      required:
+      - PortfolioName
+      - TimeWeightedReturn
+      properties:
+        PortfolioName:
+          type: string
+        TimeWeightedReturn:
+          type: number
+          format: decimal
+    PortfolioPerformanceData_HoldingDailyFlowDetails:
+      type: object
+      required:
+      - HoldingAccountId
+      - Date
+      - Flow
+      - Income
+      - TaxCredits
+      - HoldingFlow
+      - QuantityChange
+      properties:
+        HoldingAccountId:
+          type: string
+        Date:
+          type: string
+          format: date-time
+        Flow:
+          type: number
+          format: decimal
+        Income:
+          type: number
+          format: decimal
+        TaxCredits:
+          type: number
+          format: decimal
+        HoldingFlow:
+          $ref: '#/components/schemas/HoldingDailyAccountFlowDetails'
+        QuantityChange:
+          type: number
+          format: decimal
+    PortfolioQuery:
+      type: object
+      required:
+      - BusinessCode
+      - Code
+      - Fragment
+      - Page
+      - PageSize
+      - SortDirection
+      - SortBy
+      properties:
+        BusinessCode:
+          type: string
+        Code:
+          type: string
+        Fragment:
+          type: string
+        LegalEntityType:
+          $ref: '#/components/schemas/LegalEntityType'
+        Page:
+          type: integer
+          format: int32
+        PageSize:
+          type: integer
+          format: int32
+        SortDirection:
+          $ref: '#/components/schemas/SortDirection'
+        SortBy:
+          type: string
+    PortfolioSummaryWithValue:
+      type: object
+      required:
+      - Summary
+      - EntityType
+      - Value
+      properties:
+        Summary:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortfolioList_PortfolioSummary'
+        EntityType:
+          $ref: '#/components/schemas/LegalEntityType'
+        Value:
+          type: number
+          format: decimal
+    Portfolio_HoldingSummary:
+      type: object
+      required:
+      - Id
+      - Code
+      - ManagedAccountCode
+      - Name
+      - MarketAndSecurityInfo
+      - HoldingAccountType
+      - IncludeInPerformanceReports
+      properties:
+        Id:
+          type: string
+        Code:
+          type: string
+        ManagedAccountCode:
+          type: string
+        Name:
+          type: string
+        MarketAndSecurityInfo:
+          $ref: '#/components/schemas/Securities_MarketAndSecurityInfo'
+        HoldingAccountType:
+          $ref: '#/components/schemas/HoldingAccountType'
+        IncludeInPerformanceReports:
+          type: boolean
+    PriorYearContribCapType:
+      type: string
+      enum:
+      - NotApplicable
+      - NotApplied
+      - Unknown
+      - AppliedPreviousYear
+      - AppliedTwoYearsPrevious
+      - AppliedPreviousYearTwoYearPeriod
+      - NotAppliedShortBFPeriodPrior
+    PriorYearContributionMode:
+      type: string
+      enum:
+      - AllAvailable
+      - TwoPriorYears
+      - OnlyPriorYear
+      - PriorYearOne
+      - PriorYearTwo
+      - NothingAvailable
+    PriorYearContributionRules_PriorYearContributionRule:
+      type: object
+      required:
+      - Key
+      - Value
+      properties:
+        Key:
+          $ref: '#/components/schemas/PriorYearContributionType'
+        Value:
+          type: string
+    PriorYearContributionType:
+      type: string
+      enum:
+      - NotApplicable
+      - NotApplied
+      - Unknown
+      - AppliedPreviousYear
+      - AppliedTwoYearsPrevious
+      - AppliedPreviousYearTwoYearPeriod
+      - NotAppliedShortBFPeriodPrior
+    PriorYearContributionTypeCustomModel:
+      type: object
+      required:
+      - key
+      - value
+      properties:
+        key:
+          $ref: '#/components/schemas/PriorYearContributionType'
+        value:
+          type: string
+    PublishedDateModel:
+      type: object
+      required:
+      - Date
+      properties:
+        Date:
+          type: string
+          format: date-time
+    PublishedDatesList:
+      type: object
+      required:
+      - FundId
+      - PublishedDates
+      properties:
+        FundId:
+          type: string
+        PublishedDates:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublishedDateModel'
+    QuickAddLinkType:
+      type: string
+      enum:
+      - General
+      - InvestmentAccount
+    QuickAddLinks:
+      type: object
+      required:
+      - LinkType
+      - Editor
+      - Refresh
+      - Validate
+      - EditorRouteName
+      - RefreshRouteName
+      - ValidateRouteName
+      - EditorRouteValues
+      - RefreshRouteValues
+      - ValidateRouteValues
+      - HasWriteAccess
+      - EnableRemoteValidation
+      - SecurityIssueCodes
+      properties:
+        LinkType:
+          $ref: '#/components/schemas/QuickAddLinkType'
+        Editor:
+          $ref: '#/components/schemas/RestLink'
+        Refresh:
+          $ref: '#/components/schemas/RestLink'
+        Validate:
+          $ref: '#/components/schemas/RestLink'
+        EditorRouteName:
+          type: string
+        RefreshRouteName:
+          type: string
+        ValidateRouteName:
+          type: string
+        EditorRouteValues:
+          $ref: '#/components/schemas/RouteValues'
+        RefreshRouteValues:
+          $ref: '#/components/schemas/RouteValues'
+        ValidateRouteValues:
+          $ref: '#/components/schemas/RouteValues'
+        HasWriteAccess:
+          type: boolean
+        EnableRemoteValidation:
+          type: boolean
+        SecurityIssueCodes:
+          type: array
+          items:
+            type: string
+    RenderMode:
+      type: string
+      enum:
+      - DropDownList
+      - AutoComplete
+      - MultiSelect
+      - DropDownGrid
+      - AutoCompleteWithGrid
+    ReportData_EventMatchSummary:
+      type: object
+      required:
+      - Event
+      - SumMatchedEventsUnmatchedAmount
+      - MatchingEventDetails
+      - ComparisonValue
+      properties:
+        Event:
+          $ref: '#/components/schemas/EventMatchSummary_EventDetail'
+        SumMatchedEventsUnmatchedAmount:
+          type: number
+          format: decimal
+        MatchingEventDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventMatchSummary_MatchedEventDetail'
+        ComparisonValue:
+          type: number
+          format: decimal
+        DisplayDate:
+          type: string
+          format: date-time
+    ReportData_FundFinancialYearDetail:
+      type: object
+      required:
+      - DateRange
+      - Description
+      - Year
+      properties:
+        DateRange:
+          type: string
+          format: date-time
+        Description:
+          type: string
+        Year:
+          type: integer
+          format: int32
+    ReportData_UnmatchedCashAccountDetails:
+      type: object
+      required:
+      - AccountId
+      - TotalAmount
+      - EarliestTransactionDate
+      - LatestTransactionDate
+      properties:
+        AccountId:
+          type: string
+        TotalAmount:
+          type: number
+          format: decimal
+        EarliestTransactionDate:
+          type: string
+          format: date-time
+        LatestTransactionDate:
+          type: string
+          format: date-time
+    ReportData_UnmatchedCashItemDetails:
+      type: object
+      required:
+      - TotalAmount
+      - AccountDetails
+      properties:
+        TotalAmount:
+          type: number
+          format: decimal
+        AccountDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportData_UnmatchedCashAccountDetails'
+    ReserveMember:
+      type: object
+      required:
+      - Id
+      - DisplayName
+      - Accounts
+      - TotalAccountBalance
+      properties:
+        Id:
+          type: string
+        DisplayName:
+          type: string
+        Accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/MemberAccount'
+        TotalAccountBalance:
+          type: number
+          format: decimal
+    RestLink:
+      type: object
+      required:
+      - Id
+      - Code
+      - ScopeCode
+      - Uid
+      - Description
+      properties:
+        Id:
+          type: string
+        Code:
+          type: string
+        ScopeCode:
+          type: string
+        Uid:
+          type: string
+        Description:
+          type: string
+    RestSelectableItem:
+      type: object
+      required:
+      - SelectedValue
+      - SelectedValues
+      - DefaultValue
+      - EmptySelectionText
+      - AllowedValues
+      - NoEmptySelection
+      - NoDefaultSelection
+      - SortByText
+      - UseKendoWidgets
+      - UseDescriptionAsValueInKendoWidgets
+      - EnableAddingNewOptions
+      - RenderMode
+      - DropDownGridColumnConfigs
+      - RenderDeferred
+      - QuickAdd
+      - SelectedDescription
+      - SelectedDescriptions
+      - Required
+      - DEFAULT_OPTION_TEXT
+      properties:
+        SelectedValue:
+          type: string
+        SelectedValues:
+          type: array
+          items:
+            type: string
+        DefaultValue:
+          type: string
+        EmptySelectionText:
+          type: string
+        AllowedValues:
+          type: array
+          items:
+            $ref: '#/components/schemas/RestSelectableItem_AllowedValue'
+        NoEmptySelection:
+          type: boolean
+        NoDefaultSelection:
+          type: boolean
+        SortByText:
+          type: boolean
+        UseKendoWidgets:
+          type: boolean
+        UseDescriptionAsValueInKendoWidgets:
+          type: boolean
+        EnableAddingNewOptions:
+          type: boolean
+        RenderMode:
+          $ref: '#/components/schemas/RenderMode'
+        DropdownHeightInPixels:
+          type: integer
+          format: int32
+        DropDownGridColumnConfigs:
+          type: array
+          items:
+            $ref: '#/components/schemas/RestSelectableItem_DropDownGridColumnConfig'
+        RenderDeferred:
+          type: boolean
+        QuickAdd:
+          $ref: '#/components/schemas/QuickAddLinks'
+        SelectedDescription:
+          type: string
+        SelectedDescriptions:
+          type: array
+          items:
+            type: string
+        Required:
+          type: boolean
+        DEFAULT_OPTION_TEXT:
+          type: string
+    RestSelectableItem_AllowedValue:
+      type: object
+      required:
+      - Value
+      - Description
+      - Url
+      - Grouping
+      - GridColumnData
+      properties:
+        Value:
+          type: string
+        Description:
+          type: string
+        Url:
+          type: string
+        Grouping:
+          type: string
+        GridColumnData:
+          type: array
+          items:
+            $ref: '#/components/schemas/stringCustomModel'
+    RestSelectableItem_DropDownGridColumnConfig:
+      type: object
+      required:
+      - DataField
+      - IsBasicData
+      - HeaderName
+      - Searchable
+      properties:
+        DataField:
+          type: string
+        IsBasicData:
+          type: boolean
+        HeaderName:
+          type: string
+        WidthInEms:
+          type: number
+          format: decimal
+        Searchable:
+          type: boolean
+    ReviewState:
+      type: string
+      enum:
+      - Interim
+      - Final
+      - Calculated
+    RouteValues:
+      type: object
+      required:
+      - reference
+      - filterString
+      - effectiveStatuses
+      properties:
+        reference:
+          type: integer
+          format: int32
+        filterString:
+          type: string
+        effectiveStatuses:
+          $ref: '#/components/schemas/EffectiveStatuses'
+    S3CacheSerializationType:
+      type: string
+      enum:
+      - Json
+      - MsgPack
+      - Protobuf
+    Securities_MarketAndSecurityInfo:
+      type: object
+      required:
+      - SecurityCode
+      - SecurityName
+      - MarketCode
+      - MarketAcronym
+      properties:
+        SecurityCode:
+          type: string
+        SecurityName:
+          type: string
+        MarketCode:
+          type: string
+        MarketAcronym:
+          type: string
+    SortDirection:
+      type: string
+      enum:
+      - Asc
+      - Desc
+    StandardApiResponse:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/ApiResponseBase'
+    StatementOfFinancialPosition:
+      type: object
+      required:
+      - FundName
+      - FundCode
+      - AtDate
+      - Items
+      properties:
+        FundName:
+          type: string
+        FundCode:
+          type: string
+        AtDate:
+          type: string
+          format: date-time
+        Items:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatementOfFinancialPosition_FinancialPositionDetailItem'
+    StatementOfFinancialPosition_FinancialPositionDetailItem:
+      type: object
+      required:
+      - Description
+      - Balance
+      - Children
+      properties:
+        Description:
+          type: string
+        Balance:
+          type: number
+          format: decimal
+        Children:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatementOfFinancialPosition_FinancialPositionDetailItem'
+    Summaries_HoldingAccountMovement:
+      type: object
+      required:
+      - TransactionId
+      - HoldingAccountId
+      - MovementDate
+      - MovementType
+      - TransactionAmount
+      - ProfitOrLoss
+      - QuantityChange
+      - BookCostChange
+      - DepreciatedAmount
+      - ChangeInMarketValue
+      - FlowAmount
+      - IncludeInMarketValuation
+      - IsFrankingCredit
+      properties:
+        TransactionId:
+          type: string
+        HoldingAccountId:
+          type: string
+        EntitlementDate:
+          type: string
+          format: date-time
+        PaymentDate:
+          type: string
+          format: date-time
+        MovementDate:
+          type: string
+          format: date-time
+        MovementType:
+          $ref: '#/components/schemas/MovementType'
+        TransactionAmount:
+          type: number
+          format: decimal
+        ProfitOrLoss:
+          type: number
+          format: decimal
+        QuantityChange:
+          type: number
+          format: decimal
+        BookCostChange:
+          type: number
+          format: decimal
+        DepreciatedAmount:
+          type: number
+          format: decimal
+        ChangeInMarketValue:
+          type: number
+          format: decimal
+        FlowAmount:
+          type: number
+          format: decimal
+        IncludeInMarketValuation:
+          type: boolean
+        IsFrankingCredit:
+          type: boolean
+        IncomeAccountedDate:
+          type: string
+          format: date-time
+    TrustDeedVersionDetail:
+      type: object
+      required:
+      - DeedDate
+      - Jurisdiction
+      - TrusteeNamesOnDeed
+      - DeedType
+      - Comments
+      - DeedSource
+      - DatePrinted
+      - DatePrintedSpecified
+      properties:
+        DeedDate:
+          type: string
+          format: date-time
+        Jurisdiction:
+          type: string
+        TrusteeNamesOnDeed:
+          type: string
+        DeedType:
+          type: string
+        Comments:
+          type: string
+        DeedSource:
+          type: string
+        DatePrinted:
+          type: string
+          format: date-time
+        DatePrintedSpecified:
+          type: boolean
+    TrustDeedVersionList:
+      type: object
+      required:
+      - TrustDeedVersionSummaries
+      properties:
+        TrustDeedVersionSummaries:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrustDeedVersionDetail'
+    UrlPattern:
+      type: string
+      enum:
+      - Fund
+      - Business
+      - User
+      - External
+    bool:
+      type: object
+      required:
+      - TrueString
+      - FalseString
+      properties:
+        TrueString:
+          type: string
+        FalseString:
+          type: string
+    stringCustomModel:
+      type: object
+      required:
+      - key
+      - value
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+    InternalErrorCommon:
+      type: object
+      properties:
+        Code:
+          type: string
+          example: API_INTERNAL_ERROR
+        Message:
+          type: string
+          example: An unexpected error occurred on the server. Please try again later.
+      xml:
+        name: Error
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          nullable: true
+        message:
+          type: string
+          nullable: true
+      additionalProperties: false
+    ForbiddenErrorCommon:
+      type: object
+      properties:
+        Code:
+          type: string
+          example: FORBIDDEN
+        Message:
+          type: string
+          example: You do not have permission to access this resource.
+      xml:
+        name: Error
+    ResourceUnavailableErrorCommon:
+      type: object
+      properties:
+        Code:
+          type: string
+          example: API_NOT_FOUND
+        Message:
+          type: string
+          example: Resource not available or user does not have access to the fund.
+      xml:
+        name: Error
+    UnauthorizedErrorCommon:
+      type: object
+      properties:
+        Code:
+          type: string
+          example: API_NOT_AUTHORISED
+        Message:
+          type: string
+          example: Not authorised
+      xml:
+        name: Error
+        wrapped: false
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+  parameters:
+    businessCodeParam:
+      name: businessCode
+      in: path
+      description: Class business code
+      required: true
+      schema:
+        type: string
+        example: demo-business
+    fundCodeParam:
+      name: fundCode
+      description: Class entity code
+      in: path
+      required: true
+      schema:
+        type: string
+        example: demo-fund
+    versionParam:
+      name: version
+      description: API version
+      in: path
+      required: true
+      schema:
+        type: string
+        example: '1.0'

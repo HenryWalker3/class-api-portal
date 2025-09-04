@@ -28,7 +28,7 @@ Integrate your practice management system with **Class** to automate client onbo
 - Your environment’s **Base URL** (e.g., `https://api.class.com.au`).
 
 ### Get Started
-Explore the full [API documentation](/guides/specs/practice-management-guide.yaml) for commonly used endpoints.
+Explore the full [API documentation](/apis/partner/practice-management-guide.yaml) for commonly used endpoints.
 
 You can also import these endpoints into Postman
 [![Run in Postman](/images/postman.svg)](https://app.getpostman.com/run-collection/31317481-ced2ed1d-f59b-429e-b276-1f69fc6b2c51?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D31317481-ced2ed1d-f59b-429e-b276-1f69fc6b2c51%26entityType%3Dcollection%26workspaceId%3D78b42111-b0cd-4d64-8f5d-10d32cf32a0c)

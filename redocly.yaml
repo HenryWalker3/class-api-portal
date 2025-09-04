@@ -1,16 +1,55 @@
-# reunite:
-  # ignoreLint: true
+reunite:
+  ignoreLint: true
   # ignoreLinkChecker: true
 extends:
-  - recommended
+  - minimal
 
 apis:
   accounting-reports:
-    root: ./apis/accounting-reports-final.yaml
+    root: ./apis/partner/accounting-reports-final.yaml
+  business-data:
+    root: ./apis/partner/business-data-final.yaml
+  external-provider:
+    root: ./apis/partner/external-provider-final.yaml
+  feed-data:
+    root: ./apis/partner/feed-data-final.yaml
+  fund-data:
+    root: ./apis/partner/fund-data-final.yaml
+  fund-web:
+    root: ./apis/partner/fund-web-final.yaml
+  investment-reports:
+    root: ./apis/partner/investment-reports-final.yaml
+  member-data:
+    root: ./apis/partner/member-data-final.yaml
+  member-reports:
+    root: ./apis/partner/member-reports-final.yaml
+  minutes-data:
+    root: ./apis/partner/minutes-data-final.yaml
+  report-generator:
+    root: ./apis/partner/report-generator-final.yaml
 
 links:
-  - href: https://fonts.googleapis.com/css2?family=VT323&display=swap
-  - href: https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap
+  # HDS requirements
+  - href: 'https://cdn.hub24.ai/dist/themes/common.css'
+    rel: stylesheet
+  - href: 'https://cdn.hub24.ai/dist/themes/class.css'
+    rel: stylesheet
+  - href: 'https://cdn.hub24.ai/dist/themes/ni.css'
+    rel: stylesheet
+  # Add Font Awesome for icons
+  - href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css'
+    rel: stylesheet
+  # Your existing Google Fonts
+  - href: 'https://fonts.googleapis.com/css2?family=VT323&display=swap'
+  - href: 'https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap'
+
+scripts:
+  body:
+    - src: ./scripts/hds-loader.js
+      module: true
+seo:
+  title: Warp API
+  description: Warp is the groundbreaking API that allows you to navigate, manipulate, and control time.
 
 colorMode: 
   hide: true
@@ -44,6 +83,8 @@ navbar:
           label: Rate Limiting
         - page: resources/refresh-tokens.md
           label: Refresh Token
+        - page: resources/authorising-partner-application-api-access.md
+          label: Authorising Partner API Access
     - group: Guides
       items: 
         - page: guides/practice-management.md

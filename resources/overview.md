@@ -15,7 +15,7 @@ Get set up and make your first successful request in minutes.
 ## Authentication & Authorisation
 Learn how users and apps obtain tokens to call the Class API securely.
 
-- **[Auth Overview](./auth-overview.md)** — Identifying which flow to implement (Partner vs. Client)
+- **[Auth Overview](./authorising-partner-application-api-access.md)** — Identifying which flow to implement (Partner vs. Client)
 - **[Authorisation Code Flow](./authorization-code-flow.md)** — recommended OAuth 2.0 flow for web/native apps.
 - **[Resource Owner Password Flow](./resource-owner-password-flow.md)** — legacy/edge case flow.
 - **[Refresh Tokens](./refresh-tokens.md)** — how to obtain/rotate refresh tokens.
