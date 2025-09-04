@@ -30,8 +30,8 @@ apis:
 
 links:
   # HDS requirements
-  - href: 'https://cdn.hub24.ai/dist/themes/common.css'
-    rel: stylesheet
+  #- href: 'https://cdn.hub24.ai/dist/themes/common.css'
+  #  rel: stylesheet
   - href: 'https://cdn.hub24.ai/dist/themes/class.css'
     rel: stylesheet
   - href: 'https://cdn.hub24.ai/dist/themes/ni.css'

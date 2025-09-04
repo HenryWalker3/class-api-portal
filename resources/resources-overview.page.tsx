@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Button } from '@redocly/theme/components/Button/Button';
 import { Link } from '@redocly/theme/components/Link/Link';
-import './styles.css';
+import './@theme/styles.css';
 
 export const frontmatter = {
   seo: {
@@ -82,7 +82,7 @@ const sections: Section[] = [
 export default function ResourcesOverviewPage() {
   return (
     <div className="landing-wrapper">
-      <div>
+      <div className="jumbotron">
         <h1 className="landing-header">Resources Overview</h1>
         <div className="landing-subheader">
           This page centralizes guidance and links for authenticating with Class using OAuth&nbsp;2.0—
