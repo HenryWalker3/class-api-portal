@@ -1,5 +1,9 @@
 openapi: 3.0.1
 info:
+  x-metadata:
+    apiId: class-partner-api-v1
+    tags:
+      - Partner
   title: Fund Data API
   version: 1.0.0000
   description: |
