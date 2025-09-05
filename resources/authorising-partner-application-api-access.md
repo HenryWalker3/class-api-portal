@@ -1,6 +1,6 @@
 
 ### Component Test Area
-  <sl-button variant="primary">Click Me</sl-button>
+  <sl-button variant="primary" size="large">Click Me</sl-button>
 
   <sl-alert open>
     <sl-icon slot="icon" name="fas-circle-info"></sl-icon>

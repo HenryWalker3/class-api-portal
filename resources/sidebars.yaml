@@ -2,15 +2,20 @@
   items:
     - page: ./overview.md
       label: Overview
+    - separator: Authentication and Authorisation
     - page: ./authorization-code-flow.md
       label: Authorization Code Flow
     - page: ./authorisation-scopes.md
       label: Authorization Scopes
-    - page: ./rate-limiting.md
-      label: Rate Limiting
     - page: ./resource-owner-password-flow.md
       label: Resource Owner Password Flow
+    - separator: Security Implementation
+    - page: ./rate-limiting.md
+      label: Rate Limiting
     - page: ./refresh-tokens.md
       label: Refresh Token
     - page: ./authorising-partner-application-api-access.md
       label: Authorising Partner API Access
+  icon: books
+  selectFirstItemOnExpand: true
+  expanded: true

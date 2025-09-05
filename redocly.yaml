@@ -106,6 +106,7 @@ logo:
   image: images/logo.svg
   link: /
 footer:
+  hide: true
   copyrightText: Copyleft © Redocly Inc. No rights reserved.
 sso:
   - GUEST
