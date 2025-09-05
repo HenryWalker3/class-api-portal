@@ -1,6 +1,11 @@
 - group: Guides
   items:
+    - separator: Getting started
     - page: ./practice-management.md
       label: Practice Management Overview
+    - separator: API Reference
     - page: ./specs/practice-management-guide.yaml
       label: Practice Management API Documentation
+  icon: book
+  selectFirstItemOnExpand: true
+  expanded: true

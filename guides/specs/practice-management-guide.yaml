@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: Practice Management Recipe
+  title: Practice Management API
   version: 1.0.0000
   description: |
    - Key features of Class and Practice Management Integration:
@@ -195,8 +195,8 @@ paths:
       - Class_oAuth:
         - fund.details.read
     post:
-      operationId: UpdateDetailsFundCommunity
-      summary: UpdateDetailsFundCommunity
+      operationId: UpdateFundDetail
+      summary: UpdateFundDetails
       description: Update the details of a fund into Class.
       requestBody:
         required: true
@@ -737,7 +737,7 @@ paths:
         - fund.member.read
     post:
       operationId: postMemberDetail
-      summary: PostMemberDetail
+      summary: UpdateMemberDetail
       description: Update the complete details of a member within the fund.
       parameters:
       - $ref: '#/components/parameters/businessCodeParam'
