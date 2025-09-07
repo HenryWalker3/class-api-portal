@@ -771,7 +771,11 @@ paths:
         description: To include specific type of tbarState
         required: true
         schema:
-          $ref: '#/components/schemas/TbarStateGroupingType'
+          type: string
+          enum: 
+            - "All Transactions"
+            - "Not Generated"
+            - "Generated"
       - name: brandCode
         in: query
         description: This parameter is only used when you are using this at a business
