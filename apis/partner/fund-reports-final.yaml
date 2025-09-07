@@ -203,7 +203,7 @@ paths:
     get:
       operationId: fundDetailReport
       summary: fundDetailReport
-      summary: Fetches detailed information for a specific fund identified by business and fund codes. Returns comprehensive fund data, including legal type, ABN, trustee details, and investment strategies.
+      description: Fetches detailed information for a specific fund identified by business and fund codes. Returns comprehensive fund data, including legal type, ABN, trustee details, and investment strategies.
       parameters:
       - $ref: '#/components/parameters/businessCodeParam'
       - $ref: '#/components/parameters/fundCodeParam'
