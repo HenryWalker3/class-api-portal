@@ -1,20 +1,20 @@
 - group: Resources
   items:
-    - page: ./overview.md
+    - page: /resources/overview.md
       label: Overview
     - separator: Authentication and Authorisation
-    - page: ./authorization-code-flow.md
+    - page: /resources/authorization-code-flow.md
       label: Authorization Code Flow
-    - page: ./authorisation-scopes.md
+    - page: /resources/authorisation-scopes.md
       label: Authorization Scopes
-    - page: ./resource-owner-password-flow.md
+    - page: /resources/resource-owner-password-flow.md
       label: Resource Owner Password Flow
     - separator: Security Implementation
-    - page: ./rate-limiting.md
+    - page: /resources/rate-limiting.md
       label: Rate Limiting
-    - page: ./refresh-tokens.md
+    - page: /resources/refresh-tokens.md
       label: Refresh Token
-    - page: ./authorising-partner-application-api-access.md
+    - page: /resources/authorising-partner-application-api-access.md
       label: Authorising Partner API Access
   icon: books
   selectFirstItemOnExpand: true
@@ -22,10 +22,10 @@
 - group: Guides
   items:
     - separator: Getting started
-    - page: ./practice-management.md
+    - page: /guides/practice-management.md
       label: Practice Management Overview
     - separator: API Reference
-    - page: ./specs/practice-management-guide.yaml
+    - page: /guides/specs/practice-management-guide.yaml
       label: Practice Management API Documentation
   icon: book
   selectFirstItemOnExpand: true
